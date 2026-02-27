@@ -44,7 +44,7 @@ export async function getSupportPeers(): Promise<SupportPeer[]> {
   // return res.json();
 }
 
-export async function removeSupportPeer(peerId: number): Promise<void> {
+export async function removeSupportPeer(peerId: string): Promise<void> {
   // --- MOCK ---
   void peerId;
   await new Promise((r) => setTimeout(r, 200));

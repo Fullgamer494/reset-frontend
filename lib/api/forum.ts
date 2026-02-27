@@ -21,7 +21,7 @@ export async function createForoPost(data: CreateForoPostData): Promise<ForoPost
   // --- MOCK ---
   await new Promise((r) => setTimeout(r, 400));
   const newPost: ForoPost = {
-    id: Date.now(),
+    id: `post_${Date.now()}`,
     title: "Nueva publicación",
     author: data.isAnon ? "Anónimo" : "Tú",
     timeAgo: "Ahora",
@@ -46,7 +46,7 @@ export async function createForoPost(data: CreateForoPostData): Promise<ForoPost
   // return res.json();
 }
 
-export async function toggleLikePost(postId: number): Promise<{ liked: boolean; likes: number }> {
+export async function toggleLikePost(postId: string): Promise<{ liked: boolean; likes: number }> {
   // --- MOCK ---
   await new Promise((r) => setTimeout(r, 200));
   return { liked: true, likes: 1 }; // page optimistically updates state

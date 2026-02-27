@@ -37,7 +37,7 @@ export function useForo() {
     }
   };
 
-  const handleToggleLike = async (id: number) => {
+  const handleToggleLike = async (id: string) => {
     // Optimistic update
     setPosts((prev) =>
       prev.map((p) =>
@@ -60,7 +60,7 @@ export function useForo() {
     }
   };
 
-  const handleToggleBookmark = (id: number) => {
+  const handleToggleBookmark = (id: string) => {
     setPosts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, bookmarked: !p.bookmarked } : p))
     );

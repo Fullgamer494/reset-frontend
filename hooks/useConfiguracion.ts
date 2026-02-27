@@ -39,7 +39,7 @@ export function useConfiguracion() {
     }
   };
 
-  const handleRemovePeer = async (id: number) => {
+  const handleRemovePeer = async (id: string) => {
     setPeers((prev) => prev.filter((p) => p.id !== id)); // optimistic
     try {
       await removeSupportPeer(id);

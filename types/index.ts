@@ -83,7 +83,7 @@ export interface SaveJournalEntryData {
 // ─── Forum / Foro ─────────────────────────────────────────────────────────────
 
 export interface ForoPost {
-  id: number;
+  id: string;
   title: string;
   author: string;
   timeAgo: string;
@@ -109,7 +109,7 @@ export interface ForoCategory {
 // ─── Profile / Configuración ─────────────────────────────────────────────────
 
 export interface SupportPeer {
-  id: number;
+  id: string;
   name: string;
   email: string;
 }
@@ -150,7 +150,7 @@ export interface Message {
 }
 
 export interface MessageLibraryItem {
-  id: number;
+  id: string;
   text: string;
 }
 

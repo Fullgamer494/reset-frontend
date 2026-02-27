@@ -66,7 +66,7 @@ export const MOCK_JOURNAL_ENTRIES: JournalEntry[] = [
 
 export const MOCK_FORO_POSTS: ForoPost[] = [
   {
-    id: 1,
+    id: "a1b2c3d4-0002-0000-0000-000000000001",
     title: "Mi primer mes",
     author: "Usuario_1",
     timeAgo: "Hace 2 horas",
@@ -80,7 +80,7 @@ export const MOCK_FORO_POSTS: ForoPost[] = [
     bookmarked: false,
   },
   {
-    id: 2,
+    id: "a1b2c3d4-0002-0000-0000-000000000002",
     title: "Consejos para la ansiedad",
     author: "Usuario_E",
     timeAgo: "Ayer, hace 2 horas",
@@ -94,7 +94,7 @@ export const MOCK_FORO_POSTS: ForoPost[] = [
     bookmarked: false,
   },
   {
-    id: 3,
+    id: "a1b2c3d4-0002-0000-0000-000000000003",
     title: "Recaídas y perdón",
     author: "amaro_R",
     timeAgo: "Ayer",
@@ -120,8 +120,8 @@ export const MOCK_FORO_CATEGORIES: ForoCategory[] = [
 // ─── Profile / Configuración ─────────────────────────────────────────────────
 
 export const MOCK_SUPPORT_PEERS: SupportPeer[] = [
-  { id: 1, name: "Elena Martínez", email: "elena.m@correo.com" },
-  { id: 2, name: "Carlos Ruiz", email: "cruiz_88@servidor.es" },
+  { id: "a1b2c3d4-0001-0000-0000-000000000001", name: "Elena Martínez", email: "elena.m@correo.com" },
+  { id: "a1b2c3d4-0001-0000-0000-000000000002", name: "Carlos Ruiz", email: "cruiz_88@servidor.es" },
 ];
 
 // ─── Companion ───────────────────────────────────────────────────────────────
@@ -187,12 +187,12 @@ export const MOCK_MESSAGES: Message[] = [
 ];
 
 export const MOCK_MESSAGE_LIBRARY: MessageLibraryItem[] = [
-  { id: 1, text: "Cada día que avanzas es una victoria. 🌱" },
-  { id: 2, text: "Eres más fuerte de lo que crees." },
-  { id: 3, text: "La constancia es el camino. Sigue adelante." },
-  { id: 4, text: "Estoy orgulloso/a de tu esfuerzo." },
-  { id: 5, text: "Hoy es un nuevo comienzo." },
-  { id: 6, text: "Tu valor no se mide en días perfectos." },
+  { id: "a1b2c3d4-0003-0000-0000-000000000001", text: "Cada día que avanzas es una victoria. 🌱" },
+  { id: "a1b2c3d4-0003-0000-0000-000000000002", text: "Eres más fuerte de lo que crees." },
+  { id: "a1b2c3d4-0003-0000-0000-000000000003", text: "La constancia es el camino. Sigue adelante." },
+  { id: "a1b2c3d4-0003-0000-0000-000000000004", text: "Estoy orgulloso/a de tu esfuerzo." },
+  { id: "a1b2c3d4-0003-0000-0000-000000000005", text: "Hoy es un nuevo comienzo." },
+  { id: "a1b2c3d4-0003-0000-0000-000000000006", text: "Tu valor no se mide en días perfectos." },
 ];
 
 // ─── Mi Cuenta ───────────────────────────────────────────────────────────────
