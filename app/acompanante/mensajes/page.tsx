@@ -15,7 +15,8 @@ export default function MensajesPage() {
 
   return (
     <div className="min-h-full">
-      <div className="max-w-2xl mx-auto px-10 py-12">
+      {/* Contenido con padding responsivo */}
+      <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
           className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
@@ -36,7 +37,8 @@ export default function MensajesPage() {
           Conversación con Alex — Privado
         </p>
 
-        <div className="grid grid-cols-[1fr_220px] gap-5">
+          {/* Grid: columna \u00fanica en m\u00f3vil, chat + biblioteca en sm+ */}
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-5">
           {/* Chat area */}
           <div className="flex flex-col gap-4">
             <div className="border border-slate-200 bg-white rounded-sm p-6 flex flex-col gap-3 min-h-[320px]">

@@ -32,7 +32,8 @@ const MOOD_SVG: Record<string, React.ReactNode> = {
 export default function MonitoreoPage() {
   return (
     <div className="min-h-full">
-      <div className="max-w-2xl mx-auto px-10 py-12">
+      {/* Contenido con padding responsivo */}
+      <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
           className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
@@ -58,7 +59,8 @@ export default function MonitoreoPage() {
           className="border border-slate-200 bg-white rounded-sm p-8 mb-6"
           style={{ boxShadow: "8px 8px 0px 0px rgba(13, 148, 136, 0.06)" }}
         >
-          <div className="flex gap-8 items-start">
+          {/* Tarjeta principal: stacking en móvil, lado a lado en sm+ */}
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
             {/* Tree visualization */}
             <div className="flex flex-col items-center gap-3 min-w-[140px] animate-float">
               <svg width="90" height="110" viewBox="0 0 90 110" fill="none" className="animate-sway">
@@ -112,7 +114,8 @@ export default function MonitoreoPage() {
                 </div>
               </div>
 
-              <div className="flex gap-6 mb-5">
+              {/* Stats — wrapper responsivo */}
+              <div className="flex flex-wrap gap-4 sm:gap-6 mb-5">
                 <div>
                   <p
                     className="text-[24px] font-normal text-teal-600 leading-none"

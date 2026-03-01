@@ -56,7 +56,8 @@ const entries = [
 export default function HistorialPage() {
   return (
     <div className="min-h-full">
-      <div className="max-w-2xl mx-auto px-10 py-12">
+      {/* Contenido con padding responsivo */}
+      <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
           className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
