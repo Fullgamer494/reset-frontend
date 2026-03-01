@@ -43,7 +43,14 @@ const navItems = [
   },
 ];
 
-export default function UserSidebar() {
+interface UserSidebarProps {
+  /** Controla si el sidebar está abierto en móvil */
+  isOpen?: boolean;
+  /** Callback para cerrar el sidebar en móvil */
+  onClose?: () => void;
+}
+
+export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProps) {
   const pathname = usePathname();
 
   function isActive(href: string) {
@@ -53,23 +60,40 @@ export default function UserSidebar() {
 
   return (
     <aside
-      className="fixed left-0 top-0 h-full w-[288px] flex flex-col border-r border-slate-100 bg-white z-20"
+      className={
+        `fixed left-0 top-0 h-full w-[288px] flex flex-col border-r border-slate-100 bg-white z-20
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`
+      }
       style={{ boxShadow: "1px 0 0 0 #f1f5f9" }}
     >
-      {/* Logo */}
-      <div className="px-8 pt-8 pb-6 border-b border-slate-100">
-        <p
-          className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-1"
-          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+      {/* Logo — con botón de cierre visible solo en móvil */}
+      <div className="px-8 pt-8 pb-6 border-b border-slate-100 flex items-start justify-between">
+        <div>
+          <p
+            className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-1"
+            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+          >
+            Registro No. 01
+          </p>
+          <h1
+            className="text-[22px] font-normal text-slate-800 leading-tight"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Reset de Alex
+          </h1>
+        </div>
+        {/* Botón cerrar sidebar — solo visible en móvil */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="md:hidden text-slate-400 hover:text-slate-600 transition-colors mt-1 p-1"
+          aria-label="Cerrar menú"
         >
-          Registro No. 01
-        </p>
-        <h1
-          className="text-[22px] font-normal text-slate-800 leading-tight"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          Reset de Alex
-        </h1>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </div>
 
       {/* Navigation */}
