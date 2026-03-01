@@ -76,10 +76,11 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center p-6"
+      className="min-h-screen w-full flex items-start lg:items-center justify-center p-4 sm:p-6 pb-20 sm:pb-20"
       style={{ background: "#eef2f7" }}
     >
-      <div className="w-full max-w-[920px] flex gap-8 items-start">
+      {/* Layout: columna única en móvil, 2 columnas en desktop (lg+) */}
+      <div className="w-full max-w-[920px] flex flex-col gap-8 items-stretch lg:flex-row lg:gap-8 lg:items-start">
         {/* Left branding + Step 1 */}
         <div className="flex-1 flex flex-col gap-6">
           {/* Branding */}
@@ -90,8 +91,9 @@ export default function RegisterPage() {
             >
               — Comienza tu Viaje —
             </p>
+            {/* T\u00edtulo marca \u2014 tama\u00f1o responsivo */}
             <h1
-              className="text-[52px] font-normal text-slate-700 leading-none mb-3"
+              className="text-[38px] sm:text-[52px] font-normal text-slate-700 leading-none mb-3"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               ReSet
@@ -104,8 +106,8 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          {/* Step 1 Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-8 relative overflow-hidden"
+          {/* Step 1 Card — padding responsivo */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 relative overflow-hidden"
             style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
             {/* Decorative icon top-right */}
             <div className="absolute right-4 top-4 opacity-10">
@@ -181,8 +183,8 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Step 2 Card */}
-        <div className="flex-1 bg-white rounded-2xl border border-slate-100 p-8"
+        {/* Step 2 Card — padding responsivo */}
+        <div className="flex-1 bg-white rounded-2xl border border-slate-100 p-6 sm:p-8"
           style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
           <p
             className="text-[9px] tracking-[2px] uppercase text-sky-500 mb-3"
@@ -287,8 +289,8 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="fixed bottom-4 left-0 right-0 flex items-center justify-between px-10">
+      {/* Footer fijo — padding responsivo */}
+      <div className="fixed bottom-4 left-0 right-0 flex items-center justify-between px-4 sm:px-10">
         <p
           className="text-[9px] tracking-[1px] uppercase text-slate-400 italic"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}

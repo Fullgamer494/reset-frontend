@@ -13,9 +13,9 @@ export default function LoginPage() {
         background: "linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)",
       }}
     >
-      {/* Decorative background elements */}
+      {/* Decorative background elements — ocultos en móvil para no obstruir */}
       <div
-        className="absolute left-[12%] top-[8%] opacity-5 pointer-events-none select-none"
+        className="absolute left-[12%] top-[8%] opacity-5 pointer-events-none select-none hidden sm:block"
         style={{ width: 350, height: 420 }}
       >
         <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +25,7 @@ export default function LoginPage() {
         </svg>
       </div>
       <div
-        className="absolute right-[8%] top-[2%] opacity-5 pointer-events-none select-none"
+        className="absolute right-[8%] top-[2%] opacity-5 pointer-events-none select-none hidden sm:block"
         style={{ width: 400, height: 480 }}
       >
         <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@ export default function LoginPage() {
         </svg>
       </div>
 
-      {/* Main Container */}
+      {/* Main Container — padding horizontal m\u00ednimo en m\u00f3vil */}
       <div className="relative w-full max-w-[448px] px-4">
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
@@ -61,12 +61,12 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card */}
+        {/* Card \u2014 padding responsivo en m\u00f3vil */}
         <div
           className="bg-white rounded-2xl border border-slate-100 overflow-hidden"
           style={{ boxShadow: "0px 20px 50px -15px rgba(0,0,0,0.1)" }}
         >
-          <div className="px-10 pt-10 pb-4">
+          <div className="px-6 pt-8 pb-4 sm:px-10 sm:pt-10">
             <h2
               className="text-[24px] italic text-slate-700 text-center leading-tight mb-2"
               style={{ fontFamily: "'Playfair Display', serif" }}
@@ -232,7 +232,7 @@ export default function LoginPage() {
           </div>
 
           {/* Register link */}
-          <div className="px-10 py-6 border-t border-slate-100 flex items-center justify-center gap-1">
+          <div className="px-6 py-6 sm:px-10 border-t border-slate-100 flex items-center justify-center gap-1">
             <span
               className="text-[14px] italic text-slate-600"
               style={{ fontFamily: "'Playfair Display', serif" }}
