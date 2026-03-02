@@ -22,7 +22,7 @@ export default function DashboardLayout({
       {/* Overlay semitransparente en móvil cuando el sidebar está abierto */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20 z-10 md:hidden"
+          className="fixed inset-0 bg-black/30 z-20 md:hidden"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
