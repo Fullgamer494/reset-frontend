@@ -79,6 +79,23 @@ export default function RegisterPage() {
       className="min-h-screen w-full flex items-start lg:items-center justify-center p-4 sm:p-6 pb-20 sm:pb-20"
       style={{ background: "#eef2f7" }}
     >
+      {/* ─── Botón Volver — visible en móvil y desktop ─────────────────────────
+          En Capacitor Android este flujo se activa también con el botón físico Back */}
+      <Link
+        href="/login"
+        className="fixed top-4 left-4 z-20 flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
+        aria-label="Volver al inicio de sesión"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span
+          className="text-[9px] tracking-[1.5px] uppercase"
+          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+        >
+          Iniciar sesión
+        </span>
+      </Link>
       {/* Layout: columna única en móvil, 2 columnas en desktop (lg+) */}
       <div className="w-full max-w-[920px] flex flex-col gap-8 items-stretch lg:flex-row lg:gap-8 lg:items-start">
         {/* Left branding + Step 1 */}
