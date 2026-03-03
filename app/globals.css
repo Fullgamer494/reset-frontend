@@ -170,3 +170,132 @@ input:checked + .toggle-slider::before {
 .animate-pulse-ring {
   animation: pulse-ring 2s ease-out infinite;
 }
+
+/* ─── Futuristic Login Animations ──────────────────────────────────────── */
+
+@keyframes spin-gear {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes spin-gear-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.06; }
+  33%       { transform: translate(14px, -22px) rotate(60deg); opacity: 0.11; }
+  66%       { transform: translate(-9px, 11px) rotate(120deg); opacity: 0.07; }
+}
+
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0px, 0px) rotate(45deg); opacity: 0.05; }
+  50%       { transform: translate(-16px, -26px) rotate(105deg); opacity: 0.09; }
+}
+
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0px, 0px) rotate(0deg); opacity: 0.04; }
+  50%       { transform: translate(22px, -16px) rotate(90deg); opacity: 0.08; }
+}
+
+@keyframes neon-glow-card {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.08), 0 0 40px rgba(0, 212, 255, 0.04), inset 0 0 20px rgba(0, 212, 255, 0.02); }
+  50%       { box-shadow: 0 0 30px rgba(0, 212, 255, 0.16), 0 0 60px rgba(0, 212, 255, 0.08), inset 0 0 30px rgba(0, 212, 255, 0.04); }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-8px); opacity: 0; }
+  5%   { opacity: 0.4; }
+  95%  { opacity: 0.4; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  30%       { transform: translate(30px, -20px) scale(1.05); }
+  60%       { transform: translate(-15px, 35px) scale(0.95); }
+}
+
+@keyframes input-focus-glow {
+  from { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+  to   { box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15), 0 0 12px rgba(0, 212, 255, 0.1); }
+}
+
+.animate-spin-gear {
+  animation: spin-gear 40s linear infinite;
+  transform-origin: center;
+}
+
+.animate-spin-gear-reverse {
+  animation: spin-gear-reverse 60s linear infinite;
+  transform-origin: center;
+}
+
+.animate-drift-1 { animation: drift-1 14s ease-in-out infinite; }
+.animate-drift-2 { animation: drift-2 20s ease-in-out infinite; }
+.animate-drift-3 { animation: drift-3 26s ease-in-out infinite; }
+
+.animate-neon-card {
+  animation: neon-glow-card 4s ease-in-out infinite;
+}
+
+.animate-scan-line {
+  animation: scan-line 10s linear infinite;
+}
+
+.animate-orb {
+  animation: orb-drift 18s ease-in-out infinite;
+}
+
+/* Input focus glow compatible con :focus */
+.futuristic-input {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.futuristic-input::placeholder {
+  color: #94a3b8;
+}
+.futuristic-input:focus {
+  outline: none;
+  border-color: #7dd3fc;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  background: #ffffff;
+}
+
+.futuristic-btn {
+  background: linear-gradient(135deg, #06b6d4 0%, #0d9488 100%);
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.25);
+  transition: box-shadow 0.25s, transform 0.15s, filter 0.25s;
+}
+.futuristic-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 30px rgba(6, 182, 212, 0.45), 0 0 20px rgba(6, 182, 212, 0.2);
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+.futuristic-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+.futuristic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-gear,
+  .animate-spin-gear-reverse,
+  .animate-drift-1,
+  .animate-drift-2,
+  .animate-drift-3,
+  .animate-neon-card,
+  .animate-scan-line,
+  .animate-orb,
+  .animate-breathe,
+  .animate-float {
+    animation: none !important;
+    transition: none !important;
+  }
+}
