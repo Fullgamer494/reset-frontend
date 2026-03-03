@@ -69,15 +69,20 @@ export interface Mood {
 
 export interface JournalEntry {
   id: string;
+  title: string;
   mood: MoodId;
   notes: string;
+  consumed: boolean;
   createdAt: string;
-  isShared: boolean;
+  isShared?: boolean; // TODO: sin soporte en BD actual
 }
 
 export interface SaveJournalEntryData {
+  title: string;
   mood: MoodId;
   notes: string;
+  consumed: boolean;          // Requerido por tracking.daily_logs — activa/rompe la racha
+  cravingLevel?: 1|2|3|4|5;  // Mapea a core.craving_levels.level
 }
 
 // ─── Forum / Foro ─────────────────────────────────────────────────────────────
@@ -99,7 +104,7 @@ export interface ForoPost {
 export interface CreateForoPostData {
   title: string;
   content: string;
-  isAnon: boolean;
+  isAnonymous: boolean; // Nombre exacto requerido por MongoDB (campo obligatorio)
   tags: string[];
 }
 
