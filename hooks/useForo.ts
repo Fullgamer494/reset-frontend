@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   getForoPosts,
@@ -12,6 +12,11 @@ import type { ForoPost, ForoCategory } from "@/types";
 
 export function useForo() {
   const router = useRouter();
+
+  // Rastreo de posts que el usuario likeó en esta sesión
+  // (la API no devuelve estado per-usuario, por eso se mantiene en memoria)
+  const likedByMe = useRef<Set<string>>(new Set());
+
   const [posts, setPosts] = useState<ForoPost[]>([]);
   const [categories, setCategories] = useState<ForoCategory[]>([]);
   const [postText, setPostText] = useState("");
@@ -23,12 +28,16 @@ export function useForo() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /** Aplica el estado de liked de la sesión actual a una lista de posts frescos. */
+  const applyLikedState = (freshPosts: ForoPost[]): ForoPost[] =>
+    freshPosts.map((p) => ({ ...p, liked: likedByMe.current.has(p.id) }));
+
   const loadPosts = () => {
     setIsLoading(true);
     setError(null);
     Promise.all([getForoPosts(1, 10), getForoCategories()])
       .then(([p, c]) => {
-        setPosts(p);
+        setPosts(applyLikedState(p));
         setCategories(c);
       })
       .catch((err: any) => {
@@ -75,22 +84,32 @@ export function useForo() {
   };
 
   const handleToggleLike = async (id: string) => {
-    // Optimistic update
+    const wasLiked = likedByMe.current.has(id);
+
+    // Actualizar el Set de likes de sesión
+    wasLiked ? likedByMe.current.delete(id) : likedByMe.current.add(id);
+
+    // Optimistic update inmediato en la UI
     setPosts((prev) =>
       prev.map((p) =>
         p.id === id
-          ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 }
+          ? { ...p, liked: !wasLiked, likes: wasLiked ? p.likes - 1 : p.likes + 1 }
           : p
       )
     );
+
     try {
       await toggleLikePost(id);
+      // Refrescar contadores reales desde la API y re-aplicar estado de sesión
+      const refreshed = await getForoPosts(1, 10);
+      setPosts(applyLikedState(refreshed));
     } catch {
-      // Revertir si falla
+      // Revertir el Set y la UI si falla
+      wasLiked ? likedByMe.current.add(id) : likedByMe.current.delete(id);
       setPosts((prev) =>
         prev.map((p) =>
           p.id === id
-            ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 }
+            ? { ...p, liked: wasLiked, likes: wasLiked ? p.likes + 1 : p.likes - 1 }
             : p
         )
       );

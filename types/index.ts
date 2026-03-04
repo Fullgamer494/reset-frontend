@@ -61,7 +61,7 @@ export interface AddictionType {
 
 // ─── Journal / Bitácora ──────────────────────────────────────────────────────
 
-export type MoodId = "feliz" | "calmado" | "ansioso" | "triste" | "directado";
+export type MoodId = "feliz" | "calmado" | "ansioso" | "triste" | "motivado";
 
 export interface Mood {
   id: MoodId;

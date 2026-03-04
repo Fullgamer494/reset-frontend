@@ -25,6 +25,8 @@ interface AuthCtx {
   user: AuthUser | null;
   saveAuth: (token: string, user: AuthUser) => void;
   clearAuth: () => void;
+  /** Actualiza campos del usuario en memoria (ej: tras editar nombre). */
+  updateUser: (partial: Partial<AuthUser>) => void;
 }
 
 // ─── Contexto ────────────────────────────────────────────────────────────────
@@ -44,8 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  const updateUser = (partial: Partial<AuthUser>) => {
+    setUser((prev) => (prev ? { ...prev, ...partial } : prev));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, saveAuth, clearAuth }}>
+    <AuthContext.Provider value={{ user, saveAuth, clearAuth, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
