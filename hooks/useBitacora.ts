@@ -11,7 +11,7 @@ const MOOD_TO_NUMBER: Record<MoodId, number> = {
   calmado: 7,
   ansioso: 4,
   triste: 3,
-  directado: 6,
+  motivado: 6,
 };
 
 const NUMBER_TO_MOOD: Array<[number, MoodId]> = [
@@ -19,7 +19,7 @@ const NUMBER_TO_MOOD: Array<[number, MoodId]> = [
   [7, "calmado"],
   [4, "ansioso"],
   [3, "triste"],
-  [6, "directado"],
+  [6, "motivado"],
 ];
 
 function closestMood(value: number): MoodId {

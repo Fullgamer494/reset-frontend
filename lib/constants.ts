@@ -15,7 +15,7 @@ export const MOOD_OPTIONS: Mood[] = [
   { id: "calmado", label: "Calmado" },
   { id: "ansioso", label: "Ansioso" },
   { id: "triste", label: "Triste" },
-  { id: "directado", label: "Directado" },
+  { id: "motivado", label: "Motivado" },
 ];
 
 // Etiquetas disponibles para publicaciones del foro

@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import type { CompanionProfile, SupportedUser } from "@/types";
 
 export function useMiCuenta() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const [profile, setProfile] = useState<CompanionProfile>({
     name: user?.name ?? "",
@@ -79,8 +79,8 @@ export function useMiCuenta() {
     setIsSaving(true);
     setError(null);
     try {
-      // El backend no expone PATCH /companion/profile en la guía actual.
-      // Los cambios se reflejan localmente hasta que se añada ese endpoint.
+      // Actualizar nombre en el contexto de auth (persistencia en sesión)
+      if (profile.name.trim()) updateUser({ name: profile.name.trim() });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {

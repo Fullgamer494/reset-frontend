@@ -39,7 +39,7 @@ const MOOD_ICONS: Record<string, React.ReactNode> = {
       <circle cx="15" cy="9.5" r="1.2" fill="currentColor"/>
     </svg>
   ),
-  directado: (
+  motivado: (
     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
       <circle cx="12" cy="12" r="10" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M9 12h6M12 9l3 3-3 3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -53,7 +53,7 @@ const MOOD_COLORS: Record<MoodId, { text: string; bg: string; border: string }> 
   calmado:    { text: "#0ea5e9", bg: "#f0f9ff", border: "#bae6fd" },
   ansioso:    { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
   triste:     { text: "#6366f1", bg: "#eef2ff", border: "#c7d2fe" },
-  directado:  { text: "#64748b", bg: "#f8fafc", border: "#e2e8f0" },
+  motivado:  { text: "#64748b", bg: "#f8fafc", border: "#e2e8f0" },
 };
 
 // Formatear fecha
