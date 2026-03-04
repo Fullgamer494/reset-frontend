@@ -109,6 +109,7 @@ export const MOCK_FORO_POSTS: ForoPost[] = [
     comments: 12,
     liked: false,
     bookmarked: false,
+    authorId: '',
   },
   {
     id: "a1b2c3d4-0002-0000-0000-000000000002",
@@ -123,6 +124,7 @@ export const MOCK_FORO_POSTS: ForoPost[] = [
     comments: 38,
     liked: false,
     bookmarked: false,
+    authorId: '',
   },
   {
     id: "a1b2c3d4-0002-0000-0000-000000000003",
@@ -137,6 +139,7 @@ export const MOCK_FORO_POSTS: ForoPost[] = [
     comments: 45,
     liked: false,
     bookmarked: true,
+    authorId: '',
   },
 ];
 

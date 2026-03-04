@@ -2,7 +2,7 @@
 // Foro comunitario — posts, reacciones y comentarios.
 
 import { apiRequest } from './client';
-import type { ForoPost, ForoCategory, CreateForoPostData } from '@/types';
+import type { ForoPost, ForoCategory, ForoComment, CreateForoPostData } from '@/types';
 
 // ─── Helpers de normalización ────────────────────────────────────────────────
 
@@ -26,7 +26,47 @@ function normalizePost(raw: any): ForoPost {
     comments: raw.commentCount ?? raw.comments_count ?? raw.comments ?? 0,
     liked: raw.liked ?? false,
     bookmarked: raw.bookmarked ?? false,
+    authorId: raw.authorId ?? '',
   };
+}
+
+/** Convierte un comentario raw al tipo ForoComment del UI. */
+function normalizeComment(raw: any, currentUserId?: string): ForoComment {
+  const isAnon = raw.isAnonymous ?? raw.is_anonymous ?? false;
+  const isMine = !!currentUserId && raw.authorId === currentUserId;
+  return {
+    id: raw.id ?? raw._id ?? String(Date.now()),
+    postId: raw.postId ?? '',
+    authorId: raw.authorId ?? '',
+    author: isAnon
+      ? 'Anónimo'
+      : isMine
+      ? 'Tú'
+      : (raw.authorName ?? 'Miembro de la comunidad'),
+    content: raw.content ?? '',
+    isAnonymous: isAnon,
+    likes: raw.reactionUps ?? 0,
+    timeAgo: raw.createdAt
+      ? timeAgoFromDate(raw.createdAt)
+      : 'Reciente',
+    isMine,
+  };
+}
+
+function timeAgoFromDate(isoDate: string): string {
+  try {
+    const diffMs = Date.now() - new Date(isoDate).getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return 'Ahora';
+    if (mins < 60) return `Hace ${mins} min`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `Hace ${hrs} h`;
+    const days = Math.floor(hrs / 24);
+    if (days === 1) return 'Ayer';
+    return `Hace ${days} días`;
+  } catch {
+    return 'Reciente';
+  }
 }
 
 // ─── Funciones ───────────────────────────────────────────────────────────────
@@ -72,15 +112,42 @@ export async function toggleLikePost(
   return { liked: res?.liked ?? true, likes: res?.likes ?? 0 };
 }
 
+/** Obtiene los comentarios de un post. */
+export async function getPostComments(
+  postId: string,
+  currentUserId?: string
+): Promise<ForoComment[]> {
+  const res: any = await apiRequest(`/forum/posts/${postId}/comments`);
+  const list: any[] = res?.data ?? res ?? [];
+  return Array.isArray(list)
+    ? list.map((c) => normalizeComment(c, currentUserId))
+    : [];
+}
+
 /** Comenta en un post. */
 export async function commentPost(
   postId: string,
   content: string,
-  is_anonymous = false
-): Promise<any> {
-  return apiRequest(`/forum/posts/${postId}/comments`, {
+  is_anonymous = false,
+  currentUserId?: string
+): Promise<ForoComment> {
+  const res: any = await apiRequest(`/forum/posts/${postId}/comments`, {
     method: 'POST',
     body: JSON.stringify({ content, is_anonymous }),
+  });
+  return normalizeComment(res?.data ?? res, currentUserId);
+}
+
+/**
+ * Elimina un comentario (puede ser 404 si el backend no lo soporta).
+ * Lanza error que el hook debe capturar y mostrar al usuario.
+ */
+export async function deleteComment(
+  postId: string,
+  commentId: string
+): Promise<void> {
+  await apiRequest(`/forum/posts/${postId}/comments/${commentId}`, {
+    method: 'DELETE',
   });
 }
 
