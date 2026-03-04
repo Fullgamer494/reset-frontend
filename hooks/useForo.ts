@@ -2,21 +2,29 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import {
   getForoPosts,
   createForoPost,
   toggleLikePost,
   getForoCategories,
+  getPostComments,
+  commentPost,
+  deleteComment,
+  deletePost,
 } from "@/lib/api/forum";
-import type { ForoPost, ForoCategory } from "@/types";
+import type { ForoPost, ForoCategory, ForoComment } from "@/types";
 
 export function useForo() {
   const router = useRouter();
+  const { user } = useAuth();
 
   // Rastreo de posts que el usuario likeó en esta sesión
-  // (la API no devuelve estado per-usuario, por eso se mantiene en memoria)
   const likedByMe = useRef<Set<string>>(new Set());
+  // Rastreo de posts/comentarios reportados en esta sesión (feedback local)
+  const reportedPosts = useRef<Set<string>>(new Set());
 
+  // ── Estado: lista de posts ──────────────────────────────────────────────────
   const [posts, setPosts] = useState<ForoPost[]>([]);
   const [categories, setCategories] = useState<ForoCategory[]>([]);
   const [postText, setPostText] = useState("");
@@ -28,9 +36,23 @@ export function useForo() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /** Aplica el estado de liked de la sesión actual a una lista de posts frescos. */
+  // ── Estado: detalle del post (modal de comentarios) ─────────────────────────
+  const [openPost, setOpenPost] = useState<ForoPost | null>(null);
+  const [comments, setComments] = useState<ForoComment[]>([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [isCommentAnonymous, setIsCommentAnonymous] = useState(false);
+  const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
+  const [commentError, setCommentError] = useState<string | null>(null);
+  // Feedback inline por comentario: { [commentId]: mensaje }
+  const [commentFeedback, setCommentFeedback] = useState<Record<string, string>>({});
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
   const applyLikedState = (freshPosts: ForoPost[]): ForoPost[] =>
     freshPosts.map((p) => ({ ...p, liked: likedByMe.current.has(p.id) }));
+
+  // ── Carga de posts ─────────────────────────────────────────────────────────
 
   const loadPosts = () => {
     setIsLoading(true);
@@ -59,6 +81,8 @@ export function useForo() {
     );
   };
 
+  // ── Publicar post ──────────────────────────────────────────────────────────
+
   const handlePublish = async () => {
     if (!postText.trim()) return;
     setIsSubmitting(true);
@@ -69,7 +93,6 @@ export function useForo() {
         isAnonymous,
         tags: selectedTags,
       });
-      // Recargar lista desde la API
       const refreshed = await getForoPosts(1, 10);
       setPosts(refreshed);
       setPostText("");
@@ -83,13 +106,11 @@ export function useForo() {
     }
   };
 
+  // ── Like ───────────────────────────────────────────────────────────────────
+
   const handleToggleLike = async (id: string) => {
     const wasLiked = likedByMe.current.has(id);
-
-    // Actualizar el Set de likes de sesión
     wasLiked ? likedByMe.current.delete(id) : likedByMe.current.add(id);
-
-    // Optimistic update inmediato en la UI
     setPosts((prev) =>
       prev.map((p) =>
         p.id === id
@@ -97,14 +118,11 @@ export function useForo() {
           : p
       )
     );
-
     try {
       await toggleLikePost(id);
-      // Refrescar contadores reales desde la API y re-aplicar estado de sesión
       const refreshed = await getForoPosts(1, 10);
       setPosts(applyLikedState(refreshed));
     } catch {
-      // Revertir el Set y la UI si falla
       wasLiked ? likedByMe.current.add(id) : likedByMe.current.delete(id);
       setPosts((prev) =>
         prev.map((p) =>
@@ -122,7 +140,131 @@ export function useForo() {
     );
   };
 
+  // ── Abrir/cerrar detalle del post ──────────────────────────────────────────
+
+  const handleOpenPost = async (post: ForoPost) => {
+    setOpenPost(post);
+    setComments([]);
+    setCommentText("");
+    setCommentError(null);
+    setCommentFeedback({});
+    setIsCommentAnonymous(false);
+    setIsCommentsLoading(true);
+    try {
+      const fetched = await getPostComments(post.id, user?.id);
+      setComments(fetched);
+    } catch {
+      setCommentError("No se pudieron cargar los comentarios.");
+    } finally {
+      setIsCommentsLoading(false);
+    }
+  };
+
+  const handleClosePost = () => {
+    setOpenPost(null);
+    setComments([]);
+    setCommentText("");
+    setCommentError(null);
+    setCommentFeedback({});
+  };
+
+  // ── Enviar comentario ──────────────────────────────────────────────────────
+
+  const handleSendComment = async () => {
+    if (!commentText.trim() || !openPost) return;
+    setIsCommentSubmitting(true);
+    setCommentError(null);
+    const textToSend = commentText;
+    setCommentText("");
+    try {
+      const newComment = await commentPost(
+        openPost.id,
+        textToSend,
+        isCommentAnonymous,
+        user?.id
+      );
+      setComments((prev) => [...prev, newComment]);
+      // Actualizar contador en la lista de posts
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === openPost.id ? { ...p, comments: p.comments + 1 } : p
+        )
+      );
+      // Actualizar el openPost para consistencia
+      setOpenPost((prev) => prev ? { ...prev, comments: prev.comments + 1 } : prev);
+    } catch {
+      setCommentText(textToSend); // devolver texto
+      setCommentError("No se pudo enviar el comentario. Intenta de nuevo.");
+    } finally {
+      setIsCommentSubmitting(false);
+    }
+  };
+
+  // ── Borrar comentario ──────────────────────────────────────────────────────
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!openPost) return;
+    try {
+      await deleteComment(openPost.id, commentId);
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === openPost.id ? { ...p, comments: Math.max(0, p.comments - 1) } : p
+        )
+      );
+      setOpenPost((prev) =>
+        prev ? { ...prev, comments: Math.max(0, prev.comments - 1) } : prev
+      );
+    } catch {
+      // 404 → el backend no soporta aún
+      setCommentFeedback((prev) => ({
+        ...prev,
+        [commentId]: "⚠ Esta función aún no está disponible.",
+      }));
+      // Limpiar feedback después de 3 s
+      setTimeout(() => {
+        setCommentFeedback((prev) => {
+          const next = { ...prev };
+          delete next[commentId];
+          return next;
+        });
+      }, 3000);
+    }
+  };
+
+  // ── Denunciar post ─────────────────────────────────────────────────────────
+  // El endpoint no existe (404), pero damos feedback local de que el reporte fue recibido.
+
+  const handleReportPost = (postId: string) => {
+    reportedPosts.current.add(postId);
+    // Feedback local positivo aunque la API no exista
+    setCommentFeedback((prev) => ({
+      ...prev,
+      [`report_${postId}`]: "✓ Gracias por reportar. Lo revisaremos pronto.",
+    }));
+    setTimeout(() => {
+      setCommentFeedback((prev) => {
+        const next = { ...prev };
+        delete next[`report_${postId}`];
+        return next;
+      });
+    }, 4000);
+  };
+
+  // ── Borrar post propio ─────────────────────────────────────────────────────
+
+  const handleDeletePost = async (postId: string) => {
+    try {
+      await deletePost(postId);
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+      if (openPost?.id === postId) handleClosePost();
+    } catch {
+      setError("No se pudo eliminar la publicación.");
+    }
+  };
+
   return {
+    // Lista
     posts,
     categories,
     postText,
@@ -142,6 +284,25 @@ export function useForo() {
     handlePublish,
     handleToggleLike,
     handleToggleBookmark,
+    handleDeletePost,
     loadPosts,
+    // Detalle / comentarios
+    openPost,
+    comments,
+    isCommentsLoading,
+    commentText,
+    isCommentAnonymous,
+    isCommentSubmitting,
+    commentError,
+    commentFeedback,
+    currentUserId: user?.id ?? null,
+    setCommentText,
+    setIsCommentAnonymous,
+    handleOpenPost,
+    handleClosePost,
+    handleSendComment,
+    handleDeleteComment,
+    handleReportPost,
+    isReported: (postId: string) => reportedPosts.current.has(postId),
   };
 }

@@ -92,6 +92,7 @@ export interface ForoPost {
   id: string;
   title: string;
   author: string;
+  authorId: string;
   timeAgo: string;
   tags: string[];
   tagVariants: Array<"default" | "blue" | "green" | "red" | "yellow">;
@@ -112,6 +113,18 @@ export interface CreateForoPostData {
 export interface ForoCategory {
   name: string;
   count: string;
+}
+
+export interface ForoComment {
+  id: string;
+  postId: string;
+  authorId: string;
+  author: string;
+  content: string;
+  isAnonymous: boolean;
+  likes: number;
+  timeAgo: string;
+  isMine: boolean;
 }
 
 // ─── Profile / Configuración ─────────────────────────────────────────────────
