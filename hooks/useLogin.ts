@@ -37,15 +37,6 @@ export function useLogin() {
     }
   };
 
-  const fillDemo = (role: "user" | "companion") => {
-    setForm(
-      role === "companion"
-        ? { email: "padrino@correo.com", password: "demo1234" }
-        : { email: "alex@correo.com", password: "demo1234" }
-    );
-    setError(null);
-  };
-
   return {
     form,
     showPassword,
@@ -54,6 +45,5 @@ export function useLogin() {
     setShowPassword,
     handleChange,
     handleSubmit,
-    fillDemo,
   };
 }
