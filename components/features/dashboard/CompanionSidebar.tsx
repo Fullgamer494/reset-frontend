@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "@/hooks/useSession";
 
 const navItems = [
   {
@@ -52,6 +53,9 @@ interface CompanionSidebarProps {
 
 export default function CompanionSidebar({ isOpen = false, onClose }: CompanionSidebarProps) {
   const pathname = usePathname();
+  const { user, logout, showLogoutConfirm, setShowLogoutConfirm, abbreviateName } = useSession();
+
+  const displayName = abbreviateName(user?.name ?? "");
 
   function isActive(href: string) {
     if (href === "/acompanante") return pathname === "/acompanante";
@@ -67,9 +71,9 @@ export default function CompanionSidebar({ isOpen = false, onClose }: CompanionS
       }
       style={{ boxShadow: "1px 0 0 0 #f1f5f9" }}
     >
-      {/* Logo — con botón de cierre visible solo en móvil */}
+      {/* Logo — nombre real del acompañante */}
       <div className="px-8 pt-8 pb-6 border-b border-slate-100 flex items-start justify-between">
-        <div>
+        <div className="min-w-0 flex-1">
           <p
             className="text-[9px] tracking-[1.8px] uppercase text-teal-500 mb-1"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
@@ -77,17 +81,18 @@ export default function CompanionSidebar({ isOpen = false, onClose }: CompanionS
             Vista de Acompañante
           </p>
           <h1
-            className="text-[22px] font-normal text-slate-800 leading-tight"
+            className="text-[22px] font-normal text-slate-800 leading-tight truncate"
             style={{ fontFamily: "'Playfair Display', serif" }}
+            title={user?.name ?? ""}
           >
-            Oasis de Alex
+            {user?.name ? `Oasis de ${displayName}` : "Mi Oasis"}
           </h1>
         </div>
         {/* Botón cerrar sidebar — solo visible en móvil */}
         <button
           type="button"
           onClick={onClose}
-          className="md:hidden text-slate-400 hover:text-slate-600 transition-colors mt-1 p-1"
+          className="md:hidden text-slate-400 hover:text-slate-600 transition-colors mt-1 p-1 flex-shrink-0"
           aria-label="Cerrar menú"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -126,6 +131,62 @@ export default function CompanionSidebar({ isOpen = false, onClose }: CompanionS
           );
         })}
       </nav>
+
+      {/* ── Cerrar Sesión ──────────────────────────────────────────── */}
+      <div className="px-4 pb-2">
+        {!showLogoutConfirm ? (
+          <button
+            type="button"
+            onClick={() => setShowLogoutConfirm(true)}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors group"
+          >
+            <span className="text-slate-400 group-hover:text-slate-500 flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+            <span
+              className="text-[10px] tracking-[2px] uppercase font-normal"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              Cerrar Sesión
+            </span>
+          </button>
+        ) : (
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <p
+              className="text-[10px] tracking-[1px] uppercase text-slate-600 mb-1"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              ¿Cerrar sesión?
+            </p>
+            <p
+              className="text-[11px] italic text-slate-400 mb-3 leading-relaxed"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Tendrás que volver a iniciar sesión con tu correo y contraseña.
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={logout}
+                className="flex-1 h-[34px] bg-slate-700 hover:bg-slate-800 text-white rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+              >
+                Sí, salir
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 h-[34px] border border-slate-200 text-slate-500 hover:bg-slate-100 rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Companion Identity Footer */}
       <div className="p-4 border-t border-teal-50">

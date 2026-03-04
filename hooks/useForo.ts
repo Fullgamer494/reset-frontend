@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   getForoPosts,
   createForoPost,
@@ -10,6 +11,7 @@ import {
 import type { ForoPost, ForoCategory } from "@/types";
 
 export function useForo() {
+  const router = useRouter();
   const [posts, setPosts] = useState<ForoPost[]>([]);
   const [categories, setCategories] = useState<ForoCategory[]>([]);
   const [postText, setPostText] = useState("");
@@ -21,15 +23,26 @@ export function useForo() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadPosts = () => {
+    setIsLoading(true);
+    setError(null);
     Promise.all([getForoPosts(1, 10), getForoCategories()])
       .then(([p, c]) => {
         setPosts(p);
         setCategories(c);
       })
-      .catch(() => setError("Error al cargar el foro"))
+      .catch((err: any) => {
+        const msg: string = err?.message ?? "";
+        if (msg.toLowerCase().includes("token") || msg.includes("401") || msg.includes("nicia sesión")) {
+          router.push("/login");
+        } else {
+          setError("No se pudieron cargar las publicaciones. Verifica tu conexión.");
+        }
+      })
       .finally(() => setIsLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { loadPosts(); }, []);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -110,5 +123,6 @@ export function useForo() {
     handlePublish,
     handleToggleLike,
     handleToggleBookmark,
+    loadPosts,
   };
 }
