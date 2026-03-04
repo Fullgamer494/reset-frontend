@@ -1,6 +1,16 @@
 "use client";
 
+import { useDashboard } from "@/hooks/useDashboard";
+import { useSession } from "@/hooks/useSession";
+
 export default function InicioPage() {
+  const { progress, lastNote, isLoading } = useDashboard();
+  const { user, abbreviateName, todayLabel } = useSession();
+
+  const sobrietyDays = progress?.sobrietyDays ?? 0;
+  const plantStage   = progress?.plantStage ?? "Semilla";
+  const nextMilestone = progress?.nextMilestone;
+  const firstName = user?.name ? abbreviateName(user.name, 14).split(" ")[0] : null;
   return (
     <div className="min-h-full relative bg-[#f8fafc] overflow-x-hidden">
       {/* Ambient blur circles */}
@@ -9,13 +19,13 @@ export default function InicioPage() {
         <div className="absolute bg-[rgba(59,130,246,0.05)] blur-[32px] rounded-full w-48 h-48 -left-10 top-1/4" />
       </div>
 
-      {/* Header — padding responsivo */}
+      {/* Header — fecha real + saludo con nombre */}
       <header className="sticky top-0 z-10 backdrop-blur-sm bg-[rgba(255,255,255,0.4)] border-b border-[rgba(132,139,148,0.4)] h-16 sm:h-20 px-4 sm:px-8 md:px-12 flex items-center justify-between">
         <p
           className="text-[11px] uppercase text-[rgba(26,54,93,0.6)]"
           style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}
         >
-          18 de Mayo, 2026
+          {todayLabel()}
         </p>
         <div className="flex items-center gap-2">
           <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +36,7 @@ export default function InicioPage() {
             className="text-[12px] font-bold uppercase text-[rgba(26,54,93,0.6)]"
             style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "-0.3px" }}
           >
-            Usuario Registrado
+            {firstName ? `Hola, ${firstName}` : "Mi Oasis"}
           </p>
         </div>
       </header>
@@ -77,7 +87,7 @@ export default function InicioPage() {
                   </svg>
                 </div>
 
-                {/* Stage label */}
+                {/* Stage label — etapa real según la racha */}
                 <div
                   className="relative z-10 mt-10 bg-white border border-[rgba(59,130,246,0.2)] h-10 px-8 flex items-center"
                   style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.05)" }}
@@ -86,7 +96,7 @@ export default function InicioPage() {
                     className="text-[10px] font-bold italic uppercase text-[#3b82f6]"
                     style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "1px" }}
                   >
-                    Semilla
+                    {isLoading ? "···" : plantStage}
                   </span>
                 </div>
               </div>
@@ -102,13 +112,13 @@ export default function InicioPage() {
                   Progreso del OASIS
                 </p>
 
-                {/* Counter — font tamaño responsivo */}
+                {/* Counter — días de racha reales */}
                 <div className="flex items-end gap-4 mb-10">
                   <span
                     className="font-bold italic leading-none text-[#1a365d] text-[72px] sm:text-[100px] md:text-[128px]"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    42
+                    {isLoading ? "—" : sobrietyDays}
                   </span>
                   <div className="pb-5">
                     {/* "días" / "cumplidos" \u2014 tama\u00f1os responsivos */}
@@ -203,7 +213,9 @@ export default function InicioPage() {
                   className="italic text-[rgba(26,54,93,0.8)] leading-6"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 16 }}
                 >
-                  Hoy me siento particularmente en paz con el proceso...
+                  {isLoading
+                    ? "···"
+                    : (lastNote || "Aún no tienes notas. ¡Escribe tu primera entrada en la Bitácora!")}
                 </p>
               </div>
             </div>
@@ -283,7 +295,11 @@ export default function InicioPage() {
                     className="font-bold text-[#1a365d]"
                     style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16 }}
                   >
-                    50 días: Brote de Plata
+                    {isLoading
+                      ? "···"
+                      : nextMilestone
+                        ? `${nextMilestone.label} (−${nextMilestone.daysLeft}d)`
+                        : "¡Ciprés de Diamante alcanzado!"}
                   </p>
                 </div>
               </div>

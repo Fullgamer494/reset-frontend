@@ -24,6 +24,7 @@ export default function ForoPage() {
     handlePublish,
     handleToggleLike,
     handleToggleBookmark,
+    loadPosts,
   } = useForo();
 
   return (
@@ -84,7 +85,60 @@ export default function ForoPage() {
 
             {/* Posts */}
             <div className="flex flex-col gap-5">
-              {posts.map((post) => (
+              {/* Estado de carga */}
+              {isLoading && (
+                <div className="flex items-center justify-center py-16">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-6 h-6 border-2 border-sky-200 border-t-sky-500 rounded-full animate-spin" />
+                    <p
+                      className="text-[9px] uppercase tracking-[1.5px] text-slate-400"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      Cargando publicaciones…
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Estado de error */}
+              {!isLoading && error && (
+                <div className="flex flex-col items-center gap-3 py-12 border border-red-100 bg-red-50 rounded-sm">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5">
+                    <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <p
+                    className="text-[10px] uppercase tracking-[1px] text-red-500 text-center"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    {error}
+                  </p>
+                  <button
+                    onClick={loadPosts}
+                    className="mt-1 px-5 py-1.5 bg-slate-800 text-white rounded-sm hover:bg-slate-700 transition-colors"
+                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "1px", textTransform: "uppercase" }}
+                  >
+                    Reintentar
+                  </button>
+                </div>
+              )}
+
+              {/* Lista vacía */}
+              {!isLoading && !error && posts.length === 0 && (
+                <div className="flex flex-col items-center gap-3 py-14">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1">
+                    <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <p
+                    className="text-[10px] uppercase tracking-[1px] text-slate-400 italic"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    Aún no hay publicaciones. ¡Sé el primero!
+                  </p>
+                </div>
+              )}
+
+              {/* Posts reales */}
+              {!isLoading && !error && posts.map((post) => (
                 <div
                   key={post.id}
                   className="bg-white border border-slate-100 rounded-sm p-6"
