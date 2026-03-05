@@ -140,7 +140,7 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen w-full flex items-start lg:items-center justify-center p-4 sm:p-6 pb-20 sm:pb-20 relative overflow-hidden"
+      className="min-h-screen w-full flex items-start lg:items-center justify-center p-4 sm:p-6 pb-20 sm:pb-20 relative overflow-hidden safe-top-padding"
       style={{ background: "linear-gradient(135deg, #f0f4f8 0%, #e8eef4 100%)" }}
     >
       {/* ── Engrane grande — inferior derecha ────────────────────────────── */}

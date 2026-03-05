@@ -265,7 +265,7 @@ function useRevealOnScroll() {
 ───────────────────────────────────────────────────────────────────────────── */
 function Navbar() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9] safe-top-bar">
       <div className="max-w-[1280px] mx-auto px-8 h-[60px] flex items-center justify-between">
         <Link
           href="/"
@@ -308,7 +308,7 @@ function Navbar() {
 function HeroSection() {
   return (
     <section
-      className="min-h-screen pt-[60px] flex items-center overflow-hidden"
+      className="min-h-screen pt-[calc(60px+var(--safe-inset-top))] flex items-center overflow-hidden"
       style={{
         background:
           "radial-gradient(ellipse at 100% 0%, rgba(241,245,249,1) 0%, rgba(255,255,255,1) 60%)",

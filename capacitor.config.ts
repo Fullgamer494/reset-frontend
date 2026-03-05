@@ -57,6 +57,14 @@ const config: CapacitorConfig = {
   },
 
   plugins: {
+    CapacitorHttp: {
+      // Redirige todas las llamadas fetch/XHR a la capa nativa de Android/iOS.
+      // Esto elimina los errores CORS porque las peticiones ya no pasan por el
+      // WebView — el backend no ve una "Origin" bloqueada, la petición llega
+      // como si fuera una llamada nativa directa.
+      // CORS solo aplica en el WebView; en la capa nativa no existe esa restricción.
+      enabled: true,
+    },
     SplashScreen: {
       // Sin pantalla de splash por ahora; se puede añadir después
       launchShowDuration: 0,

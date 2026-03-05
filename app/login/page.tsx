@@ -97,7 +97,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen w-full flex items-center justify-center relative overflow-hidden safe-top-padding"
       style={{ background: "linear-gradient(135deg, #f0f4f8 0%, #e8eef4 100%)" }}
     >
       {/* ── Engrane grande — inferior derecha ────────────────────────────── */}

@@ -33,7 +33,7 @@ export default function DashboardLayout({
       {/* main: sin margen en móvil, con margen en md+ */}
       <main className="flex-1 md:ml-[288px] overflow-auto bg-[#f8fafc] flex flex-col">
         {/* Barra superior móvil — oculta en desktop */}
-        <div className="sticky top-0 z-10 flex items-center gap-3 px-4 h-14 bg-white border-b border-slate-100 md:hidden flex-shrink-0 safe-top-bar">
+        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-white border-b border-slate-100 md:hidden flex-shrink-0 safe-top-bar">
           {/* En sub-páginas: botón Atrás. En raíz: botón hamburguesa */}
           {!isRoot ? (
             <button
