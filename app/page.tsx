@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { isNativePlatform } from "@/lib/platform";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    SVG Icons (inline, sin librerías externas)
@@ -823,6 +825,15 @@ function Footer() {
    ROOT PAGE — Landing
 ───────────────────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
+  const router = useRouter();
+
+  // En móvil (Capacitor) no tiene sentido mostrar la landing: ir directo al login
+  useEffect(() => {
+    if (isNativePlatform()) {
+      router.replace("/login");
+    }
+  }, [router]);
+
   useRevealOnScroll();
 
   return (
