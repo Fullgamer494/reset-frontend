@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { getContacts, addContact } from "@/lib/api/emergency";
-import { updateMe } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 import type { SupportPeer } from "@/types";
 
@@ -43,44 +42,14 @@ export function useConfiguracion() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // ── Bloque: conectar con un padrino ─────────────────────────────────────────
-  const [sponsorCode, setSponsorCode] = useState("");
-  const [sponsorStatus, setSponsorStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [sponsorMsg, setSponsorMsg] = useState("");
-
-  const handleAssignSponsor = async () => {
-    const codeClean = sponsorCode.trim();
-    if (!codeClean) return;
-    if (!user) { setSponsorStatus("error"); setSponsorMsg("Debes iniciar sesión."); return; }
-    setSponsorStatus("submitting");
-    setSponsorMsg("");
-    try {
-      const { assignSponsor } = await import("@/lib/api/sponsorship");
-      await assignSponsor(codeClean, user.id);
-      setSponsorStatus("success");
-      setSponsorMsg("¡Padrino asignado correctamente!");
-      setSponsorCode("");
-    } catch (err) {
-      setSponsorStatus("error");
-      setSponsorMsg(
-        err instanceof Error && err.message
-          ? err.message
-          : "No se pudo conectar. Verifica el código e intenta de nuevo."
-      );
-    }
-    setTimeout(() => setSponsorStatus("idle"), 4000);
-  };
-  // ─────────────────────────────────────────────────────────────────────────────
-
+  // ── Actualizar perfil (nombre) ───────────────────────────────────────────────
+  // El backend no expone PATCH /auth/me; el cambio solo se refleja en el contexto local.
   const handleUpdateProfile = async () => {
     setIsSaving(true);
     setError(null);
     try {
       const trimmedName = username.trim();
       if (trimmedName) {
-        // Intentar persistir en el backend; si el endpoint no existe aún,
-        // el error se silencia y el cambio queda guardado en storage local.
-        await updateMe({ name: trimmedName }).catch(() => {});
         updateUser({ name: trimmedName });
       }
       setSaved(true);
@@ -144,16 +113,11 @@ export function useConfiguracion() {
     isSaving,
     error,
     saved,
-    sponsorCode,
-    sponsorStatus,
-    sponsorMsg,
     setUsername,
     setAddictionType,
-    setSponsorCode,
     handleUpdateProfile,
     handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
-    handleAssignSponsor,
   };
 }

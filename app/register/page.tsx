@@ -128,11 +128,13 @@ export default function RegisterPage() {
     role,
     selectedAddiction,
     otherDescription,
+    addictionClassification,
     isLoading,
     error,
     setRole,
     setSelectedAddiction,
     setOtherDescription,
+    setAddictionClassification,
     handleChange,
     handleNextStep,
     handleSubmit,
@@ -441,23 +443,97 @@ export default function RegisterPage() {
                 })}
               </div>
 
-              {/* Other description field */}
+              {/* Campos extra cuando se selecciona "Otros" */}
               {selectedAddiction === "otros" && (
-                <div className="mb-5">
-                  <label
-                    className="text-[9px] tracking-[1.5px] uppercase text-slate-400 block mb-2"
-                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                  >
-                    Especifica tu área de renovación
-                  </label>
-                  <input
-                    type="text"
-                    value={otherDescription}
-                    onChange={(e) => setOtherDescription(e.target.value)}
-                    placeholder="Ej: Tabaquismo, Compras, etc."
-                    className="w-full border-0 border-b border-slate-200 bg-transparent py-2 text-slate-500 placeholder-slate-400 outline-none focus:border-sky-400 transition-colors text-[12px] italic"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  />
+                <div className="mb-5 flex flex-col gap-4">
+                  {/* Clasificación: conductual o sustancia */}
+                  <div>
+                    <label
+                      className="text-[9px] tracking-[1.5px] uppercase text-slate-400 block mb-2"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      Tipo de adicción
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setAddictionClassification("conductual")}
+                        className={`flex flex-col items-start gap-1.5 p-3 rounded-xl border transition-all ${
+                          addictionClassification === "conductual"
+                            ? "border-sky-400 bg-sky-50 shadow-[0_0_0_1px_#0ea5e9]"
+                            : "border-slate-100 bg-white hover:border-sky-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span className={addictionClassification === "conductual" ? "text-sky-500" : "text-slate-400"}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                            <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                        <div>
+                          <p
+                            className="text-[10px] font-medium"
+                            style={{
+                              fontFamily: "'Playfair Display', serif",
+                              color: addictionClassification === "conductual" ? "#0ea5e9" : "#475569",
+                            }}
+                          >
+                            Conductual
+                          </p>
+                          <p className="text-[8px] text-slate-400 mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                            Compras, juegos, etc.
+                          </p>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setAddictionClassification("sustancia")}
+                        className={`flex flex-col items-start gap-1.5 p-3 rounded-xl border transition-all ${
+                          addictionClassification === "sustancia"
+                            ? "border-sky-400 bg-sky-50 shadow-[0_0_0_1px_#0ea5e9]"
+                            : "border-slate-100 bg-white hover:border-sky-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span className={addictionClassification === "sustancia" ? "text-sky-500" : "text-slate-400"}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                            <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                        <div>
+                          <p
+                            className="text-[10px] font-medium"
+                            style={{
+                              fontFamily: "'Playfair Display', serif",
+                              color: addictionClassification === "sustancia" ? "#0ea5e9" : "#475569",
+                            }}
+                          >
+                            De Sustancia
+                          </p>
+                          <p className="text-[8px] text-slate-400 mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                            Tabaco, cafeína, etc.
+                          </p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Descripción libre */}
+                  <div>
+                    <label
+                      className="text-[9px] tracking-[1.5px] uppercase text-slate-400 block mb-2"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      Especifica tu área de renovación
+                    </label>
+                    <input
+                      type="text"
+                      value={otherDescription}
+                      onChange={(e) => setOtherDescription(e.target.value)}
+                      placeholder="Ej: Tabaquismo, Compras, etc."
+                      className="w-full border-0 border-b border-slate-200 bg-transparent py-2 text-slate-500 placeholder-slate-400 outline-none focus:border-sky-400 transition-colors text-[12px] italic"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    />
+                  </div>
                 </div>
               )}
 

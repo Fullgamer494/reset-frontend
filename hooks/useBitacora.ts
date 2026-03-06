@@ -101,7 +101,7 @@ export function useBitacora() {
 
   // Cargar entradas al montar
   useEffect(() => {
-    getLogs(30, user?.id)
+    getLogs(30)
       .then((res: any) => {
         const data: any[] = res?.data ?? res ?? [];
         setEntries(
@@ -155,7 +155,7 @@ export function useBitacora() {
       setSaved(true);
       setError(null);
       // Recargar entradas desde la API
-      const res: any = await getLogs(30, user?.id);
+      const res: any = await getLogs(30);
       const data: any[] = res?.data ?? res ?? [];
       setEntries(
         Array.isArray(data)

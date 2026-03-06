@@ -18,6 +18,7 @@ export function useRegister() {
   const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "" });
   const [selectedAddiction, setSelectedAddiction] = useState<AddictionTypeId | "">("");
   const [otherDescription, setOtherDescription] = useState("");
+  const [addictionClassification, setAddictionClassification] = useState<"conductual" | "sustancia" | "">("")
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,25 +50,23 @@ export function useRegister() {
         setError("Describe tu situación en el campo de texto.");
         return;
       }
+      if (selectedAddiction === "otros" && !addictionClassification) {
+        setError("Indica si tu adicción es conductual o de sustancia.");
+        return;
+      }
     }
     setIsLoading(true);
     setError(null);
     try {
-      const apiRole = role === "companion" ? "PADRINO" : "ADICTO";
-      const addictionName =
-        role === "companion"
-          ? undefined
-          : selectedAddiction === "otros"
-          ? otherDescription
-          : selectedAddiction;
+      // El backend acepta 'patient' | 'sponsor' — addictionName y classification
+      // no forman parte del DTO y serían rechazados (forbidNonWhitelisted: true)
+      const apiRole = role === "companion" ? "sponsor" : "patient";
 
       await register({
         name: form.name,
         email: form.email,
         password: form.password,
         role: apiRole,
-        addictionName,
-        classification: role === "user" ? "Sustancia" : undefined,
       });
       router.push("/login");
     } catch (err) {
@@ -83,12 +82,14 @@ export function useRegister() {
     form,
     selectedAddiction,
     otherDescription,
+    addictionClassification,
     isLoading,
     error,
     setStep,
     setRole,
     setSelectedAddiction,
     setOtherDescription,
+    setAddictionClassification,
     handleChange,
     handleNextStep,
     handleSubmit,

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Toggle from "@/components/ui/Toggle";
 import { useConfiguracion } from "@/hooks/useConfiguracion";
+import { useAuth } from "@/context/AuthContext";
 import { ADDICTION_TYPES } from "@/lib/constants";
 
 export default function ConfiguracionPage() {
+  const { user } = useAuth();
   const {
     username,
     addictionType,
@@ -15,17 +17,12 @@ export default function ConfiguracionPage() {
     isSaving,
     error,
     saved,
-    sponsorCode,
-    sponsorStatus,
-    sponsorMsg,
     setUsername,
     setAddictionType,
-    setSponsorCode,
     handleUpdateProfile,
     handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
-    handleAssignSponsor,
   } = useConfiguracion();
 
   // Estado local del formulario de "Añadir Par"
@@ -177,39 +174,22 @@ export default function ConfiguracionPage() {
             className="text-[11px] italic text-slate-400 dark:text-slate-500 mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Tu padrino es quien te acompaña y revisa tu progreso. Pídele su código y únelos aquí.
+            Tu padrino es quien te acompaña y revisa tu progreso. Él te agregará usando tu correo electrónico.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              placeholder="Código o ID del padrino"
-              value={sponsorCode}
-              onChange={(e) => setSponsorCode(e.target.value)}
-              disabled={sponsorStatus === "submitting"}
-              className="flex-1 h-[44px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-4 text-slate-700 dark:text-slate-200 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all disabled:opacity-50"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
-            />
-            <button
-              onClick={handleAssignSponsor}
-              disabled={!sponsorCode.trim() || sponsorStatus === "submitting"}
-              className="h-[44px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm transition-colors flex-shrink-0"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "2px", textTransform: "uppercase" }}
-            >
-              {sponsorStatus === "submitting" ? "Conectando…" : "Conectar"}
-            </button>
+          <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-[#0a1628] rounded-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="flex-shrink-0">
+              <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <div>
+              <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Tu correo electrónico</p>
+              <p className="text-[14px] italic text-slate-700 dark:text-slate-200" style={{ fontFamily: "'Playfair Display', serif" }}>{user?.email ?? "—"}</p>
+            </div>
           </div>
 
-          {sponsorStatus === "success" && (
-            <p className="mt-3 text-[10px] text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-              {sponsorMsg}
-            </p>
-          )}
-          {sponsorStatus === "error" && (
-            <p className="mt-3 text-[10px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-              {sponsorMsg}
-            </p>
-          )}
+          <p className="mt-4 text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            Comparte tu correo con tu padrino para que él pueda agregarte desde su cuenta.
+          </p>
         </div>
 
         {/* Pares de Apoyo */}

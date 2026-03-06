@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, getMe } from "@/lib/api/auth";
+import { login } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 
 export function useLogin() {
@@ -27,10 +27,8 @@ export function useLogin() {
         email: form.email,
         password: form.password,
       });
-      // Intentar obtener datos frescos (incluye nombre si backend soporta PATCH /auth/me)
-      const freshUser = await getMe().catch(() => null);
-      saveAuth(accessToken, freshUser ?? user);
-      router.push((freshUser ?? user).role === "PADRINO" ? "/acompanante" : "/dashboard");
+      saveAuth(accessToken, user);
+      router.push(user.role === "PADRINO" ? "/acompanante" : "/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Credenciales incorrectas");
     } finally {

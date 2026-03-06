@@ -1,32 +1,17 @@
 // lib/api/sponsorship.ts
-// Apadrinamiento — asignación y terminación de tutorías entre padrino y ahijado.
+// Patrocinio — único endpoint documentado: terminar un patrocinio activo.
 
 import { apiRequest } from './client';
 
-/** Asigna un padrino a un ahijado. */
-export const assignSponsor = (
-  sponsorId: string,
-  addictId: string
-): Promise<any> =>
-  apiRequest('/sponsorships/assign', {
-    method: 'POST',
-    body: JSON.stringify({ sponsorId, addictId }),
-  });
-
-/** Termina una relación de patrocinio indicando la razón. */
+/**
+ * Termina una relación de patrocinio activa.
+ * El backend resuelve qué relación terminar a partir del token JWT.
+ */
 export const terminateSponsor = (
-  sponsorshipId: string,
-  reason: string
+  sponsorId: string,
+  reason = 'Terminación voluntaria'
 ): Promise<any> =>
   apiRequest('/sponsorship/terminate', {
     method: 'POST',
-    body: JSON.stringify({ sponsorId: sponsorshipId, reason }),
+    body: JSON.stringify({ sponsorId, reason }),
   });
-
-/** El ahijado se gradúa y finaliza su proceso de recuperación formal. */
-export const graduate = (): Promise<any> =>
-  apiRequest('/sponsorships/graduate', { method: 'POST' });
-
-/** Devuelve la lista de ahijados del padrino autenticado. */
-export const getMyGodchildren = (): Promise<any> =>
-  apiRequest('/sponsorships/my-godchildren');

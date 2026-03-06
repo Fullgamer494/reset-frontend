@@ -1,14 +1,20 @@
 // lib/api/streak.ts
-// Rachas — consulta y reinicio de la racha de sobriedad del usuario.
+// Rachas — consulta de la racha activa y el historial de mejores rachas.
 
 import { apiRequest } from './client';
 
-/** Devuelve el estado actual de la racha. */
+/** Devuelve la racha activa del usuario autenticado. */
 export const getStreak = (): Promise<any> => apiRequest('/streak/active');
 
-/** Devuelve el historial de eventos de la racha. */
-export const getStreakEvents = (): Promise<any> => apiRequest('/streak/events');
+/** Devuelve el ranking de mejores rachas del usuario. */
+export const getBestStreaks = (): Promise<any> => apiRequest('/streak/best');
 
-/** Reinicia la racha actual (recaída). */
-export const resetStreak = (): Promise<any> =>
-  apiRequest('/streak/reset', { method: 'POST' });
+/**
+ * Crea una nueva racha inicial para el usuario.
+ * @param userAddictionId UUID de la relación usuario-adición.
+ */
+export const createStreak = (userAddictionId: string): Promise<any> =>
+  apiRequest('/streak', {
+    method: 'POST',
+    body: JSON.stringify({ user_addiction_id: userAddictionId }),
+  });

@@ -33,8 +33,8 @@ export const getContacts = (): Promise<any> =>
   apiRequest('/emergency/contacts');
 
 /**
- * Dispara una alerta de emergencia.
- * @param message Mensaje opcional enviado a los contactos de emergencia.
+ * Dispara una alerta de emergencia (botón de pánico).
+ * @param message Mensaje opcional enviado a los contactos activos.
  */
 export const triggerAlert = (message?: string): Promise<any> =>
   apiRequest('/emergency/alert', {
@@ -43,6 +43,3 @@ export const triggerAlert = (message?: string): Promise<any> =>
       message: message ?? 'Alerta de emergencia activada',
     }),
   });
-
-/** Obtiene el historial de alertas del usuario. */
-export const getAlerts = (): Promise<any> => apiRequest('/emergency/alerts');

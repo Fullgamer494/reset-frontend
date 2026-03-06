@@ -10,9 +10,8 @@ export interface RegisterPayload {
   name: string;
   email: string;
   password: string;
-  role: 'ADICTO' | 'PADRINO';
-  addictionName?: string;
-  classification?: string;
+  // El backend acepta 'patient' | 'sponsor' (campo opcional con forbidNonWhitelisted)
+  role?: 'patient' | 'sponsor';
 }
 
 export interface LoginPayload {
@@ -34,6 +33,13 @@ export interface AuthResult {
   user: AuthUser;
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/** Convierte el rol devuelto por el backend al rol interno del front. */
+function mapRole(apiRole: string | undefined): 'ADICTO' | 'PADRINO' {
+  return apiRole === 'sponsor' ? 'PADRINO' : 'ADICTO';
+}
+
 // ─── Funciones ───────────────────────────────────────────────────────────────
 
 export async function register(payload: RegisterPayload): Promise<void> {
@@ -43,43 +49,9 @@ export async function register(payload: RegisterPayload): Promise<void> {
       name: payload.name,
       email: payload.email,
       password: payload.password,
-      role: payload.role,
-      addictionName: payload.addictionName,
-      classification: payload.classification,
+      ...(payload.role ? { role: payload.role } : {}),
     }),
   });
-}
-
-/**
- * Actualiza los datos del perfil del usuario autenticado.
- * Llama a PATCH /auth/me — falla silenciosamente si el endpoint no existe aún.
- */
-export async function updateMe(data: { name?: string; email?: string }): Promise<void> {
-  await apiRequest('/auth/me', {
-    method: 'PATCH',
-    body: JSON.stringify(data),
-  });
-}
-
-/**
- * Obtiene los datos frescos del usuario autenticado desde el servidor.
- * Útil tras el login para obtener el nombre/email actualizado si el backend
- * ya soporta actualizaciones de perfil.
- */
-export async function getMe(): Promise<AuthUser | null> {
-  try {
-    const res: any = await apiRequest('/auth/me');
-    const data = res?.data ?? res;
-    if (!data?.id) return null;
-    return {
-      id: data.id,
-      name: data.name ?? '',
-      email: data.email ?? '',
-      role: data.role ?? 'ADICTO',
-    };
-  } catch {
-    return null;
-  }
 }
 
 /**
@@ -92,7 +64,7 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
     body: JSON.stringify(payload),
   });
 
-  // El backend envuelve la respuesta en data: { accessToken, user }
+  // El TransformInterceptor del backend envuelve la respuesta en { success, data }
   const data = res?.data ?? res;
   const token: string = data?.access_token ?? data?.accessToken ?? data?.token ?? '';
 
@@ -104,7 +76,7 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
       id: data?.user?.id ?? '',
       name: data?.user?.name ?? '',
       email: data?.user?.email ?? '',
-      role: data?.user?.role ?? 'ADICTO',
+      role: mapRole(data?.user?.role),
     },
   };
 }

@@ -41,15 +41,10 @@ export const createLog = (data: DailyLog) =>
     body: JSON.stringify(data),
   });
 
-/** Obtiene los últimos `limit` registros. Si se pasa `userId`, filtra por usuario. */
-export const getLogs = (limit = 30, userId?: string): Promise<any> => {
-  const q = new URLSearchParams({ limit: String(limit) });
-  if (userId) q.set('userId', userId);
-  return apiRequest(`/tracking/logs?${q}`);
-};
+/** Obtiene los últimos `limit` registros del usuario autenticado. */
+export const getLogs = (limit = 30): Promise<any> =>
+  apiRequest(`/tracking/logs?limit=${limit}`);
 
-/** Devuelve las estadísticas generales del usuario (o del ahijado indicado). */
-export const getStatistics = (userId?: string): Promise<any> => {
-  const q = userId ? `?userId=${userId}` : '';
-  return apiRequest(`/tracking/stats/me${q}`);
-};
+/** Devuelve las estadísticas consolidadas del usuario autenticado. */
+export const getStatistics = (): Promise<any> =>
+  apiRequest('/tracking/stats/me');
