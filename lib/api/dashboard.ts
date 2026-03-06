@@ -8,20 +8,20 @@ import type { UserProgress } from '@/types';
  * La API puede devolver soberDays (tracking/statistics) o currentStreak (streak).
  */
 export async function getProgress(): Promise<UserProgress> {
-  // Intentar /streak primero; si devuelve null, usar /tracking/statistics
-  const res: any = await apiRequest('/streak');
-  const streakData = res?.data;
+  // Intentar /streak/active primero; si falla, usar /tracking/stats/me
+  const res: any = await apiRequest('/streak/active');
+  const streakData = res?.data ?? res;
 
   let days = 0;
   if (streakData && typeof streakData === 'object') {
-    days = streakData.currentStreak ?? streakData.soberDays ?? streakData.streak ?? 0;
+    days = streakData.day_counter ?? streakData.currentStreak ?? streakData.soberDays ?? 0;
   }
 
   if (days === 0) {
     try {
-      const stats: any = await apiRequest('/tracking/statistics');
+      const stats: any = await apiRequest('/tracking/stats/me');
       const sd = stats?.data ?? stats;
-      days = sd?.soberDays ?? sd?.currentStreak ?? 0;
+      days = sd?.day_counter ?? sd?.soberDays ?? sd?.currentStreak ?? 0;
     } catch { /* ignorar */ }
   }
 

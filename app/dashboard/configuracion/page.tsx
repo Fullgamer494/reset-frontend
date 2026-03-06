@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Toggle from "@/components/ui/Toggle";
 import { useConfiguracion } from "@/hooks/useConfiguracion";
 import { ADDICTION_TYPES } from "@/lib/constants";
@@ -22,9 +23,18 @@ export default function ConfiguracionPage() {
     setSponsorCode,
     handleUpdateProfile,
     handleRemovePeer,
+    handleAddPeer,
     handleToggleEmergencyNotifs,
     handleAssignSponsor,
   } = useConfiguracion();
+
+  // Estado local del formulario de "Añadir Par"
+  const [showAddPeer, setShowAddPeer] = useState(false);
+  const [peerName, setPeerName] = useState("");
+  const [peerPhone, setPeerPhone] = useState("");
+  const [peerRelationship, setPeerRelationship] = useState("");
+  const [peerEmail, setPeerEmail] = useState("");
+  const [isAddingPeer, setIsAddingPeer] = useState(false);
 
   if (isLoading) {
     return (
@@ -217,6 +227,7 @@ export default function ConfiguracionPage() {
               </p>
             </div>
             <button
+              onClick={() => setShowAddPeer((v) => !v)}
               className="flex items-center gap-1.5 text-[9px] tracking-[1px] uppercase text-sky-500 hover:text-sky-600 transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
@@ -226,6 +237,87 @@ export default function ConfiguracionPage() {
               Añadir Par
             </button>
           </div>
+
+          {/* Formulario de nuevo par de apoyo */}
+          {showAddPeer && (
+            <div className="mb-5 p-5 bg-sky-50 border border-sky-100 rounded-sm">
+              <p
+                className="text-[9px] tracking-[1.5px] uppercase text-sky-500 mb-4"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                Nuevo par de apoyo
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Nombre *</label>
+                  <input
+                    type="text"
+                    value={peerName}
+                    onChange={(e) => setPeerName(e.target.value)}
+                    placeholder="Ej: María González"
+                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Teléfono *</label>
+                  <input
+                    type="tel"
+                    value={peerPhone}
+                    onChange={(e) => setPeerPhone(e.target.value)}
+                    placeholder="+52 55 1234 5678"
+                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
+                  <input
+                    type="text"
+                    value={peerRelationship}
+                    onChange={(e) => setPeerRelationship(e.target.value)}
+                    placeholder="Ej: Familiar, Terapeuta"
+                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
+                  <input
+                    type="email"
+                    value={peerEmail}
+                    onChange={(e) => setPeerEmail(e.target.value)}
+                    placeholder="correo@ejemplo.com"
+                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
+                  className="h-[36px] px-4 border border-slate-200 text-slate-400 hover:text-slate-600 rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  disabled={isAddingPeer || !peerName.trim() || !peerPhone.trim() || !peerRelationship.trim()}
+                  onClick={async () => {
+                    setIsAddingPeer(true);
+                    await handleAddPeer({ name: peerName.trim(), phone_number: peerPhone.trim(), relationship: peerRelationship.trim(), email: peerEmail.trim() || undefined });
+                    setIsAddingPeer(false);
+                    setShowAddPeer(false);
+                    setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail("");
+                  }}
+                  className="h-[36px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  {isAddingPeer ? "Guardando…" : "Guardar"}
+                </button>
+              </div>
+            </div>
+          )}
 
           <p
             className="text-[11px] italic text-slate-400 mb-5 leading-relaxed"

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createLog, getLogs } from "@/lib/api/tracking";
+import { createLog, getLogs, getCravingLevels, getEmotionalStates } from "@/lib/api/tracking";
+import type { CatalogLevel } from "@/lib/api/tracking";
 import { useAuth } from "@/context/AuthContext";
 import {
   getMoodLabel,
@@ -81,10 +82,22 @@ export function useBitacora() {
   const [consumed, setConsumed] = useState(false);
   const [cravingLevel, setCravingLevel] = useState(5);     // 1-10, el usuario lo elige
 
-  // ── Estado general ───────────────────────────────────────────────────────────────
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+
+  // Catálogos cargados al montar — necesarios para obtener los UUIDs de craving y estado emocional
+  const [cravingCatalog, setCravingCatalog] = useState<CatalogLevel[]>([]);
+  const [emotionCatalog, setEmotionCatalog] = useState<CatalogLevel[]>([]);
+
+  useEffect(() => {
+    getCravingLevels()
+      .then((list) => { if (Array.isArray(list)) setCravingCatalog(list); })
+      .catch(() => { /* catálogo no disponible — se bloqueará el guardado */ });
+    getEmotionalStates()
+      .then((list) => { if (Array.isArray(list)) setEmotionCatalog(list); })
+      .catch(() => { /* catálogo no disponible */ });
+  }, []);
 
   // Cargar entradas al montar
   useEffect(() => {
@@ -110,6 +123,24 @@ export function useBitacora() {
       setError("Escribe algo antes de guardar.");
       return;
     }
+
+    // Buscar UUIDs en los catálogos — nivel más cercano al valor seleccionado
+    const findId = (catalog: CatalogLevel[], level: number): string | null => {
+      if (!catalog.length) return null;
+      const sorted = [...catalog].sort(
+        (a, b) => Math.abs(a.level - level) - Math.abs(b.level - level)
+      );
+      return sorted[0].id;
+    };
+
+    const cravingId = findId(cravingCatalog, cravingLevel);
+    const emotionId = findId(emotionCatalog, moodLevel);
+
+    if (!cravingId || !emotionId) {
+      setError("No se pudieron cargar los catálogos. Intenta de nuevo.");
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
     setSaved(false);
@@ -117,8 +148,9 @@ export function useBitacora() {
       await createLog({
         log_date: new Date().toISOString().split("T")[0],
         consumed,
-        craving_level: cravingLevel,
-        emotional_state: moodLevel,
+        craving_level_id: cravingId,
+        emotional_state_id: emotionId,
+        notes: notes.trim() || undefined,
       });
       setSaved(true);
       setError(null);

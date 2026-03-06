@@ -18,9 +18,9 @@ export const terminateSponsor = (
   sponsorshipId: string,
   reason: string
 ): Promise<any> =>
-  apiRequest(`/sponsorships/${sponsorshipId}/terminate`, {
+  apiRequest('/sponsorship/terminate', {
     method: 'POST',
-    body: JSON.stringify({ reason }),
+    body: JSON.stringify({ sponsorId: sponsorshipId, reason }),
   });
 
 /** El ahijado se gradúa y finaliza su proceso de recuperación formal. */

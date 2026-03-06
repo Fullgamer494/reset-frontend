@@ -18,11 +18,11 @@ export default function DashboardLayout({
   const pageLabel = getRouteLabel(pathname);
 
   return (
-    <div className="flex h-[100dvh] bg-white overflow-hidden">
+    <div className="flex h-[100dvh] bg-[#f8fafc] dark:bg-[#0d1929] overflow-hidden">
       {/* Overlay semitransparente en móvil cuando el sidebar está abierto */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/30 z-20 md:hidden"
+          className="fixed inset-0 bg-black/40 z-20 md:hidden"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
@@ -31,15 +31,15 @@ export default function DashboardLayout({
       <UserSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* main: sin margen en móvil, con margen en md+ */}
-      <main className="flex-1 md:ml-[288px] overflow-auto bg-[#f8fafc] flex flex-col">
+      <main className="flex-1 md:ml-[288px] overflow-auto bg-[#f8fafc] dark:bg-[#0d1929] flex flex-col">
         {/* Barra superior móvil — oculta en desktop */}
-        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-white border-b border-slate-100 md:hidden flex-shrink-0 safe-top-bar">
+        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-white dark:bg-[#0f1d2d] border-b border-slate-100 dark:border-slate-800/60 md:hidden flex-shrink-0 safe-top-bar">
           {/* En sub-páginas: botón Atrás. En raíz: botón hamburguesa */}
           {!isRoot ? (
             <button
               type="button"
               onClick={handleBack}
-              className="text-slate-500 hover:text-slate-700 transition-colors p-1 -ml-1"
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors p-1 -ml-1"
               aria-label="Volver a la pantalla anterior"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -50,7 +50,7 @@ export default function DashboardLayout({
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="text-slate-500 hover:text-slate-700 transition-colors p-1"
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors p-1"
               aria-label="Abrir menú de navegación"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -61,7 +61,7 @@ export default function DashboardLayout({
 
           {/* Título de la página actual */}
           <span
-            className="flex-1 text-[16px] font-normal text-slate-700"
+            className="flex-1 text-[16px] font-normal text-slate-700 dark:text-slate-200"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {pageLabel}

@@ -2,9 +2,11 @@
 
 import Toggle from "@/components/ui/Toggle";
 import { useMiCuenta } from "@/hooks/useMiCuenta";
+import { useSession } from "@/hooks/useSession";
 
 export default function MiCuentaPage() {
   const { profile, supportedUsers, isLoading, isSaving, error, saved, handleChange, handleSave } = useMiCuenta();
+  const { logout } = useSession();
 
   if (isLoading) {
     return (
@@ -205,6 +207,7 @@ export default function MiCuentaPage() {
             Oasis de Sobriedad — Gestión de Privacidad
           </p>
           <button
+            onClick={logout}
             className="text-[9px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >

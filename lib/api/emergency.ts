@@ -6,10 +6,11 @@ import { apiRequest } from './client';
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
 export interface EmergencyContactPayload {
-  contact_name: string;
-  phone: string;
+  name: string;
+  phone_number: string;
+  relationship: string;
   email?: string;
-  relationship?: string;
+  priority_level?: number;
 }
 
 // ─── Funciones ───────────────────────────────────────────────────────────────
@@ -18,7 +19,13 @@ export interface EmergencyContactPayload {
 export const addContact = (data: EmergencyContactPayload): Promise<any> =>
   apiRequest('/emergency/contacts', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      name: data.name,
+      phone_number: data.phone_number,
+      relationship: data.relationship,
+      email: data.email,
+      priority_level: data.priority_level ?? 1,
+    }),
   });
 
 /** Obtiene la lista de contactos de emergencia del usuario autenticado. */
@@ -27,14 +34,13 @@ export const getContacts = (): Promise<any> =>
 
 /**
  * Dispara una alerta de emergencia.
- * @param notes Mensaje opcional de resolución notificado a los contactos.
+ * @param message Mensaje opcional enviado a los contactos de emergencia.
  */
-export const triggerAlert = (notes?: string): Promise<any> =>
+export const triggerAlert = (message?: string): Promise<any> =>
   apiRequest('/emergency/alert', {
     method: 'POST',
     body: JSON.stringify({
-      resulted_in_relapse: false,
-      resolution_notes: notes ?? 'Alerta de emergencia activada',
+      message: message ?? 'Alerta de emergencia activada',
     }),
   });
 

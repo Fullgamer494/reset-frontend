@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/*
+ * Tailwind v4: configurar el variant `dark:` para que use el atributo
+ * data-theme="dark" en el elemento <html>, en lugar del media query del sistema.
+ * Esto permite al usuario elegir el modo y guardarlo aunque su sistema esté en claro.
+ */
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ── Modo Claro (valores por defecto) ───────────────────────────────── */
 :root {
   --background: #f8fafc;
   --foreground: #1e293b;
@@ -10,12 +18,59 @@
   --color-accent-companion: #0d9488;
   --color-text-primary: #1e293b;
   --color-text-secondary: #334155;
-  --color-text-muted: #94a3b8;
+  /* Mejorado de #94a3b8 (3.2:1) → #64748b (5.74:1) para cumplir WCAG AA */
+  --color-text-muted: #64748b;
   --color-border: #e2e8f0;
   --color-border-light: #f1f5f9;
   --color-bg-light: #f8fafc;
   --color-bg-card: #ffffff;
   --color-emergency: #ef4444;
+
+  /* Superficies de UI */
+  --surface-sidebar: #ffffff;
+  --surface-main: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-card-inner: #f8fafc;
+  --surface-input: #ffffff;
+
+  /* Textos de UI contextuales */
+  --ui-text-heading:   #1e293b;
+  --ui-text-body:      #334155;
+  --ui-text-muted:     #64748b;
+  --ui-text-caption:   #94a3b8;
+  --ui-border:         #e2e8f0;
+  --ui-border-subtle:  #f1f5f9;
+}
+
+/* ── Modo Oscuro ─────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --background: #0d1929;
+  --foreground: #e2e8f4;
+
+  --color-primary: #93c5fd;
+  --color-accent: #38bdf8;
+  --color-accent-companion: #2dd4bf;
+  --color-text-primary: #e2e8f4;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-border: #1e3048;
+  --color-border-light: #162438;
+  --color-bg-light: #0d1929;
+  --color-bg-card: #122033;
+  --color-emergency: #f87171;
+
+  --surface-sidebar:    #0f1d2d;
+  --surface-main:       #0d1929;
+  --surface-card:       #122033;
+  --surface-card-inner: #0f1d2d;
+  --surface-input:      #162438;
+
+  --ui-text-heading:   #e2e8f4;
+  --ui-text-body:      #d1dae8;
+  --ui-text-muted:     #9fb3c8;
+  --ui-text-caption:   #7a90a8;
+  --ui-border:         #1e3048;
+  --ui-border-subtle:  #162438;
 }
 
 @theme inline {
@@ -37,8 +92,8 @@ body {
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--surface-main);
+  color: var(--ui-text-body);
   font-family: var(--font-jetbrains), 'Courier New', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -198,6 +253,61 @@ input:checked + .toggle-slider::before {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Clases utilitarias de color ReSet ────────────────────────────────────────
+ * Usan las variables CSS del tema para soportar modo claro/oscuro sin necesitar
+ * duplicar estilos en cada componente.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* Superficies */
+.rs-surface-sidebar  { background-color: var(--surface-sidebar);    color: var(--ui-text-body); }
+.rs-surface-main     { background-color: var(--surface-main);        color: var(--ui-text-body); }
+.rs-surface-card     { background-color: var(--surface-card);        color: var(--ui-text-body); }
+.rs-surface-card-inner { background-color: var(--surface-card-inner); }
+.rs-surface-input    { background-color: var(--surface-input); }
+
+/* Textos */
+.rs-text-heading  { color: var(--ui-text-heading); }
+.rs-text-body     { color: var(--ui-text-body); }
+.rs-text-muted    { color: var(--ui-text-muted); }
+.rs-text-caption  { color: var(--ui-text-caption); }
+
+/* Bordes */
+.rs-border        { border-color: var(--ui-border); }
+.rs-border-subtle { border-color: var(--ui-border-subtle); }
+
+/* ── Dark mode: overrides globales de layout ─────────────────────────────────
+ * Aplicados con selectores específicos para no interferir con utilidades
+ * de Tailwind en el código de los componentes.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* Scrollbar en modo oscuro */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #1e3048;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #2d4a6e;
+}
+
+/* Fondos estructurales de layout */
+[data-theme="dark"] .reset-layout-bg {
+  background-color: var(--surface-main);
+}
+[data-theme="dark"] .reset-sidebar-bg {
+  background-color: var(--surface-sidebar);
+  border-color: var(--ui-border);
+}
+
+/* ── Animación bloom — para la flor del hito 30 días ─────────────────────── */
+@keyframes bloom {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.1); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+.animate-bloom {
+  animation: bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
 
 @keyframes pulse-ring {
   0%   { transform: scale(0.9); opacity: 0.6; }

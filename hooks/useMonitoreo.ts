@@ -101,12 +101,12 @@ export function useMonitoreo(): MonitoreoResult {
         let recentLogs: RecentLogEntry[] = [];
 
         try {
-          const sRes: any = await apiRequest("/tracking/statistics");
+          const sRes: any = await apiRequest("/tracking/stats/me");
           const sd = sRes?.data ?? sRes ?? {};
           const total = Math.max(sd.totalLogs ?? 1, 1);
-          const relapses = sd.relapseCount ?? 0;
+          const relapses = sd.total_relapses ?? sd.relapseCount ?? 0;
           stats = {
-            sobrietyDays:  sd.soberDays ?? sd.sobrietyDays ?? godchild.sobrietyDays,
+            sobrietyDays:  sd.day_counter ?? sd.soberDays ?? sd.sobrietyDays ?? godchild.sobrietyDays,
             notesThisWeek: sd.totalLogs ?? 0,
             consistency:   Math.round(((total - relapses) / total) * 100),
             lastActiveAt:  sd.lastActiveAt ?? null,

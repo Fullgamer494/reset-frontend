@@ -11,7 +11,7 @@ export interface RegisterData {
   password: string;
   addictionType: string;
   otherDescription?: string;
-  role?: "user" | "companion";
+  role?: "ADICTO" | "PADRINO";
 }
 
 export interface AuthResponse {
@@ -27,7 +27,7 @@ export interface User {
   email: string;
   addictionType: string;
   createdAt: string;
-  role: "user" | "companion";
+  role: "ADICTO" | "PADRINO";
 }
 
 // ─── Dashboard / Progress ────────────────────────────────────────────────────

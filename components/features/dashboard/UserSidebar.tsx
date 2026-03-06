@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { triggerAlert } from "@/lib/api/emergency";
 import { useSession } from "@/hooks/useSession";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navItems = [
   {
@@ -93,23 +94,23 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
   return (
     <aside
       className={
-        `fixed left-0 top-0 h-full w-[288px] flex flex-col border-r border-slate-100 bg-white z-30
+        `fixed left-0 top-0 h-full w-[288px] flex flex-col border-r border-slate-100 dark:border-slate-800/60 bg-white dark:bg-[#0f1d2d] z-30
         transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`
       }
       style={{ boxShadow: "1px 0 0 0 #f1f5f9" }}
     >
       {/* Logo — nombre real del usuario con tooltip para nombre completo */}
-      <div className="px-8 sidebar-safe-top pb-6 border-b border-slate-100 flex items-start justify-between">
+      <div className="px-8 sidebar-safe-top pb-6 border-b border-slate-100 dark:border-slate-800/60 flex items-start justify-between">
         <div className="min-w-0 flex-1">
           <p
-            className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-1"
+            className="text-[10px] tracking-[1.8px] uppercase text-slate-500 dark:text-slate-400 mb-1"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Registro No. 01
           </p>
           <h1
-            className="text-[22px] font-normal text-slate-800 leading-tight truncate"
+            className="text-[22px] font-normal text-slate-800 dark:text-slate-100 leading-tight truncate"
             style={{ fontFamily: "'Playfair Display', serif" }}
             title={user?.name ?? ""}
           >
@@ -120,7 +121,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
         <button
           type="button"
           onClick={onClose}
-          className="md:hidden text-slate-400 hover:text-slate-600 transition-colors mt-1 p-1 flex-shrink-0"
+          className="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors mt-1 p-1 flex-shrink-0"
           aria-label="Cerrar menú"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -139,18 +140,18 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative group ${
                 active
-                  ? "text-sky-500 bg-slate-50"
-                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                  ? "text-sky-500 bg-slate-50 dark:bg-sky-900/20"
+                  : "text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50"
               }`}
             >
               {active && (
                 <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 bg-sky-400 rounded-r-full" />
               )}
-              <span className={active ? "text-sky-500" : "text-slate-400 group-hover:text-slate-500"}>
+              <span className={active ? "text-sky-500" : "text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white"}>
                 {item.icon}
               </span>
               <span
-                className="text-[10px] tracking-[2px] uppercase font-normal"
+                className="text-[11px] tracking-[1.5px] uppercase font-normal"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {item.label}
@@ -160,21 +161,26 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
         })}
       </nav>
 
+      {/* ── Theme Toggle ──────────────────────────────────────────────── */}
+      <div className="px-4 pb-1">
+        <ThemeToggle />
+      </div>
+
       {/* ── Cerrar Sesión ─────────────────────────────────────────────── */}
       <div className="px-4 pb-2">
         {!showLogoutConfirm ? (
           <button
             type="button"
             onClick={() => setShowLogoutConfirm(true)}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors group"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
           >
-            <span className="text-slate-400 group-hover:text-slate-500 flex-shrink-0">
+            <span className="text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white flex-shrink-0">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </span>
             <span
-              className="text-[10px] tracking-[2px] uppercase font-normal"
+              className="text-[11px] tracking-[1.5px] uppercase font-normal"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Cerrar Sesión
@@ -182,7 +188,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
           </button>
         ) : (
           // Confirmación inline — evita cierres accidentales
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4">
             <p
               className="text-[10px] tracking-[1px] uppercase text-slate-600 mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
@@ -218,7 +224,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
       </div>
 
       {/* ── Emergency Footer ─────────────────────────────────────────────── */}
-      <div className="p-4 border-t border-red-50">
+      <div className="p-4 border-t border-red-50 dark:border-red-900/20">
         {emergencyState === "sent" && (
           <div className="mb-2 px-4 py-2 rounded-lg bg-teal-50 border border-teal-100">
             <p className="text-[9px] tracking-[1px] uppercase text-teal-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>

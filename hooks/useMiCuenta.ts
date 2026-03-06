@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getMyGodchildren } from "@/lib/api/sponsorship";
 import { getStatistics } from "@/lib/api/tracking";
+import { updateMe } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 import type { CompanionProfile, SupportedUser } from "@/types";
 
@@ -79,8 +80,13 @@ export function useMiCuenta() {
     setIsSaving(true);
     setError(null);
     try {
-      // Actualizar nombre en el contexto de auth (persistencia en sesión)
-      if (profile.name.trim()) updateUser({ name: profile.name.trim() });
+      const trimmedName = profile.name.trim();
+      if (trimmedName) {
+        // Intentar persistir en el backend; si el endpoint no existe aún,
+        // el error se silencia y el cambio queda guardado en storage local.
+        await updateMe({ name: trimmedName }).catch(() => {});
+        updateUser({ name: trimmedName });
+      }
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {

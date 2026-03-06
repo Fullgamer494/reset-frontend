@@ -14,10 +14,10 @@ import type {
 // ─── Progreso ────────────────────────────────────────────────────────────────
 
 export async function getCompanionProgress(): Promise<CompanionProgress> {
-  const res: any = await apiRequest('/streak');
+  const res: any = await apiRequest('/streak/active');
   const data = res?.data ?? res;
   return {
-    sobrietyDays: data?.currentStreak ?? 0,
+    sobrietyDays: data?.day_counter ?? data?.currentStreak ?? 0,
     plantStage: data?.plantStage ?? 'Brote',
     notesThisWeek: data?.notesThisWeek ?? 0,
     messagesReceived: data?.messagesReceived ?? 0,

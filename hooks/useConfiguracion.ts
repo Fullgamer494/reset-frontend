@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getContacts, addContact } from "@/lib/api/emergency";
+import { updateMe } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 import type { SupportPeer } from "@/types";
 
@@ -32,7 +33,7 @@ export function useConfiguracion() {
           Array.isArray(list)
             ? list.map((c: any) => ({
                 id: c.id ?? c._id ?? String(Date.now()),
-                name: c.contactName ?? c.contact_name ?? c.name ?? "",
+                name: c.name ?? c.contactName ?? c.contact_name ?? "",
                 email: c.email ?? "",
               }))
             : []
@@ -75,10 +76,13 @@ export function useConfiguracion() {
     setIsSaving(true);
     setError(null);
     try {
-      // El backend no expone PATCH /profile actualmente.
-      // Persiste el cambio en el contexto de auth (en memoria de sesión)
-      // para que el sidebar y el dashboard reflejen el nombre actualizado.
-      if (username.trim()) updateUser({ name: username.trim() });
+      const trimmedName = username.trim();
+      if (trimmedName) {
+        // Intentar persistir en el backend; si el endpoint no existe aún,
+        // el error se silencia y el cambio queda guardado en storage local.
+        await updateMe({ name: trimmedName }).catch(() => {});
+        updateUser({ name: trimmedName });
+      }
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
@@ -98,14 +102,17 @@ export function useConfiguracion() {
    */
   const handleAddPeer = async (data: {
     name: string;
-    phone: string;
+    phone_number: string;
+    relationship: string;
     email?: string;
   }) => {
     try {
       await addContact({
-        contact_name: data.name,
-        phone: data.phone,
+        name: data.name,
+        phone_number: data.phone_number,
+        relationship: data.relationship,
         email: data.email,
+        priority_level: 1,
       });
       // Recargar lista
       const res: any = await getContacts();
@@ -114,7 +121,7 @@ export function useConfiguracion() {
         Array.isArray(list)
           ? list.map((c: any) => ({
               id: c.id ?? c._id ?? String(Date.now()),
-              name: c.contactName ?? c.contact_name ?? c.name ?? "",
+              name: c.name ?? c.contactName ?? c.contact_name ?? "",
               email: c.email ?? "",
             }))
           : []

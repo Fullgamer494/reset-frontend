@@ -39,8 +39,44 @@ export interface AuthResult {
 export async function register(payload: RegisterPayload): Promise<void> {
   await apiRequest('/auth/register', {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      name: payload.name,
+      email: payload.email,
+      password: payload.password,
+    }),
   });
+}
+
+/**
+ * Actualiza los datos del perfil del usuario autenticado.
+ * Llama a PATCH /auth/me — falla silenciosamente si el endpoint no existe aún.
+ */
+export async function updateMe(data: { name?: string; email?: string }): Promise<void> {
+  await apiRequest('/auth/me', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+/**
+ * Obtiene los datos frescos del usuario autenticado desde el servidor.
+ * Útil tras el login para obtener el nombre/email actualizado si el backend
+ * ya soporta actualizaciones de perfil.
+ */
+export async function getMe(): Promise<AuthUser | null> {
+  try {
+    const res: any = await apiRequest('/auth/me');
+    const data = res?.data ?? res;
+    if (!data?.id) return null;
+    return {
+      id: data.id,
+      name: data.name ?? '',
+      email: data.email ?? '',
+      role: data.role ?? 'ADICTO',
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -55,7 +91,7 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
 
   // El backend envuelve la respuesta en data: { accessToken, user }
   const data = res?.data ?? res;
-  const token: string = data?.accessToken ?? data?.token ?? '';
+  const token: string = data?.access_token ?? data?.accessToken ?? data?.token ?? '';
 
   if (token) setToken(token);
 

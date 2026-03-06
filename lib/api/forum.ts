@@ -106,8 +106,8 @@ export async function toggleLikePost(
   postId: string
 ): Promise<{ liked: boolean; likes: number }> {
   const res: any = await apiRequest(
-    `/forum/posts/${postId}/react`,
-    { method: 'POST' }
+    `/forum/posts/${postId}/reactions`,
+    { method: 'POST', body: JSON.stringify({ reactionType: 'like' }) }
   );
   return { liked: res?.liked ?? true, likes: res?.likes ?? 0 };
 }
@@ -143,10 +143,10 @@ export async function commentPost(
  * Lanza error que el hook debe capturar y mostrar al usuario.
  */
 export async function deleteComment(
-  postId: string,
+  _postId: string,
   commentId: string
 ): Promise<void> {
-  await apiRequest(`/forum/posts/${postId}/comments/${commentId}`, {
+  await apiRequest(`/forum/comments/${commentId}`, {
     method: 'DELETE',
   });
 }

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import CapacitorProvider from "@/components/CapacitorProvider";
 
 const playfair = Playfair_Display({
@@ -45,11 +46,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${playfair.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased">
-        <AuthProvider>
-          <CapacitorProvider>
-            {children}
-          </CapacitorProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <CapacitorProvider>
+              {children}
+            </CapacitorProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -4,7 +4,7 @@
 import { apiRequest } from './client';
 
 /** Devuelve el estado actual de la racha. */
-export const getStreak = (): Promise<any> => apiRequest('/streak');
+export const getStreak = (): Promise<any> => apiRequest('/streak/active');
 
 /** Devuelve el historial de eventos de la racha. */
 export const getStreakEvents = (): Promise<any> => apiRequest('/streak/events');
