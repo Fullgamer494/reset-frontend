@@ -2,7 +2,8 @@
 // Cliente HTTP centralizado — gestiona base URL, token JWT y errores.
 // El token se guarda en memoria (nunca en localStorage).
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'https://resets.app/api/v1';
+const BASE = process.env.NEXT_PUBLIC_API_URL;
+if (!BASE) throw new Error('NEXT_PUBLIC_API_URL no está definida');
 
 /** Timeout en ms para cada petición (importante en redes móviles) */
 const REQUEST_TIMEOUT_MS = 15_000;
