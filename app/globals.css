@@ -9,37 +9,36 @@
 
 /* ── Modo Claro (valores por defecto) ───────────────────────────────── */
 :root {
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  --background: #e6edf5;
+  --foreground: #0f172a;
 
   /* ReSet Design Tokens */
   --color-primary: #1a365d;
-  --color-accent: #0ea5e9;
+  --color-accent: #0284c7;
   --color-accent-companion: #0d9488;
-  --color-text-primary: #1e293b;
-  --color-text-secondary: #334155;
-  /* Mejorado de #94a3b8 (3.2:1) → #64748b (5.74:1) para cumplir WCAG AA */
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-  --color-bg-light: #f8fafc;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #1e293b;
+  --color-text-muted: #475569;
+  --color-border: #b0bfcf;
+  --color-border-light: #cdd8e3;
+  --color-bg-light: #e6edf5;
   --color-bg-card: #ffffff;
-  --color-emergency: #ef4444;
+  --color-emergency: #dc2626;
 
   /* Superficies de UI */
   --surface-sidebar: #ffffff;
-  --surface-main: #f8fafc;
+  --surface-main: #e6edf5;
   --surface-card: #ffffff;
-  --surface-card-inner: #f8fafc;
-  --surface-input: #ffffff;
+  --surface-card-inner: #eef3f8;
+  --surface-input: #f8fafc;
 
   /* Textos de UI contextuales */
-  --ui-text-heading:   #1e293b;
-  --ui-text-body:      #334155;
-  --ui-text-muted:     #64748b;
-  --ui-text-caption:   #94a3b8;
-  --ui-border:         #e2e8f0;
-  --ui-border-subtle:  #f1f5f9;
+  --ui-text-heading:   #0f172a;
+  --ui-text-body:      #1e293b;
+  --ui-text-muted:     #475569;
+  --ui-text-caption:   #64748b;
+  --ui-border:         #b0bfcf;
+  --ui-border-subtle:  #cdd8e3;
 }
 
 /* ── Modo Oscuro ─────────────────────────────────────────────────────── */
