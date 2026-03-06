@@ -50,26 +50,26 @@ export default function ConfiguracionPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
+          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Ajustes de ReSet —
         </p>
         <h1
-          className="text-[44px] font-normal text-slate-800 leading-none mb-1"
+          className="text-[44px] font-normal text-slate-800 dark:text-slate-100 leading-none mb-1"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Perfil y Apoyo
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-10"
+          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Gestiona tu red de seguridad
         </p>
 
         {/* Mi Perfil Section */}
-        <div className="border border-slate-200 rounded-sm bg-white mb-6 p-8">
+        <div className="border border-slate-200 dark:border-slate-700/40 rounded-sm bg-white dark:bg-[#0d1f35] mb-6 p-8">
           <div className="flex items-center gap-2 mb-6">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
               <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -87,7 +87,7 @@ export default function ConfiguracionPage() {
             {/* Username */}
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-[9px] tracking-[1.5px] uppercase text-slate-400"
+                className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Nombre de Usuario
@@ -97,7 +97,7 @@ export default function ConfiguracionPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full h-[44px] border border-slate-200 bg-white rounded-sm px-4 text-slate-700 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="w-full h-[44px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-4 text-slate-700 dark:text-slate-200 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic" }}
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -111,7 +111,7 @@ export default function ConfiguracionPage() {
             {/* Addiction type */}
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-[9px] tracking-[1.5px] uppercase text-slate-400"
+                className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Tipo de Adicción
@@ -120,7 +120,7 @@ export default function ConfiguracionPage() {
                 <select
                   value={addictionType}
                   onChange={(e) => setAddictionType(e.target.value)}
-                  className="w-full h-[44px] border border-slate-200 bg-white rounded-sm px-4 text-slate-700 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all appearance-none cursor-pointer"
+                  className="w-full h-[44px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-4 text-slate-700 dark:text-slate-200 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all appearance-none cursor-pointer"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
                 >
                   {ADDICTION_TYPES.map((t) => (
@@ -160,7 +160,7 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* ── Padrino de Apoyo ── */}
-        <div className="border border-slate-200 rounded-sm bg-white mb-6 p-8">
+        <div className="border border-slate-200 dark:border-slate-700/40 rounded-sm bg-white dark:bg-[#0d1f35] mb-6 p-8">
           <div className="flex items-center gap-2 mb-6">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
               <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -174,7 +174,7 @@ export default function ConfiguracionPage() {
           </div>
 
           <p
-            className="text-[11px] italic text-slate-400 mb-5 leading-relaxed"
+            className="text-[11px] italic text-slate-400 dark:text-slate-500 mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Tu padrino es quien te acompaña y revisa tu progreso. Pídele su código y únelos aquí.
@@ -187,7 +187,7 @@ export default function ConfiguracionPage() {
               value={sponsorCode}
               onChange={(e) => setSponsorCode(e.target.value)}
               disabled={sponsorStatus === "submitting"}
-              className="flex-1 h-[44px] border border-slate-200 bg-white rounded-sm px-4 text-slate-700 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all disabled:opacity-50"
+              className="flex-1 h-[44px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-4 text-slate-700 dark:text-slate-200 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all disabled:opacity-50"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
             />
             <button
@@ -213,7 +213,7 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* Pares de Apoyo */}
-        <div className="border border-slate-200 rounded-sm bg-white mb-6 p-8">
+        <div className="border border-slate-200 dark:border-slate-700/40 rounded-sm bg-white dark:bg-[#0d1f35] mb-6 p-8">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
@@ -240,7 +240,7 @@ export default function ConfiguracionPage() {
 
           {/* Formulario de nuevo par de apoyo */}
           {showAddPeer && (
-            <div className="mb-5 p-5 bg-sky-50 border border-sky-100 rounded-sm">
+            <div className="mb-5 p-5 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 rounded-sm">
               <p
                 className="text-[9px] tracking-[1.5px] uppercase text-sky-500 mb-4"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
@@ -249,46 +249,46 @@ export default function ConfiguracionPage() {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Nombre *</label>
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Nombre *</label>
                   <input
                     type="text"
                     value={peerName}
                     onChange={(e) => setPeerName(e.target.value)}
                     placeholder="Ej: María González"
-                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-[40px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-3 text-slate-700 dark:text-slate-200 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Teléfono *</label>
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Teléfono *</label>
                   <input
                     type="tel"
                     value={peerPhone}
                     onChange={(e) => setPeerPhone(e.target.value)}
                     placeholder="+52 55 1234 5678"
-                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-[40px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-3 text-slate-700 dark:text-slate-200 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
                   <input
                     type="text"
                     value={peerRelationship}
                     onChange={(e) => setPeerRelationship(e.target.value)}
                     placeholder="Ej: Familiar, Terapeuta"
-                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-[40px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-3 text-slate-700 dark:text-slate-200 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
+                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
                   <input
                     type="email"
                     value={peerEmail}
                     onChange={(e) => setPeerEmail(e.target.value)}
                     placeholder="correo@ejemplo.com"
-                    className="h-[40px] border border-slate-200 bg-white rounded-sm px-3 text-slate-700 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-[40px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-3 text-slate-700 dark:text-slate-200 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   />
                 </div>
@@ -296,7 +296,7 @@ export default function ConfiguracionPage() {
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
-                  className="h-[36px] px-4 border border-slate-200 text-slate-400 hover:text-slate-600 rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
+                  className="h-[36px] px-4 border border-slate-200 dark:border-slate-700/40 text-slate-400 dark:text-slate-500 hover:text-slate-600 rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Cancelar
@@ -320,7 +320,7 @@ export default function ConfiguracionPage() {
           )}
 
           <p
-            className="text-[11px] italic text-slate-400 mb-5 leading-relaxed"
+            className="text-[11px] italic text-slate-400 dark:text-slate-500 mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Estas son las personas que recibirán una alerta si decides activar tu &apos;Raíz de Emergencia&apos;.
@@ -329,14 +329,14 @@ export default function ConfiguracionPage() {
           {/* Cabecera de tabla — ocultar columna email en móvil */}
           <div className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto] gap-4 pb-2 mb-1">
             <p
-              className="text-[9px] tracking-[1px] uppercase text-slate-300"
+              className="text-[9px] tracking-[1px] uppercase text-slate-300 dark:text-slate-600"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Nombre
             </p>
             {/* Columna email oculta en móvil */}
             <p
-              className="hidden sm:block text-[9px] tracking-[1px] uppercase text-slate-300"
+              className="hidden sm:block text-[9px] tracking-[1px] uppercase text-slate-300 dark:text-slate-600"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Correo Electrónico
@@ -346,17 +346,17 @@ export default function ConfiguracionPage() {
           {peers.map((peer) => (
             <div
               key={peer.id}
-              className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto] gap-4 py-3 border-t border-slate-50 items-center"
+              className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto] gap-4 py-3 border-t border-slate-50 dark:border-slate-700/20 items-center"
             >
               <p
-                className="text-[14px] italic text-slate-700"
+                className="text-[14px] italic text-slate-700 dark:text-slate-200"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {peer.name}
               </p>
               {/* Email oculto en móvil */}
               <p
-                className="hidden sm:block text-[11px] text-slate-400"
+                className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {peer.email}
@@ -373,8 +373,8 @@ export default function ConfiguracionPage() {
           ))}
 
           {/* Emergency notifications toggle */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
+            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700/30">
+              <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-[#0a1628] rounded-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="flex-shrink-0">
                 <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -386,7 +386,7 @@ export default function ConfiguracionPage() {
                   Notificaciones de Emergencia
                 </p>
                 <p
-                  className="text-[11px] text-slate-400"
+                  className="text-[11px] text-slate-400 dark:text-slate-500"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Enviar alerta automática a mis pares al presionar el botón de pánico.
@@ -402,20 +402,20 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* Footer responsivo */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100 dark:border-slate-700/30">
           <p
-            className="text-[9px] tracking-[0.9px] uppercase text-slate-400 italic"
+            className="text-[9px] tracking-[0.9px] uppercase text-slate-400 dark:text-slate-500 italic"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Oasis de Sobriedad — Gestión de Privacidad
           </p>
           <div className="flex items-center gap-4">
-            <button className="text-slate-300 hover:text-slate-500 transition-colors">
+              <button className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <button className="text-slate-300 hover:text-slate-500 transition-colors">
+              <button className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

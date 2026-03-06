@@ -43,6 +43,9 @@ export async function register(payload: RegisterPayload): Promise<void> {
       name: payload.name,
       email: payload.email,
       password: payload.password,
+      role: payload.role,
+      addictionName: payload.addictionName,
+      classification: payload.classification,
     }),
   });
 }

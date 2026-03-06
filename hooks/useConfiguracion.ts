@@ -11,7 +11,7 @@ export function useConfiguracion() {
 
   // Precarga el nombre del usuario autenticado
   const [username, setUsername] = useState(user?.name ?? "");
-  const [addictionType, setAddictionType] = useState("Drogas");
+  const [addictionType, setAddictionType] = useState("");
   const [emergencyNotifs, setEmergencyNotifs] = useState(true);
   const [peers, setPeers] = useState<SupportPeer[]>([]);
   const [isLoading, setIsLoading] = useState(true);

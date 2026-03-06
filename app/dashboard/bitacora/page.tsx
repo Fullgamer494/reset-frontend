@@ -45,19 +45,19 @@ export default function BitacoraPage() {
         {/* ─── Header ─────────────────────────────────────────────────────── */}
         <div className="mb-10">
           <p
-            className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-1"
+            className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500 mb-1"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Registro Personal
           </p>
           <h1
-            className="text-[42px] font-normal text-slate-800 leading-none mb-2"
+            className="text-[42px] font-normal text-slate-800 dark:text-slate-100 leading-none mb-2"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Bitácora Diaria
           </h1>
           <p
-            className="text-[12px] italic text-slate-400"
+            className="text-[12px] italic text-slate-400 dark:text-slate-500"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Cada entrada queda guardada y ordenada en el tiempo.
@@ -66,13 +66,13 @@ export default function BitacoraPage() {
 
         {/* ─── Formulario nueva entrada ────────────────────────────────────── */}
         <div
-          className="bg-white border border-slate-200 rounded-sm overflow-hidden mb-10"
+          className="bg-white dark:bg-[#0d1f35] border border-slate-200 dark:border-slate-700/40 rounded-sm overflow-hidden mb-10"
           style={{ boxShadow: "0px 4px 20px -8px rgba(0,0,0,0.06)" }}
         >
           {/* Cabecera del form */}
           <div className="px-6 pt-6 pb-4 border-b border-slate-100">
             <p
-              className="text-[9px] tracking-[1.8px] uppercase text-slate-400"
+              className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Nueva Entrada
@@ -84,7 +84,7 @@ export default function BitacoraPage() {
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2">
                 <p
-                  className="text-[9px] tracking-[1px] uppercase text-slate-400"
+                  className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Estado de Ánimo
@@ -105,8 +105,8 @@ export default function BitacoraPage() {
                 style={{ background: moodTrack, accentColor: moodColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Desanimado</span>
-                <span className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy animado</span>
+                <span className="text-[8px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Desanimado</span>
+                <span className="text-[8px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy animado</span>
               </div>
             </div>
 
@@ -114,7 +114,7 @@ export default function BitacoraPage() {
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2">
                 <p
-                  className="text-[9px] tracking-[1px] uppercase text-slate-400"
+                  className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Nivel de Craving
@@ -135,14 +135,14 @@ export default function BitacoraPage() {
                 style={{ background: cravingTrack, accentColor: cravingColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sin deseo</span>
-                <span className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy intenso</span>
+                <span className="text-[8px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sin deseo</span>
+                <span className="text-[8px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy intenso</span>
               </div>
             </div>
 
             {/* Título */}
             <p
-              className="text-[9px] tracking-[1px] uppercase text-slate-400 mb-2"
+              className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 mb-2"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Título
@@ -152,13 +152,13 @@ export default function BitacoraPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Dale un título a esta entrada..."
-              className="w-full bg-white border border-slate-100 rounded-lg px-4 py-2.5 text-slate-700 placeholder-slate-300 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
+              className="w-full bg-white dark:bg-[#070f1a] border border-slate-100 dark:border-slate-700/40 rounded-lg px-4 py-2.5 text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
             />
 
             {/* Notas */}
             <p
-              className="text-[9px] tracking-[1px] uppercase text-slate-400 mb-2"
+              className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 mb-2"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Notas del Día
@@ -168,7 +168,7 @@ export default function BitacoraPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Escribe aquí lo que tu alma necesite expresar..."
               rows={4}
-              className="w-full bg-transparent border border-slate-100 rounded-lg p-4 text-slate-600 placeholder-slate-300 outline-none focus:border-slate-200 focus:ring-1 focus:ring-slate-100 resize-none transition-all mb-4"
+              className="w-full bg-transparent border border-slate-100 dark:border-slate-700/40 rounded-lg p-4 text-slate-600 dark:text-slate-300 placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-slate-200 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-100 resize-none transition-all mb-4"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, lineHeight: "1.8", fontStyle: "italic" }}
             />
 
@@ -176,13 +176,13 @@ export default function BitacoraPage() {
             <div className="flex items-center gap-3 py-3 border-t border-b border-slate-100 mb-5">
               <div className="flex-1">
                 <p
-                  className="text-[9px] tracking-[1px] uppercase text-slate-500"
+                  className="text-[9px] tracking-[1px] uppercase text-slate-500 dark:text-slate-400"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   ¿Consumiste hoy?
                 </p>
                 <p
-                  className="text-[11px] italic text-slate-400 mt-0.5"
+                  className="text-[11px] italic text-slate-400 dark:text-slate-500 mt-0.5"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Ser honesto ayuda a mantener tu racha actualizada.
@@ -247,14 +247,14 @@ export default function BitacoraPage() {
           {/* Cabecera de sección */}
           <div className="flex items-center justify-between mb-5">
             <p
-              className="text-[9px] tracking-[1.8px] uppercase text-slate-400"
+              className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Mis Registros
             </p>
             {!isLoadingEntries && (
               <span
-                className="text-[9px] tracking-[1px] uppercase text-slate-300"
+                className="text-[9px] tracking-[1px] uppercase text-slate-300 dark:text-slate-600"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {entries.length} {entries.length === 1 ? "entrada" : "entradas"}
@@ -275,7 +275,7 @@ export default function BitacoraPage() {
           {!isLoadingEntries && entries.length === 0 && (
             <div className="text-center py-14 border border-dashed border-slate-200 rounded-sm">
               <p
-                className="text-[13px] italic text-slate-400"
+                className="text-[13px] italic text-slate-400 dark:text-slate-500"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Aún no hay entradas. ¡Escribe tu primera nota!
@@ -292,7 +292,7 @@ export default function BitacoraPage() {
               return (
                 <div
                   key={entry.id}
-                  className="bg-white border border-slate-100 rounded-sm p-5 cursor-pointer hover:border-slate-200 transition-colors"
+                  className="bg-white dark:bg-[#0d1f35] border border-slate-100 dark:border-slate-700/40 rounded-sm p-5 cursor-pointer hover:border-slate-200 dark:hover:border-slate-700/60 transition-colors"
                   style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}
                   onClick={() => setSelectedEntry(entry)}
                 >
@@ -330,13 +330,13 @@ export default function BitacoraPage() {
                     <div className="flex items-center gap-3 shrink-0">
                       <div className="text-right">
                         <p
-                          className="text-[9px] uppercase text-slate-400 leading-tight"
+                          className="text-[9px] uppercase text-slate-400 dark:text-slate-500 leading-tight"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           {date}
                         </p>
                         <p
-                          className="text-[9px] text-slate-300 leading-tight"
+                          className="text-[9px] text-slate-300 dark:text-slate-600 leading-tight"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           {time}
@@ -344,7 +344,7 @@ export default function BitacoraPage() {
                       </div>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDelete(entry.id); }}
-                        className="text-slate-200 hover:text-red-400 transition-colors"
+                        className="text-slate-200 dark:text-slate-600 hover:text-red-400 transition-colors"
                         aria-label="Eliminar entrada"
                       >
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -356,7 +356,7 @@ export default function BitacoraPage() {
 
                   {/* Título */}
                   <h3
-                    className="text-[17px] italic text-slate-700 leading-snug mb-1.5"
+                    className="text-[17px] italic text-slate-700 dark:text-slate-200 leading-snug mb-1.5"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {entry.title || "Sin título"}
@@ -364,7 +364,7 @@ export default function BitacoraPage() {
 
                   {/* Extracto de notas */}
                   <p
-                    className="text-[13px] text-slate-500 leading-relaxed line-clamp-2"
+                    className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {entry.notes}
@@ -372,7 +372,7 @@ export default function BitacoraPage() {
 
                   {/* Leer más */}
                   <p
-                    className="mt-2 text-[9px] uppercase tracking-[1px] text-slate-300"
+                    className="mt-2 text-[9px] uppercase tracking-[1px] text-slate-300 dark:text-slate-600"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
                     Toca para leer completo →

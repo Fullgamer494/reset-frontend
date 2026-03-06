@@ -52,7 +52,7 @@ export default function ForoPage() {
       <div className="px-4 sm:px-10 py-6 sm:py-10 max-w-[1100px] mx-auto">
         {/* Top label */}
         <p
-          className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-2"
+          className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Comunidad ReSet
@@ -66,7 +66,7 @@ export default function ForoPage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <p
-                  className="text-[9px] tracking-[1.8px] uppercase text-slate-400 italic"
+                  className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500 italic"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   — Espacio Seguro —
@@ -77,7 +77,7 @@ export default function ForoPage() {
             {/* Título + botón nuevo post */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3 sm:gap-0">
               <h1
-                className="text-[44px] font-normal text-slate-800 leading-none"
+                className="text-[44px] font-normal text-slate-800 dark:text-slate-100 leading-none"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Foro Comunitario
@@ -110,7 +110,7 @@ export default function ForoPage() {
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-6 h-6 border-2 border-sky-200 border-t-sky-500 rounded-full animate-spin" />
                     <p
-                      className="text-[9px] uppercase tracking-[1.5px] text-slate-400"
+                      className="text-[9px] uppercase tracking-[1.5px] text-slate-400 dark:text-slate-500"
                       style={{ fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       Cargando publicaciones…
@@ -148,7 +148,7 @@ export default function ForoPage() {
                     <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <p
-                    className="text-[10px] uppercase tracking-[1px] text-slate-400 italic"
+                    className="text-[10px] uppercase tracking-[1px] text-slate-400 dark:text-slate-500 italic"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
                     Aún no hay publicaciones. ¡Sé el primero!
@@ -160,26 +160,26 @@ export default function ForoPage() {
               {!isLoading && !error && posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-white border border-slate-100 rounded-sm p-6"
+                  className="bg-white dark:bg-[#0d1f35] border border-slate-100 dark:border-slate-700/40 rounded-sm p-6"
                   style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}
                 >
                   {/* Post header \u2014 wrap en m\u00f3vil para evitar desbordamiento de tags */}
                   <div className="flex flex-wrap items-start justify-between mb-3 gap-2">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <div className="w-8 h-8 rounded-full bg-sky-100 border border-sky-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 border border-sky-200 dark:border-sky-800/40 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
                           <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
                         <div className="min-w-0">
                           <h3
-                            className="text-[18px] italic text-slate-700 leading-tight"
+                            className="text-[18px] italic text-slate-700 dark:text-slate-200 leading-tight"
                             style={{ fontFamily: "'Playfair Display', serif" }}
                           >
                             {post.title}
                           </h3>
                         <p
-                          className="text-[9px] tracking-[0.6px] uppercase text-slate-400 mt-0.5"
+                          className="text-[9px] tracking-[0.6px] uppercase text-slate-400 dark:text-slate-500 mt-0.5"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           Publicado por {post.author} · {post.timeAgo}
@@ -199,7 +199,7 @@ export default function ForoPage() {
 
                   {/* Content */}
                   <p
-                    className="text-[14px] text-slate-600 leading-relaxed mb-4"
+                    className="text-[14px] text-slate-600 dark:text-slate-300 leading-relaxed mb-4"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {post.content}
@@ -219,7 +219,7 @@ export default function ForoPage() {
                         >
                           <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
-                        <span className="text-[9px] tracking-[0.5px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          <span className="text-[9px] tracking-[0.5px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                           {post.likes} likes
                         </span>
                       </button>
@@ -231,7 +231,7 @@ export default function ForoPage() {
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" className="group-hover:stroke-sky-400 transition-colors">
                           <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
-                        <span className="text-[9px] tracking-[0.5px] uppercase text-slate-400 group-hover:text-sky-400 transition-colors" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          <span className="text-[9px] tracking-[0.5px] uppercase text-slate-400 dark:text-slate-500 group-hover:text-sky-400 transition-colors" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                           {post.comments} comentarios
                         </span>
                       </button>
@@ -240,7 +240,7 @@ export default function ForoPage() {
                       {/* Denunciar (solo si no es mío y no fue reportado) */}
                       {post.authorId !== currentUserId && !isReported(post.id) && (
                         <button
-                          className="flex items-center gap-1 text-slate-300 hover:text-red-400 transition-colors"
+                          className="flex items-center gap-1 text-slate-300 dark:text-slate-600 hover:text-red-400 transition-colors"
                           title="Denunciar publicación"
                           onClick={() => handleReportPost(post.id)}
                         >
@@ -252,7 +252,7 @@ export default function ForoPage() {
                       )}
                       {/* Confirmación de reporte enviado */}
                       {isReported(post.id) && (
-                        <span className="text-[8px] uppercase tracking-[0.5px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Reportado</span>
+                          <span className="text-[8px] uppercase tracking-[0.5px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Reportado</span>
                       )}
                       {/* Feedback de reporte */}
                       {commentFeedback[`report_${post.id}`] && (
@@ -261,7 +261,7 @@ export default function ForoPage() {
                       {/* Borrar (solo si es mío) */}
                       {post.authorId === currentUserId && (
                         <button
-                          className="flex items-center gap-1 text-slate-300 hover:text-red-400 transition-colors"
+                          className="flex items-center gap-1 text-slate-300 dark:text-slate-600 hover:text-red-400 transition-colors"
                           title="Eliminar publicación"
                           onClick={() => handleDeletePost(post.id)}
                         >
@@ -289,7 +289,7 @@ export default function ForoPage() {
             {/* Categories */}
             <div>
               <p
-                className="text-[9px] tracking-[1.8px] uppercase text-slate-400 mb-4"
+                className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500 mb-4"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Categorías Populares
@@ -298,16 +298,16 @@ export default function ForoPage() {
                 {categories.map((cat) => (
                   <button
                     key={cat.name}
-                    className="flex items-center justify-between w-full py-2.5 border-b border-slate-100 hover:text-sky-500 transition-colors group text-left"
+                    className="flex items-center justify-between w-full py-2.5 border-b border-slate-100 dark:border-slate-700/30 hover:text-sky-500 transition-colors group text-left"
                   >
                     <span
-                      className="text-[13px] italic text-slate-600 group-hover:text-sky-500 transition-colors"
+                      className="text-[13px] italic text-slate-600 dark:text-slate-300 group-hover:text-sky-500 transition-colors"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {cat.name}
                     </span>
                     <span
-                      className="text-[9px] uppercase text-slate-300"
+                      className="text-[9px] uppercase text-slate-300 dark:text-slate-600"
                       style={{ fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       {cat.count}
@@ -318,7 +318,7 @@ export default function ForoPage() {
             </div>
 
             {/* Normas del Oasis */}
-            <div className="bg-white border border-slate-100 rounded-sm p-5">
+              <div className="bg-white dark:bg-[#0d1f35] border border-slate-100 dark:border-slate-700/40 rounded-sm p-5">
               <div className="flex items-center gap-2 mb-3">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
                   <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -331,7 +331,7 @@ export default function ForoPage() {
                 </p>
               </div>
               <p
-                className="text-[13px] italic text-slate-600 leading-relaxed mb-4"
+                className="text-[13px] italic text-slate-600 dark:text-slate-300 leading-relaxed mb-4"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Recuerda que este es un espacio de respeto mutuo. No juzgamos, acompañamos el crecimiento de cada semilla.
@@ -357,26 +357,26 @@ export default function ForoPage() {
           onClick={(e) => { if (e.target === e.currentTarget) handleClosePost(); }}
         >
           <div
-            className="bg-white border border-slate-100 rounded-sm w-full max-w-[680px] max-h-[90vh] flex flex-col"
+            className="bg-white dark:bg-[#0d1f35] border border-slate-100 dark:border-slate-700/40 rounded-sm w-full max-w-[680px] max-h-[90vh] flex flex-col"
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}
           >
             {/* Cabecera del post */}
-            <div className="flex items-start justify-between p-7 pb-5 border-b border-slate-50">
+              <div className="flex items-start justify-between p-7 pb-5 border-b border-slate-50 dark:border-slate-700/30">
               <div className="flex-1 min-w-0 pr-6">
-                <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   Publicado por {openPost.author} · {openPost.timeAgo}
                 </p>
-                <h2 className="text-[22px] italic text-slate-800 leading-tight mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <h2 className="text-[22px] italic text-slate-800 dark:text-slate-100 leading-tight mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {openPost.title}
                 </h2>
-                <p className="text-[14px] text-slate-600 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <p className="text-[14px] text-slate-600 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {openPost.content}
                 </p>
                 {/* Tags */}
                 {openPost.tags.length > 0 && (
                   <div className="flex items-center gap-1.5 mt-3 flex-wrap">
                     {openPost.tags.map((tag) => (
-                      <span key={tag} className="text-[7px] tracking-[1px] uppercase text-sky-400 bg-sky-50 border border-sky-100 px-2 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span key={tag} className="text-[7px] tracking-[1px] uppercase text-sky-400 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 px-2 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                         {tag}
                       </span>
                     ))}
@@ -385,7 +385,7 @@ export default function ForoPage() {
               </div>
               <button
                 onClick={handleClosePost}
-                className="text-slate-300 hover:text-slate-500 transition-colors flex-shrink-0"
+                className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors flex-shrink-0"
                 aria-label="Cerrar"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -396,7 +396,7 @@ export default function ForoPage() {
 
             {/* Cuerpo scrolleable: lista de comentarios */}
             <div className="flex-1 overflow-y-auto px-7 py-4">
-              <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-4" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-4" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 {openPost.comments === 0 ? 'Sin comentarios aún' : `${openPost.comments} comentario${openPost.comments !== 1 ? 's' : ''}`}
               </p>
 
@@ -418,7 +418,7 @@ export default function ForoPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="1">
                     <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <p className="text-[10px] uppercase tracking-[1px] text-slate-300 italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sé el primero en comentar</p>
+                  <p className="text-[10px] uppercase tracking-[1px] text-slate-300 dark:text-slate-600 italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sé el primero en comentar</p>
                 </div>
               )}
 
@@ -426,11 +426,11 @@ export default function ForoPage() {
               {!isCommentsLoading && comments.map((comment, idx) => (
                 <div
                   key={comment.id}
-                  className={`py-4 ${idx > 0 ? 'border-t border-slate-50' : ''}`}
+                  className={`py-4 ${idx > 0 ? 'border-t border-slate-50 dark:border-slate-700/20' : ''}`}
                 >
                   <div className="flex items-start gap-3">
                     {/* Avatar */}
-                    <div className="w-7 h-7 rounded-full bg-sky-50 border border-sky-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-7 h-7 rounded-full bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 flex items-center justify-center flex-shrink-0 mt-0.5">
                       {comment.isAnonymous ? (
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5">
                           <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -450,12 +450,12 @@ export default function ForoPage() {
                         >
                           {comment.author}
                         </span>
-                        <span className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{comment.timeAgo}</span>
+                        <span className="text-[8px] text-slate-300 dark:text-slate-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{comment.timeAgo}</span>
                         {comment.isAnonymous && (
-                          <span className="text-[7px] uppercase tracking-[0.8px] text-slate-300 bg-slate-50 border border-slate-100 px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Anónimo</span>
+                          <span className="text-[7px] uppercase tracking-[0.8px] text-slate-300 dark:text-slate-600 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/40 px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Anónimo</span>
                         )}
                       </div>
-                      <p className="text-[13px] italic text-slate-600 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <p className="text-[13px] italic text-slate-600 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
                         {comment.content}
                       </p>
                       {/* Feedback inline */}
@@ -470,7 +470,7 @@ export default function ForoPage() {
                       {/* Borrar (solo si es mío) */}
                       {comment.isMine && (
                         <button
-                          className="text-slate-300 hover:text-red-400 transition-colors"
+                          className="text-slate-300 dark:text-slate-600 hover:text-red-400 transition-colors"
                           title="Eliminar comentario"
                           onClick={() => handleDeleteComment(comment.id)}
                         >
@@ -482,7 +482,7 @@ export default function ForoPage() {
                       {/* Denunciar (solo si no es mío) */}
                       {!comment.isMine && (
                         <button
-                          className="text-slate-300 hover:text-red-400 transition-colors"
+                          className="text-slate-300 dark:text-slate-600 hover:text-red-400 transition-colors"
                           title="Denunciar comentario"
                           onClick={() => handleReportPost(comment.id)}
                         >
@@ -504,7 +504,7 @@ export default function ForoPage() {
             </div>
 
             {/* Footer: input para responder */}
-            <div className="border-t border-slate-100 px-7 py-5">
+            <div className="border-t border-slate-100 dark:border-slate-700/30 px-7 py-5">
               {/* Error de envío */}
               {commentError && comments.length > 0 && (
                 <p className="text-[9px] text-red-400 mb-2" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{commentError}</p>
@@ -512,7 +512,7 @@ export default function ForoPage() {
 
               {/* Toggle anónimo */}
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-[8px] tracking-[1px] uppercase text-slate-400 flex-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <span className="text-[8px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 flex-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   Comentar como anónimo
                 </span>
                 <button
@@ -540,7 +540,7 @@ export default function ForoPage() {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Escribe un comentario de apoyo..."
-                  className="flex-1 border border-slate-200 rounded-lg px-4 py-3 text-slate-700 text-[13px] outline-none resize-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="flex-1 border border-slate-200 dark:border-slate-700/40 dark:bg-[#070f1a] dark:text-slate-200 dark:placeholder-slate-600 rounded-lg px-4 py-3 text-slate-700 text-[13px] outline-none resize-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                   style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -580,20 +580,20 @@ export default function ForoPage() {
           onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false); }}
         >
           <div
-            className="bg-white border border-slate-100 rounded-sm p-8 w-full max-w-[600px] max-h-[90vh] overflow-y-auto"
+            className="bg-white dark:bg-[#0d1f35] border border-slate-100 dark:border-slate-700/40 rounded-sm p-8 w-full max-w-[600px] max-h-[90vh] overflow-y-auto"
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}
           >
             {/* Modal header */}
             <div className="flex items-center justify-between mb-6">
               <p
-                className="text-[9px] tracking-[1.8px] uppercase text-slate-400"
+                className="text-[9px] tracking-[1.8px] uppercase text-slate-400 dark:text-slate-500"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Nueva Publicación
               </p>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-300 hover:text-slate-500 transition-colors"
+                className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors"
                 aria-label="Cerrar"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -605,7 +605,7 @@ export default function ForoPage() {
             {/* Título del post */}
             <div className="mb-4">
               <p
-                className="text-[9px] tracking-[1px] uppercase text-slate-400 mb-2"
+                className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Título
@@ -615,7 +615,7 @@ export default function ForoPage() {
                 value={postTitle}
                 onChange={(e) => setPostTitle(e.target.value)}
                 placeholder="Dale un título a tu publicación..."
-                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-700 placeholder-slate-300 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="w-full bg-white dark:bg-[#070f1a] border border-slate-200 dark:border-slate-700/40 rounded-lg px-4 py-2.5 text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic" }}
               />
             </div>
@@ -623,7 +623,7 @@ export default function ForoPage() {
             {/* Contenido */}
             <div className="mb-5">
               <p
-                className="text-[9px] tracking-[1px] uppercase text-slate-400 mb-2"
+                className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Contenido
@@ -633,7 +633,7 @@ export default function ForoPage() {
                 onChange={(e) => setPostText(e.target.value)}
                 placeholder="¿Qué tienes en mente hoy? Comparte con la comunidad..."
                 rows={4}
-                className="w-full bg-white border border-slate-200 rounded-lg p-4 text-slate-500 placeholder-slate-300 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 resize-none transition-all"
+                  className="w-full bg-white dark:bg-[#070f1a] border border-slate-200 dark:border-slate-700/40 rounded-lg p-4 text-slate-500 dark:text-slate-300 placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 resize-none transition-all"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
               />
             </div>
@@ -641,7 +641,7 @@ export default function ForoPage() {
             {/* Etiquetas */}
             <div className="mb-5">
               <p
-                className="text-[9px] tracking-[1px] uppercase text-slate-400 mb-3"
+                className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 mb-3"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Etiquetas
@@ -673,9 +673,9 @@ export default function ForoPage() {
             </div>
 
             {/* Toggle anónimo */}
-            <div className="flex items-center gap-3 mb-6 py-3 border-t border-b border-slate-100">
+              <div className="flex items-center gap-3 mb-6 py-3 border-t border-b border-slate-100 dark:border-slate-700/30">
               <span
-                className="text-[9px] tracking-[1px] uppercase text-slate-400 flex-1"
+                className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500 flex-1"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Publicar como anónimo
@@ -718,7 +718,7 @@ export default function ForoPage() {
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="h-[42px] px-5 border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700 rounded-xl transition-colors"
+                className="h-[42px] px-5 border border-slate-200 dark:border-slate-700/40 text-slate-500 dark:text-slate-400 hover:border-slate-300 hover:text-slate-700 rounded-xl transition-colors"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,

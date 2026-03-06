@@ -61,7 +61,7 @@ export default function AcompananteLayout({
 
           {/* Título de la página actual */}
           <span
-            className="flex-1 text-[16px] font-normal text-slate-700"
+            className="flex-1 text-[16px] font-normal text-slate-700 dark:text-slate-200"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {pageLabel}

@@ -53,7 +53,7 @@ export default function MonitoreoPage() {
       <div className="min-h-full flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-teal-200 border-t-teal-500 rounded-full animate-spin" />
-          <p className="text-[10px] text-slate-400 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Buscando ahijado...
           </p>
         </div>
@@ -68,19 +68,19 @@ export default function MonitoreoPage() {
         <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
           {/* Header */}
           <p
-            className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
+            className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             — Panel de Acompañante —
           </p>
           <h1
-            className="text-[44px] font-normal text-slate-800 leading-none mb-1"
+            className="text-[44px] font-normal text-slate-800 dark:text-slate-100 leading-none mb-1"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Monitoreo
           </h1>
           <p
-            className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-10"
+            className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Sin ahijado conectado aún
@@ -88,7 +88,7 @@ export default function MonitoreoPage() {
 
           {/* Ilustración vacía */}
           <div
-            className="border border-slate-200 bg-white rounded-sm p-10 mb-6 flex flex-col items-center text-center"
+            className="border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#0d1f35] rounded-sm p-10 mb-6 flex flex-col items-center text-center"
             style={{ boxShadow: "8px 8px 0px 0px rgba(13, 148, 136, 0.04)" }}
           >
             {/* Árbol dormido */}
@@ -100,21 +100,21 @@ export default function MonitoreoPage() {
             </svg>
 
             <p
-              className="text-[20px] font-normal text-slate-700 mb-3"
+              className="text-[20px] font-normal text-slate-700 dark:text-slate-200 mb-3"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Aún no tienes un ahijado conectado
             </p>
             <p
-              className="text-[11px] text-slate-400 leading-relaxed max-w-sm mb-6"
+              className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed max-w-sm mb-6"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Cuando alguien en recuperación introduzca tu identificador de padrino en la sección de Configuración de su app, aparecerá aquí automáticamente.
             </p>
 
-            <div className="border border-teal-100 bg-teal-50 rounded-sm p-5 w-full max-w-sm text-left mb-5">
+            <div className="border border-teal-100 dark:border-teal-800/30 bg-teal-50 dark:bg-teal-900/20 rounded-sm p-5 w-full max-w-sm text-left mb-5">
               <p
-                className="text-[8px] tracking-[1.5px] uppercase text-teal-600 mb-2"
+                className="text-[8px] tracking-[1.5px] uppercase text-teal-600 dark:text-teal-400 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 ¿Cómo conectarse?
@@ -133,7 +133,7 @@ export default function MonitoreoPage() {
                       {i + 1}.
                     </span>
                     <p
-                      className="text-[11px] italic text-teal-700 leading-relaxed"
+                      className="text-[11px] italic text-teal-700 dark:text-teal-300 leading-relaxed"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {step}
@@ -153,9 +153,9 @@ export default function MonitoreoPage() {
           </div>
 
           {/* Protocolo siempre visible */}
-          <div className="border border-red-100 bg-red-50 rounded-sm p-6">
+          <div className="border border-red-100 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 rounded-sm p-6">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5">
                   <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -168,13 +168,13 @@ export default function MonitoreoPage() {
                   Protocolo de Emergencia
                 </p>
                 <p
-                  className="text-[13px] italic text-red-700 mb-2"
+                  className="text-[13px] italic text-red-700 dark:text-red-400 mb-2"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Cuando tengas un ahijado conectado...
                 </p>
                 <p
-                  className="text-[11px] text-red-500 leading-relaxed"
+                  className="text-[11px] text-red-500 dark:text-red-400/80 leading-relaxed"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Si presiona el botón &apos;Raíz de Emergencia&apos;, recibirás una notificación inmediata. Por favor, contáctale lo antes posible o llama al servicio de emergencias si es necesario.
@@ -197,19 +197,19 @@ export default function MonitoreoPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
+          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Panel de Acompañante —
         </p>
         <h1
-          className="text-[44px] font-normal text-slate-800 leading-none mb-1"
+          className="text-[44px] font-normal text-slate-800 dark:text-slate-100 leading-none mb-1"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Progreso de {godchildName}
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-10"
+          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           ReSet — Monitoreo Activo
@@ -217,7 +217,7 @@ export default function MonitoreoPage() {
 
         {/* Tarjeta de progreso principal */}
         <div
-          className="border border-slate-200 bg-white rounded-sm p-8 mb-6"
+          className="border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#0d1f35] rounded-sm p-8 mb-6"
           style={{ boxShadow: "8px 8px 0px 0px rgba(13, 148, 136, 0.06)" }}
         >
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
@@ -244,7 +244,7 @@ export default function MonitoreoPage() {
             <div className="flex-1">
               <div className="flex items-baseline gap-2 mb-4">
                 <span
-                  className="text-[56px] font-normal text-slate-800 leading-none"
+                  className="text-[56px] font-normal text-slate-800 dark:text-slate-100 leading-none"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {sobrietyDays}
@@ -268,7 +268,7 @@ export default function MonitoreoPage() {
                     Notas totales
                   </p>
                 </div>
-                <div className="w-px bg-slate-100" />
+                <div className="w-px bg-slate-100 dark:bg-slate-700/40" />
                 <div>
                   <p className="text-[24px] font-normal text-teal-600 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {stats?.consistency ?? 0}%
@@ -286,7 +286,7 @@ export default function MonitoreoPage() {
                     <div className="absolute w-4 h-4 rounded-full bg-teal-300 animate-pulse-ring" />
                     <div className="w-2 h-2 rounded-full bg-teal-500 relative z-10" />
                   </div>
-                  <p className="text-[10px] text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Última actividad: {formatRelativeDate(recentLogs[0].date)}
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export default function MonitoreoPage() {
         </div>
 
         {/* Actividad reciente */}
-        <div className="border border-slate-200 bg-white rounded-sm p-8 mb-6">
+        <div className="border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#0d1f35] rounded-sm p-8 mb-6">
           <div className="flex items-center gap-2 mb-5">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -307,18 +307,18 @@ export default function MonitoreoPage() {
           </div>
 
           {recentLogs.length === 0 ? (
-            <p className="text-[12px] italic text-slate-400 py-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[12px] italic text-slate-400 dark:text-slate-500 py-4" style={{ fontFamily: "'Playfair Display', serif" }}>
               Tu ahijado aún no ha registrado actividad.
             </p>
           ) : (
             recentLogs.map((item, i) => (
-              <div key={item.id} className={`flex items-start gap-4 py-4 ${i > 0 ? "border-t border-slate-50" : ""}`}>
-                <div className="w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div key={item.id} className={`flex items-start gap-4 py-4 ${i > 0 ? "border-t border-slate-50 dark:border-slate-700/20" : ""}`}>
+                <div className="w-10 h-10 bg-teal-50 dark:bg-teal-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   {MOOD_SVG[item.moodId] ?? MOOD_SVG.calmado}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <p className="text-[13px] italic text-slate-700" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <p className="text-[13px] italic text-slate-700 dark:text-slate-200" style={{ fontFamily: "'Playfair Display', serif" }}>
                       {item.moodLabel}
                     </p>
                     {item.isShared && (
@@ -327,11 +327,11 @@ export default function MonitoreoPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     {item.notes ? `"${item.notes.slice(0, 80)}${item.notes.length > 80 ? "..." : ""}"` : "Registro emocional sin nota adjunta."}
                   </p>
                 </div>
-                <p className="text-[9px] text-slate-300 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[9px] text-slate-300 dark:text-slate-600 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {formatRelativeDate(item.date)}
                 </p>
               </div>
@@ -340,8 +340,8 @@ export default function MonitoreoPage() {
         </div>
 
         {/* Técnica del día para acompañante */}
-        <div className="border border-teal-100 bg-white rounded-sm p-6 mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center">
+        <div className="border border-teal-100 dark:border-teal-800/30 bg-white dark:bg-[#0d1f35] rounded-sm p-6 mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/30 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -350,10 +350,10 @@ export default function MonitoreoPage() {
             <p className="text-[8px] tracking-[1.5px] uppercase text-teal-500 mb-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Técnica del día
             </p>
-            <p className="text-[16px] font-normal text-slate-800 leading-tight mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[16px] font-normal text-slate-800 dark:text-slate-100 leading-tight mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.nombre}
             </p>
-            <p className="text-[11px] italic text-slate-400 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[11px] italic text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.hint}
             </p>
           </div>
@@ -367,9 +367,9 @@ export default function MonitoreoPage() {
         </div>
 
         {/* Protocolo de emergencia */}
-        <div className="border border-red-100 bg-red-50 rounded-sm p-6">
+        <div className="border border-red-100 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 rounded-sm p-6">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5">
                 <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -378,10 +378,10 @@ export default function MonitoreoPage() {
               <p className="text-[9px] tracking-[1.5px] uppercase text-red-400 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Protocolo de Emergencia
               </p>
-              <p className="text-[13px] italic text-red-700 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <p className="text-[13px] italic text-red-700 dark:text-red-400 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                 Si {godchildName} presiona el botón &apos;Raíz de Emergencia&apos;...
               </p>
-              <p className="text-[11px] text-red-500 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] text-red-500 dark:text-red-400/80 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Recibirás una notificación inmediata con su ubicación aproximada. Por favor, contáctale lo antes posible o llama al servicio de emergencias si es necesario.
               </p>
             </div>
