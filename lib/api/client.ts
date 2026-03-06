@@ -2,11 +2,11 @@
 // Cliente HTTP centralizado — gestiona base URL, token JWT y errores.
 // El token se guarda en memoria (nunca en localStorage).
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://64.23.248.243:80/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'https://resets.app/api/v1';
 
 if (!process.env.NEXT_PUBLIC_API_URL) {
     console.warn(
-        `⚠️ NEXT_PUBLIC_API_URL no está definida en el entorno. Usando valor por defecto: ${API_BASE}`
+        `⚠️ NEXT_PUBLIC_API_URL no está definida. Usando fallback producción: ${API_BASE}`
     );
 }
 
