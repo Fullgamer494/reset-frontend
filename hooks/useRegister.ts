@@ -14,6 +14,7 @@ interface RegisterFormStep1 {
 export function useRegister() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
+  const [role, setRole] = useState<"user" | "companion">("user");
   const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "" });
   const [selectedAddiction, setSelectedAddiction] = useState<AddictionTypeId | "">("");
   const [otherDescription, setOtherDescription] = useState("");
@@ -35,23 +36,40 @@ export function useRegister() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedAddiction) {
-      setError("Selecciona un tipo de adicción.");
+    if (!form.name || !form.email || !form.password) {
+      setError("Completa todos los campos de cuenta.");
       return;
     }
-    if (selectedAddiction === "otros" && !otherDescription.trim()) {
-      setError("Describe tu situación en el campo de texto.");
-      return;
+    if (role === "user") {
+      if (!selectedAddiction) {
+        setError("Selecciona un tipo de adicción.");
+        return;
+      }
+      if (selectedAddiction === "otros" && !otherDescription.trim()) {
+        setError("Describe tu situación en el campo de texto.");
+        return;
+      }
     }
     setIsLoading(true);
     setError(null);
     try {
-      const { token } = await register({
-        ...form,
-        addictionType: selectedAddiction === "otros" ? otherDescription : selectedAddiction,
+      const apiRole = role === "companion" ? "PADRINO" : "ADICTO";
+      const addictionName =
+        role === "companion"
+          ? undefined
+          : selectedAddiction === "otros"
+          ? otherDescription
+          : selectedAddiction;
+
+      await register({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: apiRole,
+        addictionName,
+        classification: role === "user" ? "Sustancia" : undefined,
       });
-      localStorage.setItem("token", token);
-      router.push("/dashboard");
+      router.push("/login");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al crear la cuenta");
     } finally {
@@ -61,12 +79,14 @@ export function useRegister() {
 
   return {
     step,
+    role,
     form,
     selectedAddiction,
     otherDescription,
     isLoading,
     error,
     setStep,
+    setRole,
     setSelectedAddiction,
     setOtherDescription,
     handleChange,

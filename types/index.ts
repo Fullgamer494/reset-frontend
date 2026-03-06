@@ -11,6 +11,7 @@ export interface RegisterData {
   password: string;
   addictionType: string;
   otherDescription?: string;
+  role?: "user" | "companion";
 }
 
 export interface AuthResponse {
@@ -60,7 +61,17 @@ export interface AddictionType {
 
 // ─── Journal / Bitácora ──────────────────────────────────────────────────────
 
-export type MoodId = "feliz" | "calmado" | "ansioso" | "triste" | "directado";
+export type MoodId =
+  | "feliz"
+  | "calmado"
+  | "ansioso"
+  | "triste"
+  | "motivado"
+  | "esperanzado"
+  | "agradecido"
+  | "agotado"
+  | "confundido"
+  | "enojado";
 
 export interface Mood {
   id: MoodId;
@@ -91,6 +102,7 @@ export interface ForoPost {
   id: string;
   title: string;
   author: string;
+  authorId: string;
   timeAgo: string;
   tags: string[];
   tagVariants: Array<"default" | "blue" | "green" | "red" | "yellow">;
@@ -111,6 +123,18 @@ export interface CreateForoPostData {
 export interface ForoCategory {
   name: string;
   count: string;
+}
+
+export interface ForoComment {
+  id: string;
+  postId: string;
+  authorId: string;
+  author: string;
+  content: string;
+  isAnonymous: boolean;
+  likes: number;
+  timeAgo: string;
+  isMine: boolean;
 }
 
 // ─── Profile / Configuración ─────────────────────────────────────────────────

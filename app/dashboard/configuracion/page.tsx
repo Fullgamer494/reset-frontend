@@ -14,11 +14,16 @@ export default function ConfiguracionPage() {
     isSaving,
     error,
     saved,
+    sponsorCode,
+    sponsorStatus,
+    sponsorMsg,
     setUsername,
     setAddictionType,
+    setSponsorCode,
     handleUpdateProfile,
     handleRemovePeer,
     handleToggleEmergencyNotifs,
+    handleAssignSponsor,
   } = useConfiguracion();
 
   if (isLoading) {
@@ -38,7 +43,7 @@ export default function ConfiguracionPage() {
           className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
-          — Ajustes del Oasis —
+          — Ajustes de ReSet —
         </p>
         <h1
           className="text-[44px] font-normal text-slate-800 leading-none mb-1"
@@ -142,6 +147,59 @@ export default function ConfiguracionPage() {
               Actualizar Perfil
             </button>
           </div>
+        </div>
+
+        {/* ── Padrino de Apoyo ── */}
+        <div className="border border-slate-200 rounded-sm bg-white mb-6 p-8">
+          <div className="flex items-center gap-2 mb-6">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
+              <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <p
+              className="text-[9px] tracking-[2px] uppercase text-[#0ea5e9]"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              Padrino de Apoyo
+            </p>
+          </div>
+
+          <p
+            className="text-[11px] italic text-slate-400 mb-5 leading-relaxed"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Tu padrino es quien te acompaña y revisa tu progreso. Pídele su código y únelos aquí.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              placeholder="Código o ID del padrino"
+              value={sponsorCode}
+              onChange={(e) => setSponsorCode(e.target.value)}
+              disabled={sponsorStatus === "submitting"}
+              className="flex-1 h-[44px] border border-slate-200 bg-white rounded-sm px-4 text-slate-700 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all disabled:opacity-50"
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
+            />
+            <button
+              onClick={handleAssignSponsor}
+              disabled={!sponsorCode.trim() || sponsorStatus === "submitting"}
+              className="h-[44px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm transition-colors flex-shrink-0"
+              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "2px", textTransform: "uppercase" }}
+            >
+              {sponsorStatus === "submitting" ? "Conectando…" : "Conectar"}
+            </button>
+          </div>
+
+          {sponsorStatus === "success" && (
+            <p className="mt-3 text-[10px] text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              {sponsorMsg}
+            </p>
+          )}
+          {sponsorStatus === "error" && (
+            <p className="mt-3 text-[10px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              {sponsorMsg}
+            </p>
+          )}
         </div>
 
         {/* Pares de Apoyo */}

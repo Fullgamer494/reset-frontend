@@ -1,21 +1,45 @@
-import type { UserProgress } from "@/types";
-import { MOCK_PROGRESS } from "@/lib/mock/data";
-import { authHeaders } from "./auth";
+// lib/api/dashboard.ts
+// Progreso del usuario — racha y estadísticas.
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
+import { apiRequest } from './client';
+import type { UserProgress } from '@/types';
 
-/** Fetch the authenticated user's sobriety progress */
+/** Devuelve el progreso de sobriedad del usuario autenticado.
+ * La API puede devolver soberDays (tracking/statistics) o currentStreak (streak).
+ */
 export async function getProgress(): Promise<UserProgress> {
-  // --- MOCK ---
-  void authHeaders;
-  await new Promise((r) => setTimeout(r, 300));
-  return MOCK_PROGRESS;
-  // --- END MOCK ---
+  // Intentar /streak primero; si devuelve null, usar /tracking/statistics
+  const res: any = await apiRequest('/streak');
+  const streakData = res?.data;
 
-  // REAL IMPLEMENTATION:
-  // const res = await fetch(`${BASE_URL}/dashboard/progress`, {
-  //   headers: authHeaders(),
-  // });
-  // if (!res.ok) throw new Error("Error al obtener el progreso");
-  // return res.json();
+  let days = 0;
+  if (streakData && typeof streakData === 'object') {
+    days = streakData.currentStreak ?? streakData.soberDays ?? streakData.streak ?? 0;
+  }
+
+  if (days === 0) {
+    try {
+      const stats: any = await apiRequest('/tracking/statistics');
+      const sd = stats?.data ?? stats;
+      days = sd?.soberDays ?? sd?.currentStreak ?? 0;
+    } catch { /* ignorar */ }
+  }
+
+  return {
+    sobrietyDays: days,
+    plantStage: getStageName(days),
+    consecutiveDays: days,
+    lastNote: streakData?.lastNote,
+    nextMilestone: streakData?.nextMilestone,
+  };
+}
+
+function getStageName(
+  days: number
+): UserProgress['plantStage'] {
+  if (days >= 365) return 'Ciprés';
+  if (days >= 180) return 'Árbol';
+  if (days >= 90) return 'Planta';
+  if (days >= 30) return 'Brote';
+  return 'Semilla';
 }

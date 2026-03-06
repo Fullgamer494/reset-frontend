@@ -93,7 +93,7 @@ function EyeOffIcon() {
    LOGIN PAGE
 ═══════════════════════════════════════════════════════════════════════════ */
 export default function LoginPage() {
-  const { form, showPassword, isLoading, error, setShowPassword, handleChange, handleSubmit, fillDemo } = useLogin();
+  const { form, showPassword, isLoading, error, setShowPassword, handleChange, handleSubmit } = useLogin();
 
   return (
     <div
@@ -312,38 +312,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Accesos demo */}
-            <div className="mt-5 p-4 rounded-xl bg-slate-50 border border-slate-100">
-              <p className="text-[9px] tracking-[1.5px] uppercase font-jetbrains text-center mb-3 text-slate-400">
-                Accesos demo — toca para rellenar
-              </p>
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => fillDemo("user")}
-                  className="flex-1 py-2.5 px-3 rounded-lg text-left bg-sky-50 border border-sky-200 hover:bg-sky-100 transition-colors"
-                >
-                  <p className="text-[9px] tracking-wide uppercase font-jetbrains mb-0.5 text-sky-600">
-                    Adicto
-                  </p>
-                  <p className="text-[10px] italic font-playfair text-slate-500">
-                    alex@correo.com
-                  </p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillDemo("companion")}
-                  className="flex-1 py-2.5 px-3 rounded-lg text-left bg-teal-50 border border-teal-200 hover:bg-teal-100 transition-colors"
-                >
-                  <p className="text-[9px] tracking-wide uppercase font-jetbrains mb-0.5 text-teal-600">
-                    Padrino
-                  </p>
-                  <p className="text-[10px] italic font-playfair text-slate-500">
-                    padrino@correo.com
-                  </p>
-                </button>
-              </div>
-            </div>
+
           </div>
 
           {/* Enlace de registro */}
