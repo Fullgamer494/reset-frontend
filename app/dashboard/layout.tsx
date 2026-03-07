@@ -18,7 +18,7 @@ export default function DashboardLayout({
   const pageLabel = getRouteLabel(pathname);
 
   return (
-    <div className="flex h-[100dvh] bg-[#f8fafc] dark:bg-[#0d1929] overflow-hidden">
+    <div className="flex h-dvh bg-[var(--surface-main)] overflow-hidden">
       {/* Overlay semitransparente en móvil cuando el sidebar está abierto */}
       {sidebarOpen && (
         <div
@@ -31,9 +31,9 @@ export default function DashboardLayout({
       <UserSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* main: sin margen en móvil, con margen en md+ */}
-      <main className="flex-1 md:ml-[288px] overflow-auto bg-[#f8fafc] dark:bg-[#0d1929] flex flex-col">
+      <main className="flex-1 md:ml-72 overflow-auto bg-[var(--surface-main)] flex flex-col">
         {/* Barra superior móvil — oculta en desktop */}
-        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-white dark:bg-[#0f1d2d] border-b border-slate-100 dark:border-slate-800/60 md:hidden flex-shrink-0 safe-top-bar">
+        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-white dark:bg-[#0f1d2d] border-b border-slate-100 dark:border-slate-800/60 md:hidden shrink-0 safe-top-bar">
           {/* En sub-páginas: botón Atrás. En raíz: botón hamburguesa */}
           {!isRoot ? (
             <button

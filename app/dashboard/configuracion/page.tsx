@@ -36,7 +36,7 @@ export default function ConfiguracionPage() {
   if (isLoading) {
     return (
       <div className="min-h-full flex items-center justify-center">
-        <p className="text-[10px] tracking-[2px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Cargando...</p>
+        <p className="text-[11px] tracking-[2px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Cargando...</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function ConfiguracionPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
+          className="text-[11px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-300 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Ajustes de ReSet —
@@ -59,7 +59,7 @@ export default function ConfiguracionPage() {
           Perfil y Apoyo
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
+          className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-10"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Gestiona tu red de seguridad
@@ -72,7 +72,7 @@ export default function ConfiguracionPage() {
               <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <p
-              className="text-[9px] tracking-[2px] uppercase text-[#0ea5e9]"
+              className="text-[11px] tracking-[2px] uppercase text-[#0ea5e9]"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Mi Perfil
@@ -84,7 +84,7 @@ export default function ConfiguracionPage() {
             {/* Username */}
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500"
+                className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Nombre de Usuario
@@ -108,7 +108,7 @@ export default function ConfiguracionPage() {
             {/* Addiction type */}
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500"
+                className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Tipo de Adicción
@@ -163,7 +163,7 @@ export default function ConfiguracionPage() {
               <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <p
-              className="text-[9px] tracking-[2px] uppercase text-[#0ea5e9]"
+              className="text-[11px] tracking-[2px] uppercase text-[#0ea5e9]"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Padrino de Apoyo
@@ -171,7 +171,7 @@ export default function ConfiguracionPage() {
           </div>
 
           <p
-            className="text-[11px] italic text-slate-400 dark:text-slate-500 mb-5 leading-relaxed"
+            className="text-[11px] italic text-slate-400 dark:text-slate-300 mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Tu padrino es quien te acompaña y revisa tu progreso. Él te agregará usando tu correo electrónico.
@@ -182,12 +182,12 @@ export default function ConfiguracionPage() {
               <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <div>
-              <p className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Tu correo electrónico</p>
+              <p className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Tu correo electrónico</p>
               <p className="text-[14px] italic text-slate-700 dark:text-slate-200" style={{ fontFamily: "'Playfair Display', serif" }}>{user?.email ?? "—"}</p>
             </div>
           </div>
 
-          <p className="mt-4 text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="mt-4 text-[11px] text-slate-400 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Comparte tu correo con tu padrino para que él pueda agregarte desde su cuenta.
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function ConfiguracionPage() {
                 <path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <p
-                className="text-[9px] tracking-[2px] uppercase text-[#0ea5e9]"
+                className="text-[11px] tracking-[2px] uppercase text-[#0ea5e9]"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Pares de Apoyo
@@ -208,7 +208,7 @@ export default function ConfiguracionPage() {
             </div>
             <button
               onClick={() => setShowAddPeer((v) => !v)}
-              className="flex items-center gap-1.5 text-[9px] tracking-[1px] uppercase text-sky-500 hover:text-sky-600 transition-colors"
+              className="flex items-center gap-1.5 text-[11px] tracking-[1px] uppercase text-sky-500 hover:text-sky-600 transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -222,14 +222,14 @@ export default function ConfiguracionPage() {
           {showAddPeer && (
             <div className="mb-5 p-5 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 rounded-sm">
               <p
-                className="text-[9px] tracking-[1.5px] uppercase text-sky-500 mb-4"
+                className="text-[11px] tracking-[1.5px] uppercase text-sky-500 mb-4"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Nuevo par de apoyo
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Nombre *</label>
+                  <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Nombre *</label>
                   <input
                     type="text"
                     value={peerName}
@@ -240,7 +240,7 @@ export default function ConfiguracionPage() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Teléfono *</label>
+                  <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Teléfono *</label>
                   <input
                     type="tel"
                     value={peerPhone}
@@ -251,7 +251,7 @@ export default function ConfiguracionPage() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
+                  <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
                   <input
                     type="text"
                     value={peerRelationship}
@@ -262,7 +262,7 @@ export default function ConfiguracionPage() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] tracking-[1px] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
+                  <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
                   <input
                     type="email"
                     value={peerEmail}
@@ -276,7 +276,7 @@ export default function ConfiguracionPage() {
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
-                  className="h-[36px] px-4 border border-slate-200 dark:border-slate-700/40 text-slate-400 dark:text-slate-500 hover:text-slate-600 rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
+                  className="h-[36px] px-4 border border-slate-200 dark:border-slate-700/40 text-slate-400 dark:text-slate-300 hover:text-slate-600 rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Cancelar
@@ -290,7 +290,7 @@ export default function ConfiguracionPage() {
                     setShowAddPeer(false);
                     setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail("");
                   }}
-                  className="h-[36px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[9px] tracking-[1px] uppercase transition-colors"
+                  className="h-[36px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {isAddingPeer ? "Guardando…" : "Guardar"}
@@ -300,7 +300,7 @@ export default function ConfiguracionPage() {
           )}
 
           <p
-            className="text-[11px] italic text-slate-400 dark:text-slate-500 mb-5 leading-relaxed"
+            className="text-[11px] italic text-slate-400 dark:text-slate-300 mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Estas son las personas que recibirán una alerta si decides activar tu &apos;Raíz de Emergencia&apos;.
@@ -309,14 +309,14 @@ export default function ConfiguracionPage() {
           {/* Cabecera de tabla — ocultar columna email en móvil */}
           <div className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto] gap-4 pb-2 mb-1">
             <p
-              className="text-[9px] tracking-[1px] uppercase text-slate-300 dark:text-slate-600"
+              className="text-[11px] tracking-[1px] uppercase text-slate-300 dark:text-slate-400"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Nombre
             </p>
             {/* Columna email oculta en móvil */}
             <p
-              className="hidden sm:block text-[9px] tracking-[1px] uppercase text-slate-300 dark:text-slate-600"
+              className="hidden sm:block text-[11px] tracking-[1px] uppercase text-slate-300 dark:text-slate-400"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Correo Electrónico
@@ -336,7 +336,7 @@ export default function ConfiguracionPage() {
               </p>
               {/* Email oculto en móvil */}
               <p
-                className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500"
+                className="hidden sm:block text-[11px] text-slate-400 dark:text-slate-300"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {peer.email}
@@ -360,13 +360,13 @@ export default function ConfiguracionPage() {
               </svg>
               <div className="flex-1">
                 <p
-                  className="text-[9px] tracking-[1.5px] uppercase text-[#0ea5e9] mb-0.5"
+                  className="text-[11px] tracking-[1.5px] uppercase text-[#0ea5e9] mb-0.5"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Notificaciones de Emergencia
                 </p>
                 <p
-                  className="text-[11px] text-slate-400 dark:text-slate-500"
+                  className="text-[11px] text-slate-400 dark:text-slate-300"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Enviar alerta automática a mis pares al presionar el botón de pánico.
@@ -384,18 +384,18 @@ export default function ConfiguracionPage() {
         {/* Footer responsivo */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100 dark:border-slate-700/30">
           <p
-            className="text-[9px] tracking-[0.9px] uppercase text-slate-400 dark:text-slate-500 italic"
+            className="text-[11px] tracking-[0.9px] uppercase text-slate-400 dark:text-slate-300 italic"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Oasis de Sobriedad — Gestión de Privacidad
           </p>
           <div className="flex items-center gap-4">
-              <button className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors">
+              <button className="text-slate-300 dark:text-slate-400 hover:text-slate-500 transition-colors">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-              <button className="text-slate-300 dark:text-slate-600 hover:text-slate-500 transition-colors">
+              <button className="text-slate-300 dark:text-slate-400 hover:text-slate-500 transition-colors">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

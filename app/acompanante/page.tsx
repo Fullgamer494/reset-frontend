@@ -53,7 +53,7 @@ export default function MonitoreoPage() {
       <div className="min-h-full flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-teal-200 border-t-teal-500 rounded-full animate-spin" />
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="text-[11px] text-slate-400 dark:text-slate-300 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Buscando ahijado...
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function MonitoreoPage() {
         <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
           {/* Header */}
           <p
-            className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
+            className="text-[11px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-300 mb-2"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             — Panel de Acompañante —
@@ -80,7 +80,7 @@ export default function MonitoreoPage() {
             Monitoreo
           </h1>
           <p
-            className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
+            className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-10"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Sin ahijado conectado aún
@@ -106,7 +106,7 @@ export default function MonitoreoPage() {
               Aún no tienes un ahijado conectado
             </p>
             <p
-              className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed max-w-sm mb-6"
+              className="text-[11px] text-slate-400 dark:text-slate-300 leading-relaxed max-w-sm mb-6"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Cuando alguien en recuperación introduzca tu identificador de padrino en la sección de Configuración de su app, aparecerá aquí automáticamente.
@@ -114,7 +114,7 @@ export default function MonitoreoPage() {
 
             <div className="border border-teal-100 dark:border-teal-800/30 bg-teal-50 dark:bg-teal-900/20 rounded-sm p-5 w-full max-w-sm text-left mb-5">
               <p
-                className="text-[8px] tracking-[1.5px] uppercase text-teal-600 dark:text-teal-400 mb-2"
+                className="text-[11px] tracking-[1.5px] uppercase text-teal-600 dark:text-teal-400 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 ¿Cómo conectarse?
@@ -127,7 +127,7 @@ export default function MonitoreoPage() {
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <span
-                      className="text-[9px] text-teal-400 font-bold mt-0.5 flex-shrink-0"
+                      className="text-[11px] text-teal-400 font-bold mt-0.5 flex-shrink-0"
                       style={{ fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       {i + 1}.
@@ -145,7 +145,7 @@ export default function MonitoreoPage() {
 
             <Link
               href="/acompanante/cuenta"
-              className="inline-flex items-center gap-2 text-[9px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
+              className="inline-flex items-center gap-2 text-[11px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Ver mi perfil →
@@ -162,7 +162,7 @@ export default function MonitoreoPage() {
               </div>
               <div>
                 <p
-                  className="text-[9px] tracking-[1.5px] uppercase text-red-400 mb-1.5"
+                  className="text-[11px] tracking-[1.5px] uppercase text-red-400 mb-1.5"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Protocolo de Emergencia
@@ -197,7 +197,7 @@ export default function MonitoreoPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
+          className="text-[11px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-300 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Panel de Acompañante —
@@ -209,7 +209,7 @@ export default function MonitoreoPage() {
           Progreso de {godchildName}
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-10"
+          className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-10"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           ReSet — Monitoreo Activo
@@ -231,10 +231,10 @@ export default function MonitoreoPage() {
                 <polygon points="45,8 46.5,12 51,12 47.5,15 49,19 45,16.5 41,19 42.5,15 39,12 43.5,12" fill="#f0fdf4"/>
               </svg>
               <div className="text-center">
-                <p className="text-[8px] tracking-[1.5px] uppercase text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[11px] tracking-[1.5px] uppercase text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {plantName}
                 </p>
-                <p className="text-[10px] text-slate-400 mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[11px] text-slate-400 mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {plantStage}
                 </p>
               </div>
@@ -250,10 +250,10 @@ export default function MonitoreoPage() {
                   {sobrietyDays}
                 </span>
                 <div>
-                  <p className="text-[9px] tracking-[1.5px] uppercase text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] tracking-[1.5px] uppercase text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Días
                   </p>
-                  <p className="text-[9px] tracking-[1.2px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] tracking-[1.2px] uppercase text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     En recuperación
                   </p>
                 </div>
@@ -264,7 +264,7 @@ export default function MonitoreoPage() {
                   <p className="text-[24px] font-normal text-teal-600 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {stats?.notesThisWeek ?? 0}
                   </p>
-                  <p className="text-[9px] text-slate-400 tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-400 tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Notas totales
                   </p>
                 </div>
@@ -273,7 +273,7 @@ export default function MonitoreoPage() {
                   <p className="text-[24px] font-normal text-teal-600 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {stats?.consistency ?? 0}%
                   </p>
-                  <p className="text-[9px] text-slate-400 tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-400 tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Constancia
                   </p>
                 </div>
@@ -286,7 +286,7 @@ export default function MonitoreoPage() {
                     <div className="absolute w-4 h-4 rounded-full bg-teal-300 animate-pulse-ring" />
                     <div className="w-2 h-2 rounded-full bg-teal-500 relative z-10" />
                   </div>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Última actividad: {formatRelativeDate(recentLogs[0].date)}
                   </p>
                 </div>
@@ -301,13 +301,13 @@ export default function MonitoreoPage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <p className="text-[9px] tracking-[2px] uppercase text-teal-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="text-[11px] tracking-[2px] uppercase text-teal-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Actividad Reciente
             </p>
           </div>
 
           {recentLogs.length === 0 ? (
-            <p className="text-[12px] italic text-slate-400 dark:text-slate-500 py-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[12px] italic text-slate-400 dark:text-slate-300 py-4" style={{ fontFamily: "'Playfair Display', serif" }}>
               Tu ahijado aún no ha registrado actividad.
             </p>
           ) : (
@@ -322,16 +322,16 @@ export default function MonitoreoPage() {
                       {item.moodLabel}
                     </p>
                     {item.isShared && (
-                      <span className="text-[8px] tracking-[1px] uppercase text-teal-400 bg-teal-50 px-2 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span className="text-[11px] tracking-[1px] uppercase text-teal-400 bg-teal-50 px-2 py-0.5 rounded-full" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                         Compartido
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     {item.notes ? `"${item.notes.slice(0, 80)}${item.notes.length > 80 ? "..." : ""}"` : "Registro emocional sin nota adjunta."}
                   </p>
                 </div>
-                <p className="text-[9px] text-slate-300 dark:text-slate-600 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[11px] text-slate-300 dark:text-slate-400 whitespace-nowrap" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   {formatRelativeDate(item.date)}
                 </p>
               </div>
@@ -347,20 +347,20 @@ export default function MonitoreoPage() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[8px] tracking-[1.5px] uppercase text-teal-500 mb-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="text-[11px] tracking-[1.5px] uppercase text-teal-500 mb-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Técnica del día
             </p>
             <p className="text-[16px] font-normal text-slate-800 dark:text-slate-100 leading-tight mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.nombre}
             </p>
-            <p className="text-[11px] italic text-slate-400 dark:text-slate-500 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[11px] italic text-slate-400 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.hint}
             </p>
           </div>
           <Link
             href="/acompanante/tecnicas"
             className="flex-shrink-0 h-9 px-4 border border-teal-200 hover:bg-teal-50 text-teal-600 flex items-center transition-colors rounded-sm"
-            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
           >
             Ver todas →
           </Link>
@@ -375,7 +375,7 @@ export default function MonitoreoPage() {
               </svg>
             </div>
             <div>
-              <p className="text-[9px] tracking-[1.5px] uppercase text-red-400 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] tracking-[1.5px] uppercase text-red-400 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Protocolo de Emergencia
               </p>
               <p className="text-[13px] italic text-red-700 dark:text-red-400 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>

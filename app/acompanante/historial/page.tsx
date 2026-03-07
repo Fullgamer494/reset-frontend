@@ -76,7 +76,7 @@ export default function HistorialPage() {
       <div className="min-h-full flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-teal-200 border-t-teal-500 rounded-full animate-spin" />
-          <p className="text-[10px] text-slate-400 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <p className="text-[11px] text-slate-400 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Cargando historial...
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function HistorialPage() {
       <div className="min-h-full">
         <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
           <p
-            className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
+            className="text-[11px] tracking-[2px] uppercase italic text-slate-400 mb-2"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             — Registros Emocionales —
@@ -102,7 +102,7 @@ export default function HistorialPage() {
             Bitácora de Progreso
           </h1>
           <p
-            className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-10"
+            className="text-[11px] tracking-[1.5px] uppercase text-slate-400 mb-10"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Sin ahijado conectado aún
@@ -139,7 +139,7 @@ export default function HistorialPage() {
 
             <Link
               href="/acompanante"
-              className="inline-flex items-center gap-2 text-[9px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
+              className="inline-flex items-center gap-2 text-[11px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               ← Volver al panel
@@ -159,7 +159,7 @@ export default function HistorialPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 mb-2"
+          className="text-[11px] tracking-[2px] uppercase italic text-slate-400 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Registros Emocionales —
@@ -171,7 +171,7 @@ export default function HistorialPage() {
           Bitácora de Progreso
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 mb-10"
+          className="text-[11px] tracking-[1.5px] uppercase text-slate-400 mb-10"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Historial emocional de {godchildName} — Últimas entradas
@@ -181,7 +181,7 @@ export default function HistorialPage() {
         {recentLogs.length > 1 && (
           <div className="border border-slate-200 bg-white rounded-sm p-8 mb-6">
             <p
-              className="text-[9px] tracking-[2px] uppercase text-teal-600 mb-6"
+              className="text-[11px] tracking-[2px] uppercase text-teal-600 mb-6"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               Tendencia Emocional
@@ -201,9 +201,9 @@ export default function HistorialPage() {
                 ))}
               </svg>
               <div className="absolute left-0 top-0 h-full flex flex-col justify-between pointer-events-none">
-                <p className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy bien</p>
-                <p className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Regular</p>
-                <p className="text-[8px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Difícil</p>
+                <p className="text-[11px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy bien</p>
+                <p className="text-[11px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Regular</p>
+                <p className="text-[11px] text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Difícil</p>
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function HistorialPage() {
         {/* Lista de entradas */}
         <div className="border border-slate-200 bg-white rounded-sm p-8">
           <p
-            className="text-[9px] tracking-[2px] uppercase text-teal-600 mb-5"
+            className="text-[11px] tracking-[2px] uppercase text-teal-600 mb-5"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Entradas Recientes
@@ -253,7 +253,7 @@ export default function HistorialPage() {
                         </span>
                       )}
                       <p
-                        className="text-[9px] text-slate-300 ml-auto"
+                        className="text-[11px] text-slate-300 ml-auto"
                         style={{ fontFamily: "'JetBrains Mono', monospace" }}
                       >
                         {formatRelativeDate(entry.date)}

@@ -61,12 +61,12 @@ export default function InicioPage() {
         {/* =============================================
             MAIN HERO CARD
         ============================================= */}
-        <div className="relative mb-8 pt-[22px]">
+        <div className="relative mb-8 pt-5.5">
 
           {/* Tape — top, centered on the left (plant) panel */}
           <div className="absolute left-[30%] -translate-x-1/2 top-0 z-20 pointer-events-none">
             <div
-              className="w-[104px] h-[43px] bg-[rgba(186,230,253,0.4)]"
+              className="w-26 h-10.75 bg-[rgba(186,230,253,0.4)]"
               style={{ backdropFilter: "blur(0.5px)", transform: "rotate(-2deg)" }}
             />
           </div>
@@ -77,10 +77,10 @@ export default function InicioPage() {
             style={{ boxShadow: "8px 8px 0px 0px rgba(26,54,93,0.05)" }}
           >
             {/* Inner border */}
-            <div className="absolute inset-[12px] border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none z-0" />
+            <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none z-0" />
 
             {/* Grid del hero card: 1 columna en móvil, 2 en sm+ */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 sm:min-h-[520px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 sm:min-h-130">
 
               {/* ── Left: Plant ── */}
               <div className="relative flex flex-col items-center justify-center py-10 sm:py-14 overflow-hidden">
@@ -101,7 +101,7 @@ export default function InicioPage() {
                   style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.05)" }}
                 >
                   <span
-                    className="text-[10px] font-bold italic uppercase text-[#3b82f6] dark:text-sky-400"
+                    className="text-[11px] font-bold italic uppercase text-[#3b82f6] dark:text-sky-400"
                     style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "1px" }}
                   >
                     {isLoading ? "···" : getPlantLabel(sobrietyDays)}
@@ -148,7 +148,7 @@ export default function InicioPage() {
                 {/* CTA Button — altura responsiva */}
                 <Link
                   href="/dashboard/bitacora"
-                  className="flex items-center gap-3 justify-center h-[52px] sm:h-[60px] w-full bg-[#3b82f6] hover:bg-blue-500 text-white transition-colors mb-8 rounded-sm"
+                  className="flex items-center gap-3 justify-center h-13 sm:h-15 w-full bg-[#3b82f6] hover:bg-blue-500 text-white transition-colors mb-8 rounded-sm"
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: 13,
@@ -183,7 +183,7 @@ export default function InicioPage() {
           {/* Tape — bottom-right corner of main card */}
           <div className="absolute right-[22%] -bottom-4 z-20 pointer-events-none">
             <div
-              className="w-[78px] h-[35px] bg-[rgba(186,230,253,0.4)]"
+              className="w-19.5 h-8.75 bg-[rgba(186,230,253,0.4)]"
               style={{ backdropFilter: "blur(0.5px)", transform: "rotate(1deg)" }}
             />
           </div>
@@ -195,10 +195,10 @@ export default function InicioPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
           {/* ── Última Nota ── */}
-          <div className="relative pt-[15px]">
+          <div className="relative pt-3.75">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 z-20 pointer-events-none">
               <div
-                className="w-[70px] h-[29px] bg-[rgba(186,230,253,0.4)]"
+                className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
                 style={{ backdropFilter: "blur(0.5px)", transform: "rotate(-5deg)" }}
               />
             </div>
@@ -210,7 +210,7 @@ export default function InicioPage() {
                 minHeight: 128,
               }}
             >
-              <div className="absolute inset-[12px] border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+              <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
                   className="uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4"
@@ -231,10 +231,10 @@ export default function InicioPage() {
           </div>
 
           {/* ── Comunidad ── */}
-          <Link href="/dashboard/foro" className="block relative pt-[15px] group">
+          <Link href="/dashboard/foro" className="block relative pt-3.75 group">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 z-20 pointer-events-none">
               <div
-                className="w-[70px] h-[29px] bg-[rgba(186,230,253,0.4)]"
+                className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
                 style={{ backdropFilter: "blur(0.5px)", transform: "rotate(5deg)" }}
               />
             </div>
@@ -246,7 +246,7 @@ export default function InicioPage() {
                 minHeight: 128,
               }}
             >
-              <div className="absolute inset-[12px] border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+              <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
                   className="uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4"
@@ -270,10 +270,10 @@ export default function InicioPage() {
           </Link>
 
           {/* ── Próximo Hito ── */}
-          <div className="relative pt-[15px]">
+          <div className="relative pt-3.75">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 z-20 pointer-events-none">
               <div
-                className="w-[70px] h-[29px] bg-[rgba(186,230,253,0.4)]"
+                className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
                 style={{ backdropFilter: "blur(0.5px)", transform: "rotate(-3deg)" }}
               />
             </div>
@@ -285,7 +285,7 @@ export default function InicioPage() {
                 minHeight: 128,
               }}
             >
-              <div className="absolute inset-[12px] border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+              <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
                   className="uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4"
@@ -318,11 +318,11 @@ export default function InicioPage() {
         </div>
 
         {/* ── Técnica del día ── */}
-        <div className="mt-6 relative pt-[15px]">
+        <div className="mt-6 relative pt-3.75">
           {/* Tape */}
           <div className="absolute left-[10%] top-0 z-20 pointer-events-none">
             <div
-              className="w-[70px] h-[29px] bg-[rgba(186,230,253,0.4)]"
+              className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
               style={{ backdropFilter: "blur(0.5px)", transform: "rotate(-1deg)" }}
             />
           </div>
@@ -330,10 +330,10 @@ export default function InicioPage() {
             className="bg-[#f8fafc] dark:bg-[#122033] border border-[#cbd5e1] dark:border-[#1e3048] relative"
             style={{ boxShadow: "8px 8px 0px 0px rgba(26,54,93,0.05)" }}
           >
-            <div className="absolute inset-[12px] border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+            <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
             <div className="relative z-10 p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
               {/* Ícono */}
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#eff6ff] border border-[rgba(59,130,246,0.15)] flex items-center justify-center">
+              <div className="shrink-0 w-10 h-10 rounded-full bg-[#eff6ff] border border-[rgba(59,130,246,0.15)] flex items-center justify-center">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="1.5">
                   <path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -341,7 +341,7 @@ export default function InicioPage() {
               {/* Texto */}
               <div className="flex-1 min-w-0">
                 <p
-                  className="text-[10px] tracking-[1.5px] uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-1"
+                  className="text-[11px] tracking-[1.5px] uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-1"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Técnica del día
@@ -362,8 +362,8 @@ export default function InicioPage() {
               {/* Enlace */}
               <Link
                 href="/dashboard/tecnicas"
-                className="flex-shrink-0 h-9 px-5 bg-white dark:bg-[#0d1f35] border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                className="shrink-0 h-9 px-5 bg-white dark:bg-[#0d1f35] border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Ver todas →
               </Link>

@@ -18,9 +18,10 @@
   --color-accent-companion: #0d9488;
   --color-text-primary: #0f172a;
   --color-text-secondary: #1e293b;
-  --color-text-muted: #475569;
-  --color-border: #b0bfcf;
-  --color-border-light: #cdd8e3;
+  /* Aumentado de #475569 → más oscuro para cumplir WCAG AA en pantallas de baja calidad */
+  --color-text-muted: #2d4059;
+  --color-border: #93a8be;
+  --color-border-light: #b8cad8;
   --color-bg-light: #e6edf5;
   --color-bg-card: #ffffff;
   --color-emergency: #dc2626;
@@ -32,26 +33,31 @@
   --surface-card-inner: #eef3f8;
   --surface-input: #f8fafc;
 
-  /* Textos de UI contextuales */
-  --ui-text-heading:   #0f172a;
-  --ui-text-body:      #1e293b;
-  --ui-text-muted:     #475569;
-  --ui-text-caption:   #64748b;
-  --ui-border:         #b0bfcf;
-  --ui-border-subtle:  #cdd8e3;
+  /* Textos de UI contextuales — contrastes WCAG AA mínimos 4.5:1 sobre fondos claros */
+  --ui-text-heading:   #0c1727;
+  --ui-text-body:      #162032;
+  --ui-text-muted:     #2d4059;
+  --ui-text-caption:   #3d5166;
+  --ui-border:         #93a8be;
+  --ui-border-subtle:  #b8cad8;
+
+  /* Tamaños mínimos de texto para legibilidad */
+  --text-label-min: 12px;
+  --text-caption-min: 11px;
 }
 
 /* ── Modo Oscuro ─────────────────────────────────────────────────────── */
 [data-theme="dark"] {
   --background: #0d1929;
-  --foreground: #e2e8f4;
+  --foreground: #e8edf6;
 
   --color-primary: #93c5fd;
   --color-accent: #38bdf8;
   --color-accent-companion: #2dd4bf;
-  --color-text-primary: #e2e8f4;
-  --color-text-secondary: #cbd5e1;
-  --color-text-muted: #94a3b8;
+  --color-text-primary: #e8edf6;
+  --color-text-secondary: #d1dae8;
+  /* En oscuro: texto muted más brillante para no perderse */
+  --color-text-muted: #a8bdd4;
   --color-border: #1e3048;
   --color-border-light: #162438;
   --color-bg-light: #0d1929;
@@ -64,10 +70,11 @@
   --surface-card-inner: #0f1d2d;
   --surface-input:      #162438;
 
-  --ui-text-heading:   #e2e8f4;
-  --ui-text-body:      #d1dae8;
-  --ui-text-muted:     #9fb3c8;
-  --ui-text-caption:   #7a90a8;
+  /* Textos de UI contextuales — contrastes WCAG AA mínimos 4.5:1 sobre fondos oscuros */
+  --ui-text-heading:   #eef2fa;
+  --ui-text-body:      #d8e2f0;
+  --ui-text-muted:     #a8bdd4;
+  --ui-text-caption:   #8aaac4;
   --ui-border:         #1e3048;
   --ui-border-subtle:  #162438;
 }
@@ -81,6 +88,19 @@
 
 * {
   box-sizing: border-box;
+  /* Transición suave entre temas claro ↔ oscuro */
+  transition:
+    background-color 0.25s ease,
+    border-color     0.25s ease,
+    color            0.2s ease,
+    fill             0.2s ease,
+    box-shadow       0.2s ease;
+}
+
+/* Excluir animaciones propias de la transición global */
+*[class*="animate-"],
+*[class*="transition-"] {
+  transition: unset;
 }
 
 html,
@@ -90,12 +110,23 @@ body {
   padding: 0;
 }
 
+html {
+  /* Tamaño base cómodo — evita texto invisible en pantallas LCD de baja gama */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background-color: var(--surface-main);
   color: var(--ui-text-body);
   font-family: var(--font-jetbrains), 'Courier New', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Mejora el renderizado de fuentes monoespaciadas en pantallas de baja calidad */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
 
   /* ── Capacitor / móvil ──────────────────────────────────────────────────
    * overscroll-behavior-y: none  → elimina el "rebote" de scroll en iOS que
@@ -110,6 +141,28 @@ body {
   overscroll-behavior-y: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: pan-y;
+}
+
+/* ─── Clases utilitarias de texto accesible ──────────────────────────── */
+
+/* Mínimo para etiquetas — reemplaza los text-[10px] que desaparecen en LCD */
+.text-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.text-caption {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+/* Texto muted con contraste garantizado en ambos modos */
+.text-muted {
+  color: var(--ui-text-muted);
+}
+
+.text-caption-color {
+  color: var(--ui-text-caption);
 }
 
 /* Typography helpers */
@@ -219,11 +272,32 @@ input:checked + .toggle-slider::before {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--ui-border);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--ui-text-caption);
+}
+
+/* ─── Focus visible accesible ────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Placeholder legible en ambos modos ───────────────────────────────── */
+::placeholder {
+  color: var(--ui-text-caption);
+  opacity: 1;
+}
+
+/* ─── Estilos globales de inputs: foco adaptado al tema ─────────────── */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
 }
 
 /* ─── Animations ─────────────────────────────────────────────────────────── */
@@ -420,19 +494,19 @@ input:checked + .toggle-slider::before {
 
 /* Input focus glow compatible con :focus */
 .futuristic-input {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #1e293b;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--surface-input);
+  border: 1px solid var(--ui-border);
+  color: var(--ui-text-body);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.25s;
 }
 .futuristic-input::placeholder {
-  color: #94a3b8;
+  color: var(--ui-text-caption);
 }
 .futuristic-input:focus {
   outline: none;
-  border-color: #7dd3fc;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-  background: #ffffff;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+  background: var(--color-bg-card);
 }
 
 .futuristic-btn {
@@ -451,6 +525,59 @@ input:checked + .toggle-slider::before {
 .futuristic-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Fondo adaptativo para las páginas de login / register */
+.login-bg {
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8eef4 100%);
+}
+[data-theme="dark"] .login-bg {
+  background: linear-gradient(135deg, #0d1929 0%, #091422 100%);
+}
+
+/* Tarjeta de login — fondo adaptativo */
+.login-card {
+  background: var(--surface-card);
+  border: 1px solid var(--ui-border-subtle);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.12), 0 4px 16px -4px rgba(14, 165, 233, 0.08);
+}
+[data-theme="dark"] .login-card {
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5), 0 4px 16px -4px rgba(14, 165, 233, 0.05);
+}
+
+/* Footer divisor en la tarjeta de login */
+.login-card-footer {
+  border-top: 1px solid var(--ui-border-subtle);
+}
+
+/* Superficies blancas que deben adaptarse al tema (tarjetas de registro) */
+.card-surface {
+  background-color: var(--surface-card);
+  border-color: var(--ui-border-subtle);
+}
+
+/* Input de línea base (sin fondo, con borde inferior) adaptativo al tema */
+.input-line {
+  color: var(--ui-text-body);
+  border-bottom-color: var(--ui-border) !important;
+  transition: border-color 0.2s;
+}
+.input-line::placeholder {
+  color: var(--ui-text-caption);
+}
+.input-line:focus {
+  border-bottom-color: var(--color-accent) !important;
+}
+
+/* Botones de selección (rol, adicción) — adaptan fondo y borde al tema */
+.select-btn-idle {
+  background-color: var(--surface-card);
+  border-color: var(--ui-border-subtle);
+  color: var(--ui-text-body);
+}
+.select-btn-idle:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+  background-color: var(--surface-card-inner);
 }
 
 /* ─── Landing Page Animations ─────────────────────────────────────────── */

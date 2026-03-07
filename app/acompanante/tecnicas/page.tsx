@@ -203,13 +203,13 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span
-              className={`inline-flex items-center px-2 py-0.5 rounded text-[8px] tracking-[1px] uppercase font-normal ${dc.bg} ${dc.text}`}
+              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] tracking-[1px] uppercase font-normal ${dc.bg} ${dc.text}`}
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               {tecnica.dificultad}
             </span>
             <span
-              className="text-[8px] tracking-[1px] uppercase text-slate-300"
+              className="text-[10px] tracking-[1px] uppercase text-slate-300"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               {tecnica.duracion}
@@ -251,7 +251,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
           </p>
 
           <p
-            className="text-[8px] tracking-[2px] uppercase text-slate-400 mb-3"
+            className="text-[10px] tracking-[2px] uppercase text-slate-400 mb-3"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Pasos
@@ -260,7 +260,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
             {tecnica.pasos.map((paso, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <span
-                  className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-[9px] text-teal-600 font-bold"
+                  className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center text-[11px] text-teal-600 font-bold"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {i + 1}
@@ -320,7 +320,7 @@ export default function TecnicasAcompananteePage() {
         {/* Header */}
         <div className="mb-10">
           <p
-            className="text-[9px] tracking-[1.8px] uppercase text-teal-500 mb-1"
+            className="text-[11px] tracking-[1.8px] uppercase text-teal-500 mb-1"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Recursos para Acompañantes
@@ -346,7 +346,7 @@ export default function TecnicasAcompananteePage() {
               key={cat}
               type="button"
               onClick={() => setCategoriaActiva(cat)}
-              className={`h-8 px-4 rounded-full text-[9px] tracking-[1.5px] uppercase transition-colors ${
+              className={`h-8 px-4 rounded-full text-[11px] tracking-[1.5px] uppercase transition-colors ${
                 categoriaActiva === cat
                   ? "bg-teal-700 text-white"
                   : "bg-white border border-slate-200 text-slate-500 hover:border-teal-200"
@@ -368,7 +368,7 @@ export default function TecnicasAcompananteePage() {
         {/* Banner de autocuidado */}
         <div className="mt-12 border border-teal-100 bg-teal-50 rounded-sm p-8 text-center">
           <p
-            className="text-[9px] tracking-[2px] uppercase text-teal-500 mb-2"
+            className="text-[11px] tracking-[2px] uppercase text-teal-500 mb-2"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Recuerda

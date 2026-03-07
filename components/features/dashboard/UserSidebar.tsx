@@ -104,8 +104,8 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
       <div className="px-8 sidebar-safe-top pb-6 border-b border-slate-100 dark:border-slate-800/60 flex items-start justify-between">
         <div className="min-w-0 flex-1">
           <p
-            className="text-[10px] tracking-[1.8px] uppercase text-slate-500 dark:text-slate-400 mb-1"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            className="text-[11px] tracking-[1.8px] uppercase mb-1"
+            style={{ fontFamily: "'JetBrains Mono', monospace", color: 'var(--ui-text-muted)' }}
           >
             Registro No. 01
           </p>
@@ -121,7 +121,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
         <button
           type="button"
           onClick={onClose}
-          className="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors mt-1 p-1 flex-shrink-0"
+          className="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors mt-1 p-1 shrink-0"
           aria-label="Cerrar menú"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -151,7 +151,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
                 {item.icon}
               </span>
               <span
-                className="text-[11px] tracking-[1.5px] uppercase font-normal"
+                className="text-[12px] tracking-[1.5px] uppercase font-normal"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {item.label}
@@ -174,7 +174,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
             onClick={() => setShowLogoutConfirm(true)}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
           >
-            <span className="text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white flex-shrink-0">
+            <span className="text-slate-400 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white shrink-0">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -190,7 +190,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
           // Confirmación inline — evita cierres accidentales
           <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4">
             <p
-              className="text-[10px] tracking-[1px] uppercase text-slate-600 mb-1"
+              className="text-[11px] tracking-[1px] uppercase text-slate-600 mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               ¿Cerrar sesión?
@@ -205,16 +205,16 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
               <button
                 type="button"
                 onClick={logout}
-                className="flex-1 h-[34px] bg-slate-700 hover:bg-slate-800 text-white rounded-md transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                className="flex-1 h-8.5 bg-slate-700 hover:bg-slate-800 text-white rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Sí, salir
               </button>
               <button
                 type="button"
                 onClick={() => setShowLogoutConfirm(false)}
-                className="flex-1 h-[34px] border border-slate-200 text-slate-500 hover:bg-slate-100 rounded-md transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                className="flex-1 h-8.5 border border-slate-200 text-slate-500 hover:bg-slate-100 rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Cancelar
               </button>
@@ -227,14 +227,14 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
       <div className="p-4 border-t border-red-50 dark:border-red-900/20">
         {emergencyState === "sent" && (
           <div className="mb-2 px-4 py-2 rounded-lg bg-teal-50 border border-teal-100">
-            <p className="text-[9px] tracking-[1px] uppercase text-teal-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="text-[11px] tracking-[1px] uppercase text-teal-600" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               ✓ Alerta enviada a tus contactos
             </p>
           </div>
         )}
         {emergencyState === "error" && (
           <div className="mb-2 px-4 py-2 rounded-lg bg-red-50 border border-red-100">
-            <p className="text-[9px] tracking-[1px] uppercase text-red-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            <p className="text-[11px] tracking-[1px] uppercase text-red-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               Error al enviar. Llama al 911.
             </p>
           </div>
@@ -247,19 +247,19 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
             disabled={emergencyState === "sending"}
             onClick={() => setShowEmergencyConfirm(true)}
           >
-            <span className="text-red-500 flex-shrink-0">
+            <span className="text-red-500 shrink-0">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </span>
             <div className="text-left">
               <p
-                className="text-[10px] tracking-[1.5px] uppercase text-red-500 font-normal"
+                className="text-[12px] tracking-[1.2px] uppercase text-red-500 font-normal"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {emergencyState === "sending" ? "Enviando alerta…" : "Raíz de Emergencia"}
               </p>
-              <p className="text-[9px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Auxilio Inmediato
               </p>
             </div>
@@ -268,7 +268,7 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
           // Confirmación de emergencia — acción crítica requiere doble confirmación
           <div className="rounded-lg border border-red-200 bg-red-50 p-4">
             <p
-              className="text-[10px] tracking-[1px] uppercase text-red-600 mb-1"
+              className="text-[11px] tracking-[1px] uppercase text-red-600 mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               ¿Enviar alerta ahora?
@@ -283,16 +283,16 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
               <button
                 type="button"
                 onClick={handleEmergency}
-                className="flex-1 h-[34px] bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                className="flex-1 h-8.5 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Sí, enviar
               </button>
               <button
                 type="button"
                 onClick={() => setShowEmergencyConfirm(false)}
-                className="flex-1 h-[34px] border border-red-200 text-red-400 hover:bg-red-100 rounded-md transition-colors"
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                className="flex-1 h-8.5 border border-red-200 text-red-400 hover:bg-red-100 rounded-md transition-colors"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Cancelar
               </button>

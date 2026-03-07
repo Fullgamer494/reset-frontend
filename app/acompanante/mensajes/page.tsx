@@ -10,7 +10,7 @@ export default function MensajesPage() {
       <div className="min-h-full flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-teal-200 border-t-teal-500 rounded-full animate-spin" />
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Cargando mensajes...</p>
+          <p className="text-[11px] text-slate-400 dark:text-slate-300 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Cargando mensajes...</p>
         </div>
       </div>
     );
@@ -21,7 +21,7 @@ export default function MensajesPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12">
         {/* Header */}
         <p
-          className="text-[9px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-500 mb-2"
+          className="text-[11px] tracking-[2px] uppercase italic text-slate-400 dark:text-slate-300 mb-2"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           — Canal de Aliento —
@@ -33,7 +33,7 @@ export default function MensajesPage() {
           Mensajes de Aliento
         </h1>
         <p
-          className="text-[9px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-500 mb-6"
+          className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-6"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Mensajes de aliento para quien acompañas
@@ -61,10 +61,10 @@ export default function MensajesPage() {
                   <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1">
                     <path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <p className="text-[12px] italic text-slate-400 dark:text-slate-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <p className="text-[12px] italic text-slate-400 dark:text-slate-300" style={{ fontFamily: "'Playfair Display', serif" }}>
                     Aún no hay mensajes.
                   </p>
-                  <p className="text-[10px] text-slate-300 dark:text-slate-600 leading-relaxed max-w-[180px]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  <p className="text-[11px] text-slate-300 dark:text-slate-400 leading-relaxed max-w-[180px]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                     Selecciona una frase de aliento de la biblioteca →
                   </p>
                 </div>
@@ -89,7 +89,7 @@ export default function MensajesPage() {
                         {msg.text}
                       </p>
                       <p
-                        className={`text-[8px] mt-1 ${msg.fromMe ? "text-teal-200" : "text-slate-300"}`}
+                        className={`text-[11px] mt-1 ${msg.fromMe ? "text-teal-200" : "text-slate-300"}`}
                         style={{ fontFamily: "'JetBrains Mono', monospace" }}
                       >
                         {msg.time}
@@ -102,7 +102,7 @@ export default function MensajesPage() {
 
             {/* Error de envío */}
             {error && (
-              <p className="text-[10px] text-red-400 px-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] text-red-400 px-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 {error}
               </p>
             )}
@@ -130,7 +130,7 @@ export default function MensajesPage() {
                 className="px-5 bg-teal-600 hover:bg-teal-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2 self-end"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 9,
+                  fontSize: 11,
                   letterSpacing: "1.5px",
                   textTransform: "uppercase",
                   height: 72,
@@ -148,7 +148,7 @@ export default function MensajesPage() {
           <div className="flex flex-col gap-4">
             <div className="border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#0d1f35] rounded-sm p-5">
               <p
-                className="text-[8px] tracking-[1.5px] uppercase text-teal-600 mb-4"
+                className="text-[11px] tracking-[1.5px] uppercase text-teal-600 mb-4"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Biblioteca de Aliento
@@ -169,7 +169,7 @@ export default function MensajesPage() {
 
             <div className="border border-teal-100 dark:border-teal-800/30 bg-teal-50 dark:bg-teal-900/20 rounded-sm p-4">
               <p
-                className="text-[8px] tracking-[1.5px] uppercase text-teal-600 mb-2"
+                className="text-[11px] tracking-[1.5px] uppercase text-teal-600 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 ¿Por qué enviar mensajes?
