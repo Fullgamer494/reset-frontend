@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
-/contexto-skills
+/.github
 .pnp.*
 .yarn/*
 !.yarn/patches
