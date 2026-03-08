@@ -67,6 +67,18 @@ export default function DashboardLayout({
             {pageLabel}
           </span>
 
+          {/* Icono notificaciones — visible siempre en la barra móvil */}
+          <button
+            type="button"
+            className="relative text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-1"
+            aria-label="Notificaciones"
+            tabIndex={-1}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
           {/* En sub-páginas: botón para abrir el menú lateral igualmente */}
           {!isRoot && (
             <button

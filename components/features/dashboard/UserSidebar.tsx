@@ -117,17 +117,31 @@ export default function UserSidebar({ isOpen = false, onClose }: UserSidebarProp
             {user?.name ? `ReSet de ${displayName}` : "Mi ReSet"}
           </h1>
         </div>
-        {/* Botón cerrar sidebar — solo visible en móvil */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors mt-1 p-1 shrink-0"
-          aria-label="Cerrar menú"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        {/* Acciones del header: notificaciones + cerrar (móvil) */}
+        <div className="flex items-center gap-0.5 mt-1 shrink-0">
+          {/* Icono notificaciones — estático, sin funcionalidad por ahora */}
+          <button
+            type="button"
+            className="relative text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-1"
+            aria-label="Notificaciones"
+            tabIndex={-1}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          {/* Botón cerrar sidebar — solo visible en móvil */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors p-1"
+            aria-label="Cerrar menú"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Navigation */}
