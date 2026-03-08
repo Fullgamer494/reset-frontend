@@ -11,8 +11,8 @@ export async function saveJournalEntry(
 ): Promise<JournalEntry> {
   const raw = await createLog({
     consumed: data.consumed,
-    cravingLevelLevel: data.cravingLevel ?? 5,
-    emotionalStateLevel: 5, // campo requerido — sin mapeo disponible desde SaveJournalEntryData
+    craving_level: data.cravingLevel ?? 5,
+    emotional_state: 5,
   });
   return {
     id: raw.id ?? String(Date.now()),

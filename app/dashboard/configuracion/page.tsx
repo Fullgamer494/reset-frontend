@@ -16,6 +16,7 @@ export default function ConfiguracionPage() {
     isLoading,
     isSaving,
     error,
+    peerError,
     saved,
     setUsername,
     setAddictionType,
@@ -252,14 +253,19 @@ export default function ConfiguracionPage() {
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Relación *</label>
-                  <input
-                    type="text"
+                  <select
                     value={peerRelationship}
                     onChange={(e) => setPeerRelationship(e.target.value)}
-                    placeholder="Ej: Familiar, Terapeuta"
                     className="h-[40px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-3 text-slate-700 dark:text-slate-200 text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
-                    style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
-                  />
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    <option value="">Selecciona una relación…</option>
+                    <option value="familia">Familiar</option>
+                    <option value="amigo">Amigo/a</option>
+                    <option value="padrino">Padrino / Madrina</option>
+                    <option value="terapeuta">Terapeuta</option>
+                    <option value="otro">Otro</option>
+                  </select>
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[11px] tracking-[1px] uppercase text-slate-400 dark:text-slate-300" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Correo (opcional)</label>
@@ -273,6 +279,11 @@ export default function ConfiguracionPage() {
                   />
                 </div>
               </div>
+              {peerError && (
+                <p className="mb-3 text-[11px] text-red-400" role="alert" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  {peerError}
+                </p>
+              )}
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
@@ -285,10 +296,12 @@ export default function ConfiguracionPage() {
                   disabled={isAddingPeer || !peerName.trim() || !peerPhone.trim() || !peerRelationship.trim()}
                   onClick={async () => {
                     setIsAddingPeer(true);
-                    await handleAddPeer({ contactName: peerName.trim(), phone: peerPhone.trim(), relationship: peerRelationship.trim(), email: peerEmail.trim() || undefined });
+                    const ok = await handleAddPeer({ contactName: peerName.trim(), phone: peerPhone.trim(), relationship: peerRelationship.trim(), email: peerEmail.trim() || undefined });
                     setIsAddingPeer(false);
-                    setShowAddPeer(false);
-                    setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail("");
+                    if (ok) {
+                      setShowAddPeer(false);
+                      setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail("");
+                    }
                   }}
                   className="h-[36px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}

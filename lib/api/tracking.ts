@@ -8,15 +8,17 @@ import { apiRequest } from './client';
 
 /**
  * Payload para crear un registro diario.
- * cravingLevelLevel y emotionalStateLevel son números directos 1-10,
- * NO son UUIDs de catálogos.
+ * Los niveles son números directos 1-10, NO son UUIDs de catálogos.
+ * El backend usa snake_case para los campos del DTO de entrada.
  */
 export interface CreateDailyLogPayload {
   consumed: boolean;
   /** Nivel de ansiedad/craving. Rango 1-10. */
-  cravingLevelLevel: number;
+  craving_level: number;
   /** Nivel de estado emocional. Rango 1-10. */
-  emotionalStateLevel: number;
+  emotional_state: number;
+  /** Fecha del registro en formato YYYY-MM-DD. Por defecto: hoy. */
+  log_date?: string;
   triggers?: string;
   notes?: string;
 }
@@ -35,13 +37,14 @@ export interface DailyLogResponse {
 }
 
 export interface TrackingStatisticsResponse {
-  user_id: string;
-  total_logs: number;
-  avg_craving: number;
-  avg_emotion: number;
-  total_relapses: number;
-  day_counter: number;
-  streak_status: string;
+  userId?: string;
+  totalLogs?: number;
+  avgCraving?: number;
+  avgEmotion?: number;
+  totalRelapses?: number;
+  /** Días de sobriedad consecutivos según el backend. */
+  dayCounter: number;
+  streakStatus?: string;
 }
 
 // ─── Funciones ───────────────────────────────────────────────────────────────
@@ -50,7 +53,14 @@ export interface TrackingStatisticsResponse {
 export const createLog = (data: CreateDailyLogPayload): Promise<DailyLogResponse> =>
   apiRequest<DailyLogResponse>('/tracking/logs', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      consumed: data.consumed,
+      craving_level: data.craving_level,
+      emotional_state: data.emotional_state,
+      log_date: data.log_date ?? new Date().toISOString().split('T')[0],
+      ...(data.triggers ? { triggers: data.triggers } : {}),
+      ...(data.notes ? { notes: data.notes } : {}),
+    }),
   });
 
 /**

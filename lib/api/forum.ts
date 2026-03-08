@@ -95,7 +95,7 @@ export async function createForoPost(
     body: JSON.stringify({
       title: data.title,
       content: data.content,
-      isAnonymous: data.isAnonymous,
+      is_anonymous: data.isAnonymous,
     }),
   });
   return normalizePost(res?.data ?? res);
@@ -132,7 +132,8 @@ export async function commentPost(
 ): Promise<ForoComment> {
   const res: any = await apiRequest(`/forum/posts/${postId}/comments`, {
     method: 'POST',
-    body: JSON.stringify({ content, isAnonymous: is_anonymous }),
+    body: JSON.stringify({ content, is_anonymous }),
+
   });
   return normalizeComment(res?.data ?? res, currentUserId);
 }

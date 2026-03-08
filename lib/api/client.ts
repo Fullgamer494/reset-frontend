@@ -43,13 +43,31 @@ export async function apiRequest<T>(
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(
-        (err as { message?: string }).message ?? `Error ${res.status}`
-      );
+      const err = await res.json().catch(() => ({})) as { message?: string | string[]; error?: string };
+      // NestJS ValidationPipe puede devolver message como array de cadenas
+      const rawMsg = err.message;
+      const msg = Array.isArray(rawMsg)
+        ? rawMsg[0]                      // primera falla de validación
+        : (rawMsg ?? '');
+      // Mensajes legibles para los códigos de estado más comunes
+      const fallbacks: Record<number, string> = {
+        401: 'Correo o contraseña incorrectos.',
+        403: 'No tienes permiso para realizar esta acción.',
+        404: 'Recurso no encontrado.',
+        409: 'Ya existe un registro con esos datos.',
+        422: 'Los datos enviados no son válidos.',
+        429: 'Demasiados intentos. Espera un momento antes de volver a intentarlo.',
+        500: 'Error interno del servidor. Inténtalo de nuevo más tarde.',
+      };
+      throw new Error(msg || fallbacks[res.status] || `Error ${res.status}`);
     }
 
-    return res.json() as Promise<T>;
+    const result = await res.json() as any;
+    // Auto-unwrap la envoltura NestJS {success: true, data: ...}
+    if (result && typeof result === 'object' && result.success === true && 'data' in result) {
+      return result.data as T;
+    }
+    return result as T;
   } catch (err) {
     if (err instanceof DOMException && err.name === 'AbortError') {
       throw new Error('La petición tardó demasiado. Verifica tu conexión.');

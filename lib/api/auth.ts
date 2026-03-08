@@ -9,8 +9,8 @@ import { apiRequest, setToken } from './client';
 export interface RegisterPayload {
   name: string;
   email: string;
-  /** La contraseña en texto plano — el backend la hashea. Campo llamado passwordHash por contrato. */
-  passwordHash: string;
+  /** La contraseña en texto plano — el backend la hashea. */
+  password: string;
   role: 'ADICTO' | 'PADRINO';
   /** Requerido si role = 'ADICTO'. Ej: "Alcohol", "Drogas", "Apuestas". */
   addictionName?: string;
@@ -20,8 +20,8 @@ export interface RegisterPayload {
 
 export interface LoginPayload {
   email: string;
-  /** La contraseña en texto plano — el backend la valida. Campo llamado passwordHash por contrato. */
-  passwordHash: string;
+  /** La contraseña en texto plano — el backend la valida. */
+  password: string;
 }
 
 // ─── Respuestas normalizadas (usadas por los hooks y el contexto) ─────────────
@@ -51,7 +51,7 @@ export async function register(payload: RegisterPayload): Promise<void> {
     body: JSON.stringify({
       name: payload.name,
       email: payload.email,
-      passwordHash: payload.passwordHash,
+      password: payload.password,
       role: payload.role,
       ...(payload.addictionName ? { addictionName: payload.addictionName } : {}),
       ...(payload.classification ? { classification: payload.classification } : {}),
@@ -68,7 +68,7 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
     method: 'POST',
     body: JSON.stringify({
       email: payload.email,
-      passwordHash: payload.passwordHash,
+      password: payload.password,
     }),
   });
 

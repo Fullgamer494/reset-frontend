@@ -16,6 +16,7 @@ export default function ForoPage() {
     isLoading,
     isSubmitting,
     error,
+    publishError,
     setPostText,
     setPostTitle,
     setIsModalOpen,
@@ -714,6 +715,17 @@ export default function ForoPage() {
               </span>
             </div>
 
+            {/* Error de publicación */}
+            {publishError && (
+              <p
+                className="mb-4 text-[11px] text-red-400"
+                role="alert"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                {publishError}
+              </p>
+            )}
+
             {/* Acciones */}
             <div className="flex items-center justify-end gap-3">
               <button
@@ -730,7 +742,7 @@ export default function ForoPage() {
               </button>
               <button
                 onClick={handlePublish}
-                disabled={!postText.trim() || isSubmitting}
+                disabled={!postTitle.trim() || !postText.trim() || isSubmitting}
                 className="flex items-center gap-2 h-[42px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",

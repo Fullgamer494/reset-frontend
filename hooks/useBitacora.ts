@@ -95,8 +95,8 @@ export function useBitacora() {
       // La API recibe números directos 1-10, NO UUIDs de catálogos
       await createLog({
         consumed,
-        cravingLevelLevel: cravingLevel,
-        emotionalStateLevel: moodLevel,
+        craving_level: cravingLevel,
+        emotional_state: moodLevel,
         notes: notes.trim() || undefined,
       });
       setSaved(true);

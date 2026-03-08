@@ -44,7 +44,7 @@ function formatRelativeDate(isoDate: string): string {
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function MonitoreoPage() {
-  const { isLoading, godchildFound, godchild, stats, recentLogs } = useMonitoreo();
+  const { isLoading, godchildFound, godchild, stats, recentLogs, error } = useMonitoreo();
   const tipP = TIPS_PADRINO[new Date().getDay() % TIPS_PADRINO.length];
 
   // ── Estado de carga ──────────────────────────────────────────────────────────
@@ -55,6 +55,22 @@ export default function MonitoreoPage() {
           <div className="w-8 h-8 border-2 border-teal-200 border-t-teal-500 rounded-full animate-spin" />
           <p className="text-[11px] text-slate-400 dark:text-slate-300 tracking-[1px] uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             Buscando ahijado...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Error de red / servidor ──────────────────────────────────────────────────
+  if (error) {
+    return (
+      <div className="min-h-full flex items-center justify-center">
+        <div className="text-center max-w-xs px-4">
+          <p className="text-[11px] uppercase tracking-[1px] text-red-400 mb-2" style={{ fontFamily: "'JetBrains Mono', monospace" }} role="alert">
+            {error}
+          </p>
+          <p className="text-[12px] text-slate-400 dark:text-slate-300 italic" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Verifica tu conexión e intenta de nuevo.
           </p>
         </div>
       </div>

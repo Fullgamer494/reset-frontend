@@ -11,7 +11,7 @@ import type { CompanionProgress, SupportedUser } from '@/types';
 export async function getCompanionProgress(): Promise<CompanionProgress> {
   const streak = await getStreak();
   return {
-    sobrietyDays: streak?.dayCounter ?? 0,
+    sobrietyDays: streak?.currentStreak ?? 0,
     plantStage: 'Brote',
     notesThisWeek: 0,
     messagesReceived: 0,

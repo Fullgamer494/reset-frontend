@@ -16,6 +16,8 @@ export function useConfiguracion() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Error exclusivo del formulario de añadir par de apoyo — no contamina el área de perfil. */
+  const [peerError, setPeerError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   // Sincronizar nombre cuando el contexto de auth se carga/actualiza
@@ -32,8 +34,8 @@ export function useConfiguracion() {
           Array.isArray(list)
             ? list.map((c: any) => ({
                 id: c.id ?? c._id ?? String(Date.now()),
-                // La API devuelve contactName (camelCase) según contrato
-                name: c.contactName ?? c.name ?? '',
+                // La API puede devolver contactName (camelCase) o contact_name (snake_case)
+                name: c.contactName ?? c.contact_name ?? c.name ?? '',
                 email: c.email ?? '',
               }))
             : []
@@ -69,13 +71,15 @@ export function useConfiguracion() {
 
   /**
    * Añade un nuevo contacto de emergencia (par de apoyo).
+   * Devuelve true si tuvo éxito, false si falló (para que la página decida si cerrar el form).
    */
   const handleAddPeer = async (data: {
     contactName: string;
     phone?: string;
     relationship: string;
     email?: string;
-  }) => {
+  }): Promise<boolean> => {
+    setPeerError(null);
     try {
       await addContact({
         contactName: data.contactName,
@@ -96,8 +100,10 @@ export function useConfiguracion() {
             }))
           : []
       );
+      return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al agregar contacto");
+      setPeerError(err instanceof Error ? err.message : 'No se pudo agregar el contacto. Intenta de nuevo.');
+      return false;
     }
   };
 
@@ -113,6 +119,8 @@ export function useConfiguracion() {
     isLoading,
     isSaving,
     error,
+    /** Error exclusivo del formulario de añadir contacto. */
+    peerError,
     saved,
     setUsername,
     setAddictionType,

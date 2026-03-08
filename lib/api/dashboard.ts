@@ -15,12 +15,12 @@ export async function getProgress(): Promise<UserProgress> {
   try {
     const streak = await getStreak();
     // La API devuelve dayCounter (camelCase), no day_counter
-    days = streak?.dayCounter ?? 0;
+    days = streak?.currentStreak ?? 0;
   } catch {
     // Si el streak falla (ej: no hay racha activa), caer a estadísticas
     try {
       const stats = await getStatistics();
-      days = stats?.day_counter ?? 0;
+        days = stats?.dayCounter ?? 0;
     } catch { /* seguir con 0 */ }
   }
 

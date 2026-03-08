@@ -60,6 +60,8 @@ export function useForo() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Error específico del modal de nuevo post — no contamina la lista principal. */
+  const [publishError, setPublishError] = useState<string | null>(null);
 
   // ── Estado: detalle del post (modal de comentarios) ─────────────────────────
   const [openPost, setOpenPost] = useState<ForoPost | null>(null);
@@ -109,8 +111,16 @@ export function useForo() {
   // ── Publicar post ──────────────────────────────────────────────────────────
 
   const handlePublish = async () => {
-    if (!postText.trim()) return;
+    if (!postTitle.trim()) {
+      setPublishError('El título es obligatorio.');
+      return;
+    }
+    if (!postText.trim()) {
+      setPublishError('El contenido no puede estar vacío.');
+      return;
+    }
     setIsSubmitting(true);
+    setPublishError(null);
     try {
       await createForoPost({
         title: postTitle,
@@ -119,13 +129,13 @@ export function useForo() {
         tags: selectedTags,
       });
       const refreshed = await getForoPosts(1, 10);
-      setPosts(refreshed);
+      setPosts(applyLikedState(refreshed));
       setPostText("");
       setPostTitle("");
       setSelectedTags([]);
       setIsModalOpen(false);
-    } catch {
-      setError("No se pudo publicar. Intenta de nuevo.");
+    } catch (err) {
+      setPublishError(err instanceof Error ? err.message : 'No se pudo publicar. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -195,7 +205,7 @@ export function useForo() {
     setCommentText("");
     setCommentError(null);
     setCommentFeedback({});
-  };
+  };;
 
   // ── Enviar comentario ──────────────────────────────────────────────────────
 
@@ -304,10 +314,13 @@ export function useForo() {
     isLoading,
     isSubmitting,
     error,
+    /** Error específico del modal de nuevo post. */
+    publishError,
     setPostText,
     setPostTitle,
     setSelectedTags,
-    setIsModalOpen,
+    /** Al cerrar el modal también limpiamos el error de publicación. */
+    setIsModalOpen: (v: boolean) => { if (!v) setPublishError(null); setIsModalOpen(v); },
     setIsAnonymous,
     toggleTag,
     handlePublish,

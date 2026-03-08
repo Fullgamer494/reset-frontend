@@ -37,12 +37,12 @@ export const addContact = (data: EmergencyContactPayload): Promise<any> =>
   apiRequest('/emergency/contacts', {
     method: 'POST',
     body: JSON.stringify({
-      contactName: data.contactName,
+      contact_name: data.contactName,
       relationship: data.relationship,
       ...(data.email ? { email: data.email } : {}),
       ...(data.phone ? { phone: data.phone } : {}),
-      ...(data.customRelationship ? { customRelationship: data.customRelationship } : {}),
-      priorityOrder: data.priorityOrder ?? 1,
+      ...(data.customRelationship ? { custom_relationship: data.customRelationship } : {}),
+      priority_order: data.priorityOrder ?? 1,
     }),
   });
 

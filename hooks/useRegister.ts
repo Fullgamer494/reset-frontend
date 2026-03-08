@@ -29,8 +29,24 @@ export function useRegister() {
   };
 
   const handleNextStep = () => {
-    if (!form.name || !form.email || !form.password) {
-      setError("Completa todos los campos antes de continuar.");
+    if (!form.name.trim()) {
+      setError('Ingresa tu nombre completo.');
+      return;
+    }
+    if (!form.email.trim()) {
+      setError('Ingresa tu correo electrónico.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError('El correo electrónico no tiene un formato válido.');
+      return;
+    }
+    if (!form.password) {
+      setError('Elige una contraseña.');
+      return;
+    }
+    if (form.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
     setStep(2);
@@ -76,7 +92,7 @@ export function useRegister() {
       await register({
         name: form.name,
         email: form.email,
-        passwordHash: form.password,
+        password: form.password,
         role: role === "companion" ? "PADRINO" : "ADICTO",
         ...(role === "user" && addictionLabel ? { addictionName: addictionLabel } : {}),
         ...(role === "user" && classificationLabel ? { classification: classificationLabel } : {}),

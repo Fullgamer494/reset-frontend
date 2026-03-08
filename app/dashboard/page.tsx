@@ -17,7 +17,7 @@ const TIPS_DIARIOS = [
 ];
 
 export default function InicioPage() {
-  const { progress, lastNote, isLoading } = useDashboard();
+  const { progress, lastNote, isLoading, error } = useDashboard();
   const { user, abbreviateName, todayLabel } = useSession();
   const tip = TIPS_DIARIOS[new Date().getDay() % TIPS_DIARIOS.length];
 
@@ -57,6 +57,24 @@ export default function InicioPage() {
 
       {/* ── Content ── — padding responsivo */}
       <div className="px-4 sm:px-8 md:px-16 py-8 md:py-16 max-w-4xl mx-auto">
+
+        {/* ── Banner de error al cargar progreso ── */}
+        {!isLoading && error && (
+          <div
+            className="flex items-center gap-3 px-5 py-3 mb-6 border border-red-100 bg-red-50 dark:bg-red-900/10 dark:border-red-900/30 rounded-sm"
+            role="alert"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5" aria-hidden="true">
+              <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <p
+              className="text-[11px] uppercase tracking-[1px] text-red-500"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              {error}
+            </p>
+          </div>
+        )}
 
         {/* =============================================
             MAIN HERO CARD

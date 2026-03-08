@@ -7,11 +7,12 @@ import { apiRequest } from './client';
 // ─── Tipo de respuesta ────────────────────────────────────────────────────────
 
 export interface StreakResponse {
-  id: string;
-  status: string;       // "ACTIVE" | "BROKEN"
-  dayCounter: number;   // Días consecutivos limpios
+  /** Días consecutivos de sobriedad según el backend. */
+  currentStreak: number;
+  status: string;        // "active" | "broken"
   startedAt: string;    // ISO date
   lastLogDate: string;  // ISO date
+  totalDaysAchievedHistorical?: number;
 }
 
 // ─── Funciones ───────────────────────────────────────────────────────────────
