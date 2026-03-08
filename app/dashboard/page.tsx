@@ -36,18 +36,18 @@ export default function InicioPage() {
       {/* Header — fecha real + saludo con nombre */}
       <header className="sticky top-0 z-10 backdrop-blur-sm bg-[rgba(255,255,255,0.4)] dark:bg-[rgba(15,29,45,0.85)] border-b border-[rgba(132,139,148,0.4)] dark:border-[rgba(30,48,72,0.8)] h-16 sm:h-20 px-4 sm:px-8 md:px-12 flex items-center justify-between">
         <p
-          className="text-[11px] uppercase text-[rgba(26,54,93,0.6)] dark:text-slate-400"
+          className="text-[11px] uppercase rs-text-muted"
           style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}
         >
           {todayLabel()}
         </p>
-        <div className="flex items-center gap-2 text-[rgba(26,54,93,0.5)] dark:text-slate-400">
+        <div className="flex items-center gap-2 rs-text-muted">
           <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 2C7.23858 2 5 4.23858 5 7C5 9.76142 7.23858 12 10 12C12.7614 12 15 9.76142 15 7C15 4.23858 12.7614 2 10 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M2 20C2 17.2386 5.58172 15 10 15C14.4183 15 18 17.2386 18 20V22H2V20Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <p
-            className="text-[12px] font-bold uppercase text-[rgba(26,54,93,0.6)] dark:text-slate-300"
+            className="text-[12px] font-bold uppercase rs-text-muted"
             style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "-0.3px" }}
           >
             {firstName ? `Hola, ${firstName}` : "Mi ReSet"}
