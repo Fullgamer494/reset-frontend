@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getGodchildProfile } from "@/lib/api/sponsorship";
+import { getGodchildProfile, acceptSponsorship, rejectSponsorship, terminateSponsorship } from "@/lib/api/sponsorship";
 import { useAuth } from "@/context/AuthContext";
 import type { CompanionProfile, SupportedUser } from "@/types";
 
@@ -16,10 +16,12 @@ export function useMiCuenta() {
     smsAlerts: false,
   });
   const [supportedUsers, setSupportedUsers] = useState<SupportedUser[]>([]);
+  const [activeSponsorshipId, setActiveSponsorshipId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [sponsorshipActionError, setSponsorshipActionError] = useState<string | null>(null);
 
   useEffect(() => {
     // Rellenar datos básicos del perfil desde el contexto de auth
@@ -40,6 +42,7 @@ export function useMiCuenta() {
     getGodchildProfile()
       .then((data) => {
         const g = data.godchild;
+        setActiveSponsorshipId(data.sponsorship.id);
         setSupportedUsers([
           {
             id: g.id,
@@ -78,15 +81,31 @@ export function useMiCuenta() {
     }
   };
 
+  // ── Terminar apadrinamiento activo (desde la cuenta del padrino) ──────────
+  const handleTerminateSponsorship = async () => {
+    if (!activeSponsorshipId) return;
+    setSponsorshipActionError(null);
+    try {
+      await terminateSponsorship(activeSponsorshipId);
+      setActiveSponsorshipId(null);
+      setSupportedUsers([]);
+    } catch (err) {
+      setSponsorshipActionError(err instanceof Error ? err.message : "No se pudo terminar el apadrinamiento.");
+    }
+  };
+
   return {
     profile,
     supportedUsers,
+    activeSponsorshipId,
     isLoading,
     isSaving,
     error,
     saved,
+    sponsorshipActionError,
     handleChange,
     handleSave,
+    handleTerminateSponsorship,
   };
 }
 

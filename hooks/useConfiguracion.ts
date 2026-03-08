@@ -2,8 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { getContacts, addContact } from "@/lib/api/emergency";
+import { requestSponsorship, terminateSponsorship } from "@/lib/api/sponsorship";
 import { useAuth } from "@/context/AuthContext";
 import type { SupportPeer } from "@/types";
+
+// Estado del sponsorship del adicto (PENDING | ACTIVE | NONE)
+export type SponsorshipStatus = 'NONE' | 'PENDING' | 'ACTIVE';
+export interface SponsorshipState {
+  status: SponsorshipStatus;
+  sponsorshipId?: string;
+}
 
 export function useConfiguracion() {
   const { user, updateUser } = useAuth();
@@ -19,6 +27,12 @@ export function useConfiguracion() {
   /** Error exclusivo del formulario de añadir par de apoyo — no contamina el área de perfil. */
   const [peerError, setPeerError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+
+  // ── Sponsorship (solo ADICTO) ────────────────────────────────────────────
+  const [sponsorCode, setSponsorCode] = useState("");
+  const [sponsorshipState, setSponsorshipState] = useState<SponsorshipState>({ status: 'NONE' });
+  const [isSponsorshipLoading, setIsSponsorshipLoading] = useState(false);
+  const [sponsorshipError, setSponsorshipError] = useState<string | null>(null);
 
   // Sincronizar nombre cuando el contexto de auth se carga/actualiza
   useEffect(() => {
@@ -111,6 +125,44 @@ export function useConfiguracion() {
     setEmergencyNotifs(value);
   };
 
+  // ── Solicitar apadrinamiento (ADICTO) ─────────────────────────────────────
+  const handleRequestSponsorship = async () => {
+    const code = sponsorCode.trim();
+    if (!code) {
+      setSponsorshipError("Ingresa el código de tu padrino.");
+      return;
+    }
+    setIsSponsorshipLoading(true);
+    setSponsorshipError(null);
+    try {
+      const res = await requestSponsorship(code);
+      setSponsorshipState({
+        status: 'PENDING',
+        sponsorshipId: res.sponsorship?.id,
+      });
+      setSponsorCode("");
+    } catch (err) {
+      setSponsorshipError(err instanceof Error ? err.message : "No se pudo enviar la solicitud.");
+    } finally {
+      setIsSponsorshipLoading(false);
+    }
+  };
+
+  // ── Terminar apadrinamiento activo ────────────────────────────────────────
+  const handleTerminateSponsorship = async () => {
+    if (!sponsorshipState.sponsorshipId) return;
+    setIsSponsorshipLoading(true);
+    setSponsorshipError(null);
+    try {
+      await terminateSponsorship(sponsorshipState.sponsorshipId);
+      setSponsorshipState({ status: 'NONE' });
+    } catch (err) {
+      setSponsorshipError(err instanceof Error ? err.message : "No se pudo terminar el apadrinamiento.");
+    } finally {
+      setIsSponsorshipLoading(false);
+    }
+  };
+
   return {
     username,
     addictionType,
@@ -122,6 +174,14 @@ export function useConfiguracion() {
     /** Error exclusivo del formulario de añadir contacto. */
     peerError,
     saved,
+    // Sponsorship
+    sponsorCode,
+    setSponsorCode,
+    sponsorshipState,
+    isSponsorshipLoading,
+    sponsorshipError,
+    handleRequestSponsorship,
+    handleTerminateSponsorship,
     setUsername,
     setAddictionType,
     handleUpdateProfile,

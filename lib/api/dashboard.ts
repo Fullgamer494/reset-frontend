@@ -7,21 +7,25 @@ import { getStatistics } from './tracking';
 import type { UserProgress } from '@/types';
 
 /** Devuelve el progreso de sobriedad del usuario autenticado.
- * Combina /streak (dayCounter) con /tracking/statistics como fallback.
+ * Prioriza /tracking/statistics (calculado en vivo desde los logs) sobre
+ * /streak (depende de un trigger DB que puede no estar activo).
  */
 export async function getProgress(): Promise<UserProgress> {
   let days = 0;
 
-  try {
-    const streak = await getStreak();
-    // La API devuelve dayCounter (camelCase), no day_counter
-    days = streak?.currentStreak ?? 0;
-  } catch {
-    // Si el streak falla (ej: no hay racha activa), caer a estadísticas
-    try {
-      const stats = await getStatistics();
-        days = stats?.dayCounter ?? 0;
-    } catch { /* seguir con 0 */ }
+  // Intentar las dos fuentes en paralelo para mayor velocidad
+  const [statsResult, streakResult] = await Promise.allSettled([
+    getStatistics(),
+    getStreak(),
+  ]);
+
+  if (statsResult.status === 'fulfilled' && (statsResult.value?.dayCounter ?? 0) > 0) {
+    // fn_get_user_stats calcula los días directamente desde daily_logs — no depende del trigger
+    days = statsResult.value.dayCounter;
+  } else if (streakResult.status === 'fulfilled') {
+    days = streakResult.value?.currentStreak ?? 0;
+  } else if (statsResult.status === 'fulfilled') {
+    days = statsResult.value?.dayCounter ?? 0;
   }
 
   return {

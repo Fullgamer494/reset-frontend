@@ -18,6 +18,13 @@ export default function ConfiguracionPage() {
     error,
     peerError,
     saved,
+    sponsorCode,
+    setSponsorCode,
+    sponsorshipState,
+    isSponsorshipLoading,
+    sponsorshipError,
+    handleRequestSponsorship,
+    handleTerminateSponsorship,
     setUsername,
     setAddictionType,
     handleUpdateProfile,
@@ -171,26 +178,93 @@ export default function ConfiguracionPage() {
             </p>
           </div>
 
-          <p
-            className="text-[11px] italic text-slate-400 dark:text-slate-300 mb-5 leading-relaxed"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Tu padrino es quien te acompaña y revisa tu progreso. Él te agregará usando tu correo electrónico.
-          </p>
+          {/* Estado NONE: formulario para ingresar código */}
+          {sponsorshipState.status === 'NONE' && (
+            <>
+              <p
+                className="text-[11px] italic text-slate-400 dark:text-slate-300 mb-5 leading-relaxed"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Tu padrino te compartirá un código de 8 caracteres. Ingrésalo aquí para enviarle una solicitud de apadrinamiento.
+              </p>
+              <div className="flex gap-3 items-end">
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <label
+                    className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    Código del Padrino
+                  </label>
+                  <input
+                    type="text"
+                    value={sponsorCode}
+                    onChange={(e) => setSponsorCode(e.target.value.toUpperCase())}
+                    maxLength={10}
+                    placeholder="XXXXXXXX"
+                    className="h-[44px] border border-slate-200 dark:border-slate-700/40 bg-white dark:bg-[#070f1a] rounded-sm px-4 text-slate-700 dark:text-slate-200 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all tracking-[4px] text-center"
+                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15 }}
+                    onKeyDown={(e) => e.key === 'Enter' && handleRequestSponsorship()}
+                  />
+                </div>
+                <button
+                  onClick={handleRequestSponsorship}
+                  disabled={isSponsorshipLoading || !sponsorCode.trim()}
+                  className="h-[44px] px-5 bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white rounded-sm transition-colors flex-shrink-0"
+                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "1.5px", textTransform: "uppercase" }}
+                >
+                  {isSponsorshipLoading ? "Enviando…" : "Solicitar"}
+                </button>
+              </div>
+              {sponsorshipError && (
+                <p className="mt-3 text-[11px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{sponsorshipError}</p>
+              )}
+            </>
+          )}
 
-          <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-[#0a1628] rounded-lg">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="flex-shrink-0">
-              <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <div>
-              <p className="text-[11px] tracking-[1.5px] uppercase text-slate-400 dark:text-slate-300 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Tu correo electrónico</p>
-              <p className="text-[14px] italic text-slate-700 dark:text-slate-200" style={{ fontFamily: "'Playfair Display', serif" }}>{user?.email ?? "—"}</p>
+          {/* Estado PENDING: esperando que el padrino acepte */}
+          {sponsorshipState.status === 'PENDING' && (
+            <div className="flex items-start gap-3 p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 rounded-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="flex-shrink-0 mt-0.5">
+                <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <div>
+                <p className="text-[11px] tracking-[1.5px] uppercase text-sky-600 dark:text-sky-400 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                  Solicitud enviada
+                </p>
+                <p className="text-[12px] italic text-slate-500 dark:text-slate-400" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Esperando a que tu padrino acepte la solicitud. Te notificaremos cuando lo haga.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
-          <p className="mt-4 text-[11px] text-slate-400 dark:text-slate-300 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-            Comparte tu correo con tu padrino para que él pueda agregarte desde su cuenta.
-          </p>
+          {/* Estado ACTIVE: conexión activa */}
+          {sponsorshipState.status === 'ACTIVE' && (
+            <div>
+              <div className="flex items-start gap-3 p-4 bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/40 rounded-lg mb-4">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5" className="flex-shrink-0 mt-0.5">
+                  <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div>
+                  <p className="text-[11px] tracking-[1.5px] uppercase text-teal-600 dark:text-teal-400 mb-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Apadrinamiento activo</p>
+                  <p className="text-[12px] italic text-slate-500 dark:text-slate-400" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    Tu padrino puede ver tu progreso y te acompañará en tu recuperación.
+                  </p>
+                </div>
+              </div>
+              {sponsorshipError && (
+                <p className="mb-2 text-[11px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{sponsorshipError}</p>
+              )}
+              <button
+                onClick={handleTerminateSponsorship}
+                disabled={isSponsorshipLoading}
+                className="text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors disabled:opacity-50"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                {isSponsorshipLoading ? "Procesando…" : "Terminar apadrinamiento"}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Pares de Apoyo */}

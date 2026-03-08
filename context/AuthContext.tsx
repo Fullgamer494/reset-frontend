@@ -69,6 +69,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ]);
         if (token && raw) {
           const parsedUser = JSON.parse(raw) as AuthUser;
+
+          // Sesión antigua: si el PADRINO no tiene sponsorCode guardado,
+          // intentar extraerlo del JWT (payload público — no requiere red).
+          if (parsedUser.role === 'PADRINO' && !parsedUser.sponsorCode) {
+            try {
+              const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+              const payload = JSON.parse(atob(b64)) as Record<string, unknown>;
+              const extracted = (payload.sponsorCode ?? payload.sponsor_code ?? null) as string | null;
+              if (extracted) {
+                parsedUser.sponsorCode = extracted;
+                // Actualizar storage con el dato recuperado
+                storageSave(STORAGE_KEYS.USER, JSON.stringify(parsedUser)).catch(() => {});
+              }
+            } catch { /* JWT malformado — ignorar */ }
+          }
+
           setToken(token);   // pone el token en memoria para las llamadas HTTP
           setUser(parsedUser);
         }

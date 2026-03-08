@@ -80,6 +80,19 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
 
   const apiUser = data?.user ?? {};
 
+  // El backend puede devolver camelCase (sponsorCode) o snake_case (sponsor_code)
+  const sponsorCode = apiUser.sponsorCode ?? (apiUser as Record<string, unknown>).sponsor_code ?? null;
+
+  // Fallback: decodificar el JWT para extraer sponsorCode si el endpoint no lo incluye
+  let resolvedSponsorCode = sponsorCode as string | null;
+  if (!resolvedSponsorCode && token) {
+    try {
+      const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(b64)) as Record<string, unknown>;
+      resolvedSponsorCode = (payload.sponsorCode ?? payload.sponsor_code ?? null) as string | null;
+    } catch { /* JWT malformado — ignorar */ }
+  }
+
   return {
     accessToken: token,
     user: {
@@ -87,7 +100,7 @@ export async function login(payload: LoginPayload): Promise<AuthResult> {
       name: apiUser.name ?? '',
       email: apiUser.email ?? '',
       role: (apiUser.role === 'PADRINO' ? 'PADRINO' : 'ADICTO') as 'ADICTO' | 'PADRINO',
-      sponsorCode: apiUser.sponsorCode ?? null,
+      sponsorCode: resolvedSponsorCode,
     },
   };
 }
