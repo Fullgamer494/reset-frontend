@@ -137,8 +137,6 @@ export default function RegisterPage() {
     setAddictionClassification,
     showConfirmPassword,
     setShowConfirmPassword,
-    profilePhotoPreview,
-    handlePhotoChange,
     handleChange,
     handleNextStep,
     handleSubmit,
@@ -334,58 +332,7 @@ export default function RegisterPage() {
               Paso 1: Datos de Cuenta
             </p>
 
-            {/* ── Foto de perfil (opcional) ──────────────────────────── */}
-            <div className="flex flex-col items-center gap-3 mb-6">
-              {/* Avatar: preview o initials por defecto */}
-              <div className="relative group">
-                <div
-                  className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center border-2 transition-colors"
-                  style={{
-                    borderColor: profilePhotoPreview ? 'var(--color-accent)' : 'var(--ui-border)',
-                    background: profilePhotoPreview ? 'transparent' : 'var(--surface-card-inner)',
-                  }}
-                >
-                  {profilePhotoPreview ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={profilePhotoPreview} alt="Vista previa" className="w-full h-full object-cover" />
-                  ) : (
-                    <span
-                      className="text-[22px] font-bold select-none"
-                      style={{ color: 'var(--ui-text-caption)', fontFamily: "'Playfair Display', serif" }}
-                    >
-                      {form.name.trim()
-                        ? form.name.trim().split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
-                        : '?'}
-                    </span>
-                  )}
-                </div>
-                {/* Overlay de cámara al hacer hover */}
-                <label
-                  htmlFor="profile-photo-input"
-                  className="absolute inset-0 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: 'rgba(0,0,0,0.45)' }}
-                  aria-label="Cambiar foto de perfil"
-                >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" aria-hidden="true">
-                    <path d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </label>
-                <input
-                  id="profile-photo-input"
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={handlePhotoChange}
-                  aria-label="Subir foto de perfil (opcional)"
-                />
-              </div>
-              <p className="text-[10px] tracking-[1px] uppercase" style={{ color: 'var(--ui-text-caption)', fontFamily: "'JetBrains Mono', monospace" }}>
-                Foto de perfil{' '}
-                <span style={{ color: 'var(--ui-text-caption)', opacity: 0.6 }}>(opcional)</span>
-              </p>
-            </div>
-
+            {/* ── Datos de cuenta  ──────────────────────────── */}
             <div className="flex flex-col gap-5">
               {/* Name */}
               <div className="flex flex-col gap-1.5">

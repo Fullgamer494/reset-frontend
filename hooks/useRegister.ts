@@ -19,8 +19,6 @@ export function useRegister() {
   const [role, setRole] = useState<"user" | "companion">("user");
   const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "", confirmPassword: "" });
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
-  const [profilePhotoPreview, setProfilePhotoPreview] = useState<string | null>(null);
   const [selectedAddiction, setSelectedAddiction] = useState<AddictionTypeId | "">("");
   const [otherDescription, setOtherDescription] = useState("");
   const [addictionClassification, setAddictionClassification] = useState<"conductual" | "sustancia" | "">("")
@@ -30,18 +28,6 @@ export function useRegister() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError(null);
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
-    setProfilePhoto(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setProfilePhotoPreview(ev.target?.result as string ?? null);
-      reader.readAsDataURL(file);
-    } else {
-      setProfilePhotoPreview(null);
-    }
   };
 
   const handleNextStep = () => {
@@ -141,9 +127,6 @@ export function useRegister() {
     setAddictionClassification,
     showConfirmPassword,
     setShowConfirmPassword,
-    profilePhoto,
-    profilePhotoPreview,
-    handlePhotoChange,
     handleChange,
     handleNextStep,
     handleSubmit,

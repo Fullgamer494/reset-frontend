@@ -6,6 +6,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useSession } from "@/hooks/useSession";
 import { useAuth } from "@/context/AuthContext";
 import PlantStage, { getPlantLabel } from "@/components/ui/PlantStage";
+import { getAvatarUrl } from "@/lib/avatar";
 import { getMyNotes, type EncouragementNote } from "@/lib/api/encouragement";
 
 // Técnica del día — rota según el día de la semana
@@ -68,11 +69,10 @@ export default function InicioPage() {
           <Link
             href="/dashboard/configuracion"
             className="w-8 h-8 rounded-full hidden md:flex items-center justify-center shrink-0 bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400 text-[11px] font-bold transition-opacity hover:opacity-80 overflow-hidden"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
             aria-label="Mi perfil"
           >
-            {user?.avatarUrl
-              ? <img src={user.avatarUrl} alt={initials} className="w-full h-full object-cover" />
+            {user?.id
+              ? <img src={getAvatarUrl(user.id)} alt={initials} className="w-full h-full object-cover" />
               : initials}
           </Link>
         </div>
