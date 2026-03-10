@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useBitacora } from "@/hooks/useBitacora";
-import { MOOD_ICONS, MOOD_COLORS, formatDate, getMoodDisplayLabel } from "@/lib/bitacora-helpers";
+import { MOOD_COLORS, formatDate, getMoodDisplayLabel } from "@/lib/bitacora-helpers";
 import BitacoraEntryModal from "@/components/features/dashboard/BitacoraEntryModal";
 import type { JournalEntry, MoodId } from "@/types";
 
@@ -13,7 +13,6 @@ export default function BitacoraPage() {
     title,
     moodLevel,
     setMoodLevel,
-    moodLabel,
     moodColor,
     moodTrack,
     cravingLevel,
@@ -66,11 +65,11 @@ export default function BitacoraPage() {
 
         {/* ─── Formulario nueva entrada ────────────────────────────────────── */}
         <div
-          className="bg-[var(--surface-card)] border border-[var(--ui-border)] rounded-sm overflow-hidden mb-10"
+          className="bg-(--surface-card) border border-(--ui-border) rounded-sm overflow-hidden mb-10"
           style={{ boxShadow: "0px 4px 20px -8px rgba(0,0,0,0.18)" }}
         >
           {/* Cabecera del form */}
-          <div className="px-6 pt-6 pb-4 border-b border-[var(--ui-border)]">
+          <div className="px-6 pt-6 pb-4 border-b border-(--ui-border)">
             <p
               className="text-[11px] tracking-[1.8px] uppercase rs-text-muted"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
@@ -90,10 +89,10 @@ export default function BitacoraPage() {
                   Estado de Ánimo
                 </p>
                 <span
-                  className="text-[11px] tabular-nums"
+                  className="text-[13px] tabular-nums"
                   style={{ fontFamily: "'JetBrains Mono', monospace", color: moodColor }}
                 >
-                  {moodLabel} · <span className="rs-text-caption">{moodLevel}/10</span>
+                  {moodLevel}<span className="text-[11px] rs-text-caption">/10</span>
                 </span>
               </div>
               <input
@@ -105,8 +104,8 @@ export default function BitacoraPage() {
                 style={{ background: moodTrack, accentColor: moodColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Desanimado</span>
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy animado</span>
+                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy bajo</span>
+                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy alto</span>
               </div>
             </div>
 
@@ -152,7 +151,7 @@ export default function BitacoraPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Dale un título a esta entrada..."
-              className="w-full bg-[var(--surface-input)] border border-[var(--ui-border)] rounded-lg px-4 py-2.5 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
+              className="w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
             />
 
@@ -168,12 +167,12 @@ export default function BitacoraPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Escribe aquí lo que tu alma necesite expresar..."
               rows={4}
-              className="w-full bg-transparent border border-[var(--ui-border)] rounded-lg p-4 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
+              className="w-full bg-transparent border border-(--ui-border) rounded-lg p-4 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, lineHeight: "1.8", fontStyle: "italic" }}
             />
 
             {/* Toggle consumo */}
-            <div className="flex items-center gap-3 py-3 border-t border-b border-[var(--ui-border)] mb-5">
+            <div className="flex items-center gap-3 py-3 border-t border-b border-(--ui-border) mb-5">
               <div className="flex-1">
                 <p
                   className="text-[11px] tracking-[1px] uppercase rs-text-muted"
@@ -292,7 +291,7 @@ export default function BitacoraPage() {
               return (
                 <div
                   key={entry.id}
-                  className="bg-[var(--surface-card)] border border-[var(--ui-border)] rounded-sm p-5 cursor-pointer hover:border-slate-300 dark:hover:border-slate-700/60 transition-colors"
+                  className="bg-(--surface-card) border border-(--ui-border) rounded-sm p-5 cursor-pointer hover:border-slate-300 dark:hover:border-slate-700/60 transition-colors"
                   style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.09)" }}
                   onClick={() => setSelectedEntry(entry)}
                 >
@@ -301,12 +300,9 @@ export default function BitacoraPage() {
                     <div className="flex items-center gap-2 flex-wrap min-w-0">
                       {/* Mood badge */}
                       <div
-                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full shrink-0"
+                        className="flex items-center px-2.5 py-1 rounded-full shrink-0"
                         style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}`, color: colors.text }}
                       >
-                        <span style={{ color: colors.text, display: "flex", transform: "scale(0.7)", transformOrigin: "center" }}>
-                          {MOOD_ICONS[entry.mood as MoodId]}
-                        </span>
                         <span
                           className="text-[10px] uppercase tracking-[0.5px]"
                           style={{ fontFamily: "'JetBrains Mono', monospace", color: colors.text }}

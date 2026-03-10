@@ -1,9 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useSession } from "@/hooks/useSession";
+import { useAuth } from "@/context/AuthContext";
 import PlantStage, { getPlantLabel } from "@/components/ui/PlantStage";
+import { getAvatarUrl } from "@/lib/avatar";
+import { getMyNotes, type EncouragementNote } from "@/lib/api/encouragement";
 
 // Técnica del día — rota según el día de la semana
 const TIPS_DIARIOS = [
@@ -18,13 +22,27 @@ const TIPS_DIARIOS = [
 
 export default function InicioPage() {
   const { progress, lastNote, isLoading, error } = useDashboard();
-  const { user, abbreviateName, todayLabel } = useSession();
+  const { user } = useAuth();
+  const initials = user?.name
+    ? user.name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")
+    : "U";
+  const { abbreviateName, todayLabel } = useSession();
   const tip = TIPS_DIARIOS[new Date().getDay() % TIPS_DIARIOS.length];
 
   const sobrietyDays = progress?.sobrietyDays ?? 0;
   const plantStage   = progress?.plantStage ?? "Semilla";
   const nextMilestone = progress?.nextMilestone;
   const firstName = user?.name ? abbreviateName(user.name, 14).split(" ")[0] : null;
+
+  // ── Notas de aliento del padrino ──
+  const [encouragementNotes, setEncouragementNotes] = useState<EncouragementNote[]>([]);
+  const [notesLoading, setNotesLoading] = useState(true);
+  useEffect(() => {
+    getMyNotes()
+      .then(setEncouragementNotes)
+      .catch(() => { /* silencious — no notes section visible */ })
+      .finally(() => setNotesLoading(false));
+  }, []);
   return (
     <div className="min-h-full relative bg-[#f8fafc] dark:bg-[#0d1929] overflow-x-hidden">
       {/* Ambient blur circles */}
@@ -41,17 +59,22 @@ export default function InicioPage() {
         >
           {todayLabel()}
         </p>
-        <div className="flex items-center gap-2 rs-text-muted">
-          <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 2C7.23858 2 5 4.23858 5 7C5 9.76142 7.23858 12 10 12C12.7614 12 15 9.76142 15 7C15 4.23858 12.7614 2 10 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 20C2 17.2386 5.58172 15 10 15C14.4183 15 18 17.2386 18 20V22H2V20Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+        <div className="flex items-center gap-2.5">
           <p
             className="text-[12px] font-bold uppercase rs-text-muted"
             style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "-0.3px" }}
           >
             {firstName ? `Hola, ${firstName}` : "Mi ReSet"}
           </p>
+          <Link
+            href="/dashboard/configuracion"
+            className="w-8 h-8 rounded-full hidden md:flex items-center justify-center shrink-0 bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400 text-[11px] font-bold transition-opacity hover:opacity-80 overflow-hidden"
+            aria-label="Mi perfil"
+          >
+            {user?.id
+              ? <img src={getAvatarUrl(user.id)} alt={initials} className="w-full h-full object-cover" />
+              : initials}
+          </Link>
         </div>
       </header>
 
@@ -115,7 +138,7 @@ export default function InicioPage() {
 
                 {/* Stage label — etapa real según la racha */}
                 <div
-                  className="relative z-10 mt-10 bg-[var(--surface-card)] border border-[rgba(59,130,246,0.2)] dark:border-[rgba(59,130,246,0.15)] h-10 px-8 flex items-center"
+                  className="relative z-10 mt-10 bg-(--surface-card) border border-[rgba(59,130,246,0.2)] dark:border-[rgba(59,130,246,0.15)] h-10 px-8 flex items-center"
                   style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.05)" }}
                 >
                   <span
@@ -335,6 +358,48 @@ export default function InicioPage() {
 
         </div>
 
+        {/* ── Mensaje de tu Padrino ──
+             TODO: reemplazar con datos reales del endpoint de mensajería cuando esté disponible.
+             Por ahora muestra el último mensaje de la biblioteca de muestra.
+        */}
+        <div className="mt-4 relative pt-3.75">
+          <div className="absolute left-[60%] top-0 z-20 pointer-events-none">
+            <div
+              className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
+              style={{ backdropFilter: "blur(0.5px)", transform: "rotate(2deg)" }}
+            />
+          </div>
+          <div
+            className="bg-[#f8fafc] dark:bg-[#122033] border border-[#cbd5e1] dark:border-[#1e3048] relative"
+            style={{ boxShadow: "8px 8px 0px 0px rgba(26,54,93,0.05)" }}
+          >
+            <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+            <div className="relative z-10 p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+              {/* Ícono */}
+              <div className="shrink-0 w-10 h-10 rounded-full bg-[#f0f9ff] dark:bg-sky-900/20 border border-[rgba(14,165,233,0.15)] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
+                  <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              {/* Texto */}
+              <div className="flex-1 min-w-0">
+                <p
+                  className="text-[11px] tracking-[1.5px] uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-1"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Mensaje de tu Padrino
+                </p>
+                <p
+                  className="text-[16px] italic text-[rgba(26,54,93,0.8)] dark:text-slate-300 leading-relaxed"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  &ldquo;Recuerda por qué empezaste este camino. Eres más fuerte de lo que crees.&rdquo;
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ── Técnica del día ── */}
         <div className="mt-6 relative pt-3.75">
           {/* Tape */}
@@ -380,7 +445,7 @@ export default function InicioPage() {
               {/* Enlace */}
               <Link
                 href="/dashboard/tecnicas"
-                className="shrink-0 h-9 px-5 bg-[var(--surface-card)] border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
+                className="shrink-0 h-9 px-5 bg-(--surface-card) border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
                 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Ver todas →
@@ -388,6 +453,60 @@ export default function InicioPage() {
             </div>
           </div>
         </div>
+
+        {/* ── Notas de Aliento — recibidas del padrino ── */}
+        {(notesLoading || encouragementNotes.length > 0) && (
+          <div className="mt-6 relative pt-3.75">
+            {/* Tape */}
+            <div className="absolute left-[40%] top-0 z-20 pointer-events-none">
+              <div
+                className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
+                style={{ backdropFilter: "blur(0.5px)", transform: "rotate(-2deg)" }}
+              />
+            </div>
+            <div
+              className="bg-[#f8fafc] dark:bg-[#122033] border border-[#cbd5e1] dark:border-[#1e3048] relative"
+              style={{ boxShadow: "8px 8px 0px 0px rgba(26,54,93,0.05)" }}
+            >
+              <div className="absolute inset-3 border border-[#e2e8f0] dark:border-[#1e3a52] pointer-events-none" />
+              <div className="relative z-10 p-6">
+                <p
+                  className="text-[11px] tracking-[1.5px] uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Notas de Aliento
+                </p>
+                {notesLoading ? (
+                  <p
+                    className="text-[15px] italic text-[rgba(26,54,93,0.4)] dark:text-slate-500"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    ···
+                  </p>
+                ) : (
+                  <ul className="flex flex-col gap-4">
+                    {encouragementNotes.map((note) => (
+                      <li key={note.id} className="flex flex-col gap-1">
+                        <p
+                          className="text-[16px] italic text-[rgba(26,54,93,0.85)] dark:text-slate-200 leading-relaxed"
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                          &ldquo;{note.content}&rdquo;
+                        </p>
+                        <p
+                          className="text-[11px] text-[rgba(26,54,93,0.4)] dark:text-slate-500"
+                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          {note.senderName} &mdash; {new Date(note.createdAt).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

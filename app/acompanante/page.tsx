@@ -131,7 +131,7 @@ export default function MonitoreoPage() {
 
           {/* Ilustración vacía */}
           <div
-            className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-10 mb-6 flex flex-col items-center text-center"
+            className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-10 mb-6 flex flex-col items-center text-center"
             style={{ boxShadow: "8px 8px 0px 0px rgba(13, 148, 136, 0.04)" }}
           >
             {/* Árbol dormido */}
@@ -170,7 +170,7 @@ export default function MonitoreoPage() {
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <span
-                      className="text-[11px] text-teal-400 font-bold mt-0.5 flex-shrink-0"
+                      className="text-[11px] text-teal-400 font-bold mt-0.5 shrink-0"
                       style={{ fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       {i + 1}.
@@ -198,7 +198,7 @@ export default function MonitoreoPage() {
           {/* Protocolo siempre visible */}
           <div className="border border-red-100 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 rounded-sm p-6">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5">
                   <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -260,12 +260,12 @@ export default function MonitoreoPage() {
 
         {/* Tarjeta de progreso principal */}
         <div
-          className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-8 mb-6"
+          className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6"
           style={{ boxShadow: "8px 8px 0px 0px rgba(13, 148, 136, 0.06)" }}
         >
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
             {/* Árbol */}
-            <div className="flex flex-col items-center gap-3 min-w-[140px] animate-float">
+            <div className="flex flex-col items-center gap-3 min-w-35 animate-float">
               <svg width="90" height="110" viewBox="0 0 90 110" fill="none" className="animate-sway">
                 <rect x="40" y="80" width="10" height="30" rx="2" fill="#a16207" opacity="0.7"/>
                 <polygon points="45,10 15,55 75,55" fill="#0d9488" opacity="0.85"/>
@@ -339,7 +339,7 @@ export default function MonitoreoPage() {
         </div>
 
         {/* Actividad reciente */}
-        <div className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-8 mb-6">
+        <div className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6">
           <div className="flex items-center gap-2 mb-5">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -356,7 +356,7 @@ export default function MonitoreoPage() {
           ) : (
             recentLogs.map((item, i) => (
               <div key={item.id} className={`flex items-start gap-4 py-4 ${i > 0 ? "border-t border-slate-50 dark:border-slate-700/20" : ""}`}>
-                <div className="w-10 h-10 bg-teal-50 dark:bg-teal-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-teal-50 dark:bg-teal-900/20 rounded-lg flex items-center justify-center shrink-0">
                   {MOOD_SVG[item.moodId] ?? MOOD_SVG.calmado}
                 </div>
                 <div className="flex-1">
@@ -383,8 +383,8 @@ export default function MonitoreoPage() {
         </div>
 
         {/* Técnica del día para acompañante */}
-        <div className="border border-teal-100 dark:border-teal-800/30 bg-[var(--surface-card)] rounded-sm p-6 mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/30 flex items-center justify-center">
+        <div className="border border-teal-100 dark:border-teal-800/30 bg-(--surface-card) rounded-sm p-6 mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="shrink-0 w-9 h-9 rounded-full bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/30 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -402,7 +402,7 @@ export default function MonitoreoPage() {
           </div>
           <Link
             href="/acompanante/tecnicas"
-            className="flex-shrink-0 h-9 px-4 border border-teal-200 hover:bg-teal-50 text-teal-600 flex items-center transition-colors rounded-sm"
+            className="shrink-0 h-9 px-4 border border-teal-200 hover:bg-teal-50 text-teal-600 flex items-center transition-colors rounded-sm"
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
           >
             Ver todas →
@@ -412,7 +412,7 @@ export default function MonitoreoPage() {
         {/* Protocolo de emergencia */}
         <div className="border border-red-100 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 rounded-sm p-6">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center shrink-0">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5">
                 <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

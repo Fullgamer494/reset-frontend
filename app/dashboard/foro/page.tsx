@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Badge from "@/components/ui/Badge";
 import { useForo } from "@/hooks/useForo";
 import { FORO_TAGS } from "@/lib/constants";
@@ -50,7 +51,7 @@ export default function ForoPage() {
   return (
     <div className="min-h-full">
       {/* Contenido con padding responsivo */}
-      <div className="px-4 sm:px-10 py-6 sm:py-10 max-w-[1100px] mx-auto">
+      <div className="px-4 sm:px-10 py-6 sm:py-10 max-w-275 mx-auto">
         {/* Top label */}
         <p
           className="text-[11px] tracking-[1.8px] uppercase rs-text-caption mb-2"
@@ -86,7 +87,7 @@ export default function ForoPage() {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 h-[42px] px-6 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-colors mb-1"
+                className="flex items-center gap-2 h-10.5 px-6 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-colors mb-1"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,
@@ -161,13 +162,13 @@ export default function ForoPage() {
               {!isLoading && !error && posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-[var(--surface-card)] border border-slate-100 dark:border-slate-700/40 rounded-sm p-6"
+                  className="bg-(--surface-card) border border-slate-100 dark:border-slate-700/40 rounded-sm p-6"
                   style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}
                 >
                   {/* Post header \u2014 wrap en m\u00f3vil para evitar desbordamiento de tags */}
                   <div className="flex flex-wrap items-start justify-between mb-3 gap-2">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                        <div className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 border border-sky-200 dark:border-sky-800/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 border border-sky-200 dark:border-sky-800/40 flex items-center justify-center shrink-0 mt-0.5">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
                           <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -187,7 +188,7 @@ export default function ForoPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 shrink-0">
                       {post.tags.map((tag, idx) => (
                         <Badge
                           key={tag}
@@ -319,7 +320,7 @@ export default function ForoPage() {
             </div>
 
             {/* Normas del Oasis */}
-              <div className="bg-[var(--surface-card)] border border-slate-100 dark:border-slate-700/40 rounded-sm p-5">
+              <div className="bg-(--surface-card) border border-slate-100 dark:border-slate-700/40 rounded-sm p-5">
               <div className="flex items-center gap-2 mb-3">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
                   <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -337,13 +338,13 @@ export default function ForoPage() {
               >
                 Recuerda que este es un espacio de respeto mutuo. No juzgamos, acompañamos el crecimiento de cada semilla.
               </p>
-              <a
-                href="#"
+              <Link
+                href="/dashboard/comunidad-manual"
                 className="text-[11px] tracking-[1px] uppercase text-sky-500 hover:underline"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Leer Manual de Comunidad
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -358,7 +359,7 @@ export default function ForoPage() {
           onClick={(e) => { if (e.target === e.currentTarget) handleClosePost(); }}
         >
           <div
-            className="bg-[var(--surface-card)] border border-slate-100 dark:border-slate-700/40 rounded-sm w-full max-w-[680px] max-h-[90vh] flex flex-col"
+            className="bg-(--surface-card) border border-slate-100 dark:border-slate-700/40 rounded-sm w-full max-w-170 max-h-[90vh] flex flex-col"
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}
           >
             {/* Cabecera del post */}
@@ -386,7 +387,7 @@ export default function ForoPage() {
               </div>
               <button
                 onClick={handleClosePost}
-                className="rs-text-caption hover:text-slate-500 transition-colors flex-shrink-0"
+                className="rs-text-caption hover:text-slate-500 transition-colors shrink-0"
                 aria-label="Cerrar"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -431,7 +432,7 @@ export default function ForoPage() {
                 >
                   <div className="flex items-start gap-3">
                     {/* Avatar */}
-                      <div className="w-7 h-7 rounded-full bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-7 h-7 rounded-full bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 flex items-center justify-center shrink-0 mt-0.5">
                       {comment.isAnonymous ? (
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5">
                           <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -467,7 +468,7 @@ export default function ForoPage() {
                       )}
                     </div>
                     {/* Acciones del comentario */}
-                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                    <div className="flex items-center gap-2 shrink-0 ml-2">
                       {/* Borrar (solo si es mío) */}
                       {comment.isMine && (
                         <button
@@ -521,7 +522,7 @@ export default function ForoPage() {
                   role="switch"
                   aria-checked={isCommentAnonymous}
                   onClick={() => setIsCommentAnonymous(!isCommentAnonymous)}
-                  className="relative rounded-full transition-colors duration-200 flex-shrink-0"
+                  className="relative rounded-full transition-colors duration-200 shrink-0"
                   style={{ width: 36, height: 20, backgroundColor: isCommentAnonymous ? '#0ea5e9' : '#e2e8f0' }}
                 >
                   <span
@@ -529,7 +530,7 @@ export default function ForoPage() {
                     style={{ width: 14, height: 14, top: 3, left: 3, transform: isCommentAnonymous ? 'translateX(16px)' : 'translateX(0)' }}
                   />
                 </button>
-                <span className="text-[11px] uppercase min-w-[28px] text-right" style={{ fontFamily: "'JetBrains Mono', monospace", color: isCommentAnonymous ? '#0ea5e9' : '#94a3b8' }}>
+                <span className="text-[11px] uppercase min-w-7 text-right" style={{ fontFamily: "'JetBrains Mono', monospace", color: isCommentAnonymous ? '#0ea5e9' : '#94a3b8' }}>
                   {isCommentAnonymous ? 'Sí' : 'No'}
                 </span>
               </div>
@@ -541,7 +542,7 @@ export default function ForoPage() {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Escribe un comentario de apoyo..."
-                  className="flex-1 border border-[var(--ui-border)] dark:bg-[#070f1a] dark:text-slate-200 dark:placeholder-slate-600 rounded-lg px-4 py-3 rs-text-body text-[13px] outline-none resize-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="flex-1 border border-(--ui-border) dark:bg-[#070f1a] dark:text-slate-200 dark:placeholder-slate-600 rounded-lg px-4 py-3 rs-text-body text-[13px] outline-none resize-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                   style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -581,7 +582,7 @@ export default function ForoPage() {
           onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false); }}
         >
           <div
-            className="bg-[var(--surface-card)] border border-slate-100 dark:border-slate-700/40 rounded-sm p-8 w-full max-w-[600px] max-h-[90vh] overflow-y-auto"
+            className="bg-(--surface-card) border border-slate-100 dark:border-slate-700/40 rounded-sm p-8 w-full max-w-150 max-h-[90vh] overflow-y-auto"
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}
           >
             {/* Modal header */}
@@ -616,7 +617,7 @@ export default function ForoPage() {
                 value={postTitle}
                 onChange={(e) => setPostTitle(e.target.value)}
                 placeholder="Dale un título a tu publicación..."
-                  className="w-full bg-[var(--surface-input)] border border-[var(--ui-border)] rounded-lg px-4 py-2.5 rs-text-body placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 rs-text-body placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic" }}
               />
             </div>
@@ -634,7 +635,7 @@ export default function ForoPage() {
                 onChange={(e) => setPostText(e.target.value)}
                 placeholder="¿Qué tienes en mente hoy? Comparte con la comunidad..."
                 rows={4}
-                  className="w-full bg-[var(--surface-input)] border border-[var(--ui-border)] rounded-lg p-4 rs-text-caption placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 resize-none transition-all"
+                  className="w-full bg-(--surface-input) border border-(--ui-border) rounded-lg p-4 rs-text-caption placeholder-slate-300 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 resize-none transition-all"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
               />
             </div>
@@ -686,7 +687,7 @@ export default function ForoPage() {
                 role="switch"
                 aria-checked={isAnonymous}
                 onClick={() => setIsAnonymous(!isAnonymous)}
-                className="relative rounded-full transition-colors duration-200 flex-shrink-0"
+                className="relative rounded-full transition-colors duration-200 shrink-0"
                 style={{
                   width: 40,
                   height: 22,
@@ -705,7 +706,7 @@ export default function ForoPage() {
                 />
               </button>
               <span
-                className="text-[11px] uppercase min-w-[40px] text-right"
+                className="text-[11px] uppercase min-w-10 text-right"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   color: isAnonymous ? "#0ea5e9" : "#94a3b8",
@@ -730,7 +731,7 @@ export default function ForoPage() {
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="h-[42px] px-5 border border-[var(--ui-border)] rs-text-caption hover:border-slate-300 hover:rs-text-body rounded-xl transition-colors"
+                className="h-10.5 px-5 border border-(--ui-border) rs-text-caption hover:border-slate-300 hover:rs-text-body rounded-xl transition-colors"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,
@@ -743,7 +744,7 @@ export default function ForoPage() {
               <button
                 onClick={handlePublish}
                 disabled={!postTitle.trim() || !postText.trim() || isSubmitting}
-                className="flex items-center gap-2 h-[42px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
+                className="flex items-center gap-2 h-10.5 px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,

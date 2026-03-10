@@ -10,13 +10,15 @@ interface RegisterFormStep1 {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export function useRegister() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [role, setRole] = useState<"user" | "companion">("user");
-  const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "" });
+  const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "", confirmPassword: "" });
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [selectedAddiction, setSelectedAddiction] = useState<AddictionTypeId | "">("");
   const [otherDescription, setOtherDescription] = useState("");
   const [addictionClassification, setAddictionClassification] = useState<"conductual" | "sustancia" | "">("")
@@ -47,6 +49,10 @@ export function useRegister() {
     }
     if (form.password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      setError('Las contraseñas no coinciden.');
       return;
     }
     setStep(2);
@@ -119,6 +125,8 @@ export function useRegister() {
     setSelectedAddiction,
     setOtherDescription,
     setAddictionClassification,
+    showConfirmPassword,
+    setShowConfirmPassword,
     handleChange,
     handleNextStep,
     handleSubmit,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Toggle from "@/components/ui/Toggle";
 import { useMiCuenta } from "@/hooks/useMiCuenta";
 import { useSession } from "@/hooks/useSession";
@@ -21,6 +22,7 @@ export default function MiCuentaPage() {
     handleTerminateSponsorship,
   } = useMiCuenta();
   const { logout } = useSession();
+  const [showTerminateConfirm, setShowTerminateConfirm] = useState(false);
 
   if (isLoading) {
     return (
@@ -55,7 +57,7 @@ export default function MiCuentaPage() {
         </p>
 
         {/* Profile form */}
-        <div className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-8 mb-6">
+        <div className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6">
           <div className="flex items-center gap-2 mb-6">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -85,7 +87,7 @@ export default function MiCuentaPage() {
                   type={type}
                   value={value}
                   onChange={(e) => handleChange(field, e.target.value)}
-                  className="h-[44px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-4 rs-text-body outline-none focus:border-teal-300 focus:ring-1 focus:ring-teal-100 transition-all"
+                  className="h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 rs-text-body outline-none focus:border-teal-300 focus:ring-1 focus:ring-teal-100 transition-all"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
                 />
               </div>
@@ -102,7 +104,7 @@ export default function MiCuentaPage() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="h-[42px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
+              className="h-10.5 px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 10,
@@ -169,7 +171,7 @@ export default function MiCuentaPage() {
         </div>
 
         {/* Usuarios que apoyo */}
-        <div className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-8 mb-6">
+        <div className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6">
           <div className="flex items-center gap-2 mb-5">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -203,7 +205,7 @@ export default function MiCuentaPage() {
           ) : (
             supportedUsers.map((supportedUser) => (
               <div key={supportedUser.id} className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-[#0a1628] rounded-lg">
-                <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/20 flex items-center justify-center shrink-0">
                   <span
                     className="text-[13px] italic text-teal-600"
                     style={{ fontFamily: "'Playfair Display', serif" }}
@@ -233,14 +235,41 @@ export default function MiCuentaPage() {
                     {supportedUser.status}
                   </span>
                   {activeSponsorshipId && (
-                    <button
-                      type="button"
-                      onClick={handleTerminateSponsorship}
-                      className="text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
-                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                    >
-                      Terminar
-                    </button>
+                    showTerminateConfirm ? (
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="text-[10px] tracking-[0.5px] rs-text-caption"
+                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          ¿Terminar?
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => { handleTerminateSponsorship(); setShowTerminateConfirm(false); }}
+                          className="text-[10px] tracking-[1px] uppercase text-white bg-red-500 hover:bg-red-600 px-2 py-0.5 rounded transition-colors"
+                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          Sí
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowTerminateConfirm(false)}
+                          className="text-[10px] tracking-[1px] uppercase rs-text-muted hover:rs-text-body transition-colors"
+                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          No
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setShowTerminateConfirm(true)}
+                        className="text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
+                        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                      >
+                        Terminar
+                      </button>
+                    )
                   )}
                 </div>
               </div>
@@ -249,7 +278,7 @@ export default function MiCuentaPage() {
         </div>
 
         {/* Alert preferences */}
-        <div className="border border-[var(--ui-border)] bg-[var(--surface-card)] rounded-sm p-8 mb-6">
+        <div className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6">
           <div className="flex items-center gap-2 mb-5">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
               <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" strokeLinecap="round" strokeLinejoin="round"/>
