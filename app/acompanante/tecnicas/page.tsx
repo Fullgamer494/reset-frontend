@@ -190,7 +190,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
 
   return (
     <div
-      className="bg-[var(--surface-card)] border border-[var(--ui-border)] rounded-sm overflow-hidden transition-shadow hover:shadow-sm"
+      className="bg-(--surface-card) border border-(--ui-border) rounded-sm overflow-hidden transition-shadow hover:shadow-sm"
       style={{ boxShadow: "0px 2px 12px -4px rgba(0,0,0,0.06)" }}
     >
       {/* Card header */}
@@ -231,7 +231,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
           )}
         </div>
         <span
-          className="flex-shrink-0 mt-1 text-teal-300 transition-transform"
+          className="shrink-0 mt-1 text-teal-300 transition-transform"
           style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -260,7 +260,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
             {tecnica.pasos.map((paso, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <span
-                  className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/40 flex items-center justify-center text-[11px] text-teal-600 dark:text-teal-400 font-bold"
+                  className="shrink-0 w-5 h-5 rounded-full bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/40 flex items-center justify-center text-[11px] text-teal-600 dark:text-teal-400 font-bold"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {i + 1}
@@ -284,7 +284,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
                 fill="none"
                 stroke="#0d9488"
                 strokeWidth="1.5"
-                className="flex-shrink-0 mt-0.5"
+                className="shrink-0 mt-0.5"
               >
                 <path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -349,7 +349,7 @@ export default function TecnicasAcompananteePage() {
               className={`h-8 px-4 rounded-full text-[11px] tracking-[1.5px] uppercase transition-colors ${
                 categoriaActiva === cat
                   ? "bg-teal-700 text-white"
-                  : "bg-[var(--surface-card)] border border-[var(--ui-border)] rs-text-muted hover:border-teal-200"
+                  : "bg-(--surface-card) border border-(--ui-border) rs-text-muted hover:border-teal-200"
               }`}
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >

@@ -190,7 +190,7 @@ export default function CompanionSidebar({ isOpen = false, onClose }: CompanionS
               <button
                 type="button"
                 onClick={logout}
-                className="flex-1 h-[34px] bg-slate-700 hover:bg-slate-800 text-white rounded-md transition-colors"
+                className="flex-1 h-8.5 bg-slate-700 hover:bg-slate-800 text-white rounded-md transition-colors"
                 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Sí, salir
@@ -198,7 +198,7 @@ export default function CompanionSidebar({ isOpen = false, onClose }: CompanionS
               <button
                 type="button"
                 onClick={() => setShowLogoutConfirm(false)}
-                className="flex-1 h-[34px] border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-colors"
+                className="flex-1 h-8.5 border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-colors"
                 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Cancelar

@@ -24,7 +24,7 @@ export default function DashboardLayout({
     : "U";
 
   return (
-    <div className="flex h-dvh bg-[var(--surface-main)] overflow-hidden">
+    <div className="flex h-dvh bg-(--surface-main) overflow-hidden">
       {/* Overlay semitransparente en móvil cuando el sidebar está abierto */}
       {sidebarOpen && (
         <div
@@ -37,9 +37,9 @@ export default function DashboardLayout({
       <UserSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* main: sin margen en móvil, con margen en md+ */}
-      <main className="flex-1 md:ml-72 overflow-auto bg-[var(--surface-main)] flex flex-col">
+      <main className="flex-1 md:ml-72 overflow-auto bg-(--surface-main) flex flex-col">
         {/* Barra superior móvil — oculta en desktop */}
-        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-[var(--surface-card)] border-b border-slate-100 dark:border-slate-800/60 md:hidden shrink-0 safe-top-bar">
+        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-(--surface-card) border-b border-slate-100 dark:border-slate-800/60 md:hidden shrink-0 safe-top-bar">
           {/* En sub-páginas: botón Atrás. En raíz: botón hamburguesa */}
           {!isRoot ? (
             <button

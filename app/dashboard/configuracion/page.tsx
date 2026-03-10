@@ -73,7 +73,7 @@ export default function ConfiguracionPage() {
         </p>
 
         {/* Mi Perfil Section */}
-        <div className="border border-[var(--ui-border)] rounded-sm bg-[var(--surface-card)] mb-6 p-8">
+        <div className="border border-(--ui-border) rounded-sm bg-(--surface-card) mb-6 p-8">
           <div className="flex items-center gap-2 mb-6">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
               <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -101,7 +101,7 @@ export default function ConfiguracionPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full h-[44px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="w-full h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic" }}
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -124,7 +124,7 @@ export default function ConfiguracionPage() {
                 <select
                   value={addictionType}
                   onChange={(e) => setAddictionType(e.target.value)}
-                  className="w-full h-[44px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all appearance-none cursor-pointer"
+                  className="w-full h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all appearance-none cursor-pointer"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
                 >
                   {ADDICTION_TYPES.map((t) => (
@@ -150,7 +150,7 @@ export default function ConfiguracionPage() {
             <button
               onClick={handleUpdateProfile}
               disabled={isSaving}
-              className="h-[42px] px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
+              className="h-10.5 px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 10,
@@ -164,7 +164,7 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* ── Padrino de Apoyo ── */}
-        <div className="border border-[var(--ui-border)] rounded-sm bg-[var(--surface-card)] mb-6 p-8">
+        <div className="border border-(--ui-border) rounded-sm bg-(--surface-card) mb-6 p-8">
           <div className="flex items-center gap-2 mb-6">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
               <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -200,7 +200,7 @@ export default function ConfiguracionPage() {
                     onChange={(e) => setSponsorCode(e.target.value.toUpperCase())}
                     maxLength={10}
                     placeholder="XXXXXXXX"
-                    className="h-[44px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all tracking-[4px] text-center"
+                    className="h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all tracking-[4px] text-center"
                     style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15 }}
                     onKeyDown={(e) => e.key === 'Enter' && handleRequestSponsorship()}
                   />
@@ -208,7 +208,7 @@ export default function ConfiguracionPage() {
                 <button
                   onClick={() => { setSubmittedSponsorCode(sponsorCode); handleRequestSponsorship(); }}
                   disabled={isSponsorshipLoading || !sponsorCode.trim()}
-                  className="h-[44px] px-5 bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white rounded-sm transition-colors flex-shrink-0"
+                  className="h-11 px-5 bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white rounded-sm transition-colors shrink-0"
                   style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "1.5px", textTransform: "uppercase" }}
                 >
                   {isSponsorshipLoading ? "Enviando…" : "Solicitar"}
@@ -236,18 +236,18 @@ export default function ConfiguracionPage() {
                     value={submittedSponsorCode}
                     disabled
                     placeholder="XXXXXXXX"
-                    className="h-[44px] border border-[var(--ui-border)] bg-[var(--surface-card-inner)] rounded-sm px-4 rs-text-caption outline-none tracking-[4px] text-center opacity-60 cursor-not-allowed"
+                    className="h-11 border border-(--ui-border) bg-(--surface-card-inner) rounded-sm px-4 rs-text-caption outline-none tracking-[4px] text-center opacity-60 cursor-not-allowed"
                     style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15 }}
                   />
                 </div>
-                <div className="h-[44px] px-5 border border-[var(--ui-border)] bg-[var(--surface-card-inner)] text-[10px] tracking-[1.5px] uppercase rs-text-caption rounded-sm flex items-center opacity-60 cursor-not-allowed flex-shrink-0"
+                <div className="h-11 px-5 border border-(--ui-border) bg-(--surface-card-inner) text-[10px] tracking-[1.5px] uppercase rs-text-caption rounded-sm flex items-center opacity-60 cursor-not-allowed shrink-0"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Enviado
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/40 rounded-lg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="flex-shrink-0 mt-0.5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5" className="shrink-0 mt-0.5">
                   <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <div>
@@ -266,7 +266,7 @@ export default function ConfiguracionPage() {
           {sponsorshipState.status === 'ACTIVE' && (
             <div>
               <div className="flex items-start gap-3 p-4 bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800/40 rounded-lg mb-4">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5" className="flex-shrink-0 mt-0.5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5" className="shrink-0 mt-0.5">
                   <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <div>
@@ -292,7 +292,7 @@ export default function ConfiguracionPage() {
         </div>
 
         {/* Pares de Apoyo */}
-        <div className="border border-[var(--ui-border)] rounded-sm bg-[var(--surface-card)] mb-6 p-8">
+        <div className="border border-(--ui-border) rounded-sm bg-(--surface-card) mb-6 p-8">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
@@ -334,7 +334,7 @@ export default function ConfiguracionPage() {
                     value={peerName}
                     onChange={(e) => setPeerName(e.target.value)}
                     placeholder="Ej: María González"
-                    className="h-[40px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
                   />
                 </div>
@@ -345,7 +345,7 @@ export default function ConfiguracionPage() {
                     value={peerPhone}
                     onChange={(e) => setPeerPhone(e.target.value)}
                     placeholder="+52 55 1234 5678"
-                    className="h-[40px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   />
                 </div>
@@ -354,7 +354,7 @@ export default function ConfiguracionPage() {
                   <select
                     value={peerRelationship}
                     onChange={(e) => setPeerRelationship(e.target.value)}
-                    className="h-[40px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
                     <option value="">Selecciona una relación…</option>
@@ -372,7 +372,7 @@ export default function ConfiguracionPage() {
                     value={peerEmail}
                     onChange={(e) => setPeerEmail(e.target.value)}
                     placeholder="correo@ejemplo.com"
-                    className="h-[40px] border border-[var(--ui-border)] bg-[var(--surface-input)] rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   />
                 </div>
@@ -385,7 +385,7 @@ export default function ConfiguracionPage() {
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
-                  className="h-[36px] px-4 border border-[var(--ui-border)] rs-text-caption hover:text-slate-600 rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
+                  className="h-9 px-4 border border-(--ui-border) rs-text-caption hover:text-slate-600 rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Cancelar
@@ -401,7 +401,7 @@ export default function ConfiguracionPage() {
                       setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail("");
                     }
                   }}
-                  className="h-[36px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
+                  className="h-9 px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {isAddingPeer ? "Guardando…" : "Guardar"}

@@ -98,9 +98,9 @@ export default function NotificationBell({ variant = 'blue' }: Props) {
         <div className="flex items-start gap-2">
           {/* Punto de no leído */}
           {!notif.isRead && (
-            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${badgeColor}`} />
+            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${badgeColor}`} />
           )}
-          {notif.isRead && <span className="mt-1.5 w-1.5 h-1.5 flex-shrink-0" />}
+          {notif.isRead && <span className="mt-1.5 w-1.5 h-1.5 shrink-0" />}
 
           <div className="flex-1 min-w-0">
             <p
@@ -178,7 +178,7 @@ export default function NotificationBell({ variant = 'blue' }: Props) {
           {!notif.isRead && !isSponsorReq && (
             <button
               onClick={() => handleMarkOne(notif._id)}
-              className="text-slate-300 hover:text-slate-500 transition-colors flex-shrink-0"
+              className="text-slate-300 hover:text-slate-500 transition-colors shrink-0"
               title="Marcar como leída"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -208,7 +208,7 @@ export default function NotificationBell({ variant = 'blue' }: Props) {
         </svg>
         {unreadCount > 0 && (
           <span
-            className={`absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full ${badgeColor} text-white flex items-center justify-center`}
+            className={`absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full ${badgeColor} text-white flex items-center justify-center`}
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9 }}
           >
             {unreadCount > 9 ? '9+' : unreadCount}

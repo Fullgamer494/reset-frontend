@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useSession } from "@/hooks/useSession";
+import { useAuth } from "@/context/AuthContext";
 import PlantStage, { getPlantLabel } from "@/components/ui/PlantStage";
 
 // Técnica del día — rota según el día de la semana
@@ -18,7 +19,11 @@ const TIPS_DIARIOS = [
 
 export default function InicioPage() {
   const { progress, lastNote, isLoading, error } = useDashboard();
-  const { user, abbreviateName, todayLabel } = useSession();
+  const { user } = useAuth();
+  const initials = user?.name
+    ? user.name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")
+    : "U";
+  const { abbreviateName, todayLabel } = useSession();
   const tip = TIPS_DIARIOS[new Date().getDay() % TIPS_DIARIOS.length];
 
   const sobrietyDays = progress?.sobrietyDays ?? 0;
@@ -41,17 +46,21 @@ export default function InicioPage() {
         >
           {todayLabel()}
         </p>
-        <div className="flex items-center gap-2 rs-text-muted">
-          <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 2C7.23858 2 5 4.23858 5 7C5 9.76142 7.23858 12 10 12C12.7614 12 15 9.76142 15 7C15 4.23858 12.7614 2 10 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 20C2 17.2386 5.58172 15 10 15C14.4183 15 18 17.2386 18 20V22H2V20Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+        <div className="flex items-center gap-2.5">
           <p
             className="text-[12px] font-bold uppercase rs-text-muted"
             style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: "-0.3px" }}
           >
             {firstName ? `Hola, ${firstName}` : "Mi ReSet"}
           </p>
+          <Link
+            href="/dashboard/configuracion"
+            className="w-8 h-8 rounded-full hidden md:flex items-center justify-center shrink-0 bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400 text-[11px] font-bold transition-opacity hover:opacity-80"
+            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            aria-label="Mi perfil"
+          >
+            {initials}
+          </Link>
         </div>
       </header>
 
@@ -115,7 +124,7 @@ export default function InicioPage() {
 
                 {/* Stage label — etapa real según la racha */}
                 <div
-                  className="relative z-10 mt-10 bg-[var(--surface-card)] border border-[rgba(59,130,246,0.2)] dark:border-[rgba(59,130,246,0.15)] h-10 px-8 flex items-center"
+                  className="relative z-10 mt-10 bg-(--surface-card) border border-[rgba(59,130,246,0.2)] dark:border-[rgba(59,130,246,0.15)] h-10 px-8 flex items-center"
                   style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.05)" }}
                 >
                   <span
@@ -422,7 +431,7 @@ export default function InicioPage() {
               {/* Enlace */}
               <Link
                 href="/dashboard/tecnicas"
-                className="shrink-0 h-9 px-5 bg-[var(--surface-card)] border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
+                className="shrink-0 h-9 px-5 bg-(--surface-card) border border-[rgba(59,130,246,0.3)] dark:border-sky-900/40 hover:bg-[#eff6ff] dark:hover:bg-sky-900/20 text-[#3b82f6] dark:text-sky-400 flex items-center transition-colors"
                 style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "1.5px", textTransform: "uppercase" }}
               >
                 Ver todas →
