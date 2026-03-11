@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { isNativePlatform } from "@/lib/platform";
 
 /* ─── Smooth Scroll (lento y fluido) ────────────────────────────────────── */
@@ -308,9 +309,19 @@ function Navbar() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-[60px] flex items-center justify-between">
           <Link
             href="/"
-            className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight hover:text-[#0d9488] transition-colors"
+            className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
           >
-            ReSet
+            <Image
+              src="/logo.png"
+              alt="ReSet logo"
+              width={32}
+              height={32}
+              className="rounded-sm"
+              priority
+            />
+            <span className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight">
+              ReSet
+            </span>
           </Link>
 
           {/* Desktop nav */}

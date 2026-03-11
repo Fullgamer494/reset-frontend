@@ -24,6 +24,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "ReSet — Tu espacio de recuperación",
   description: "Un espacio seguro para sanar, reconectar y florecer en libertad.",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/logo.png", type: "image/png" },
+    ],
+  },
 };
 
 /**
