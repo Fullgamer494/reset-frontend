@@ -25,7 +25,6 @@ export default function ConfiguracionPage() {
     handleTerminateSponsorship,
     setUsername,
     setAddictionType,
-    setSponsorCode,
     handleUpdateProfile,
     handleRemovePeer,
     handleAddPeer,
