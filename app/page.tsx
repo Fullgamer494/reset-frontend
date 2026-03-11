@@ -1,9 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isNativePlatform } from "@/lib/platform";
+
+/* ─── Smooth Scroll (lento y fluido) ────────────────────────────────────── */
+function smoothScrollTo(href: string) {
+  const id = href.replace("#", "");
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = 60;
+  const start = window.scrollY;
+  const target = el.getBoundingClientRect().top + window.scrollY - navH;
+  const duration = 1200;
+  const t0 = performance.now();
+  // easeInOutCubic
+  const ease = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const animate = (now: number) => {
+    const p = Math.min((now - t0) / duration, 1);
+    window.scrollTo(0, start + (target - start) * ease(p));
+    if (p < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    SVG Icons (inline, sin librerías externas)
@@ -263,44 +284,193 @@ function useRevealOnScroll() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Navbar
+   Navbar (con sidebar mobile)
 ───────────────────────────────────────────────────────────────────────────── */
-function Navbar() {
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9] safe-top-bar">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-[60px] flex items-center justify-between">
-        <Link
-          href="/"
-          className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight hover:text-[#0d9488] transition-colors"
-        >
-          ReSet
-        </Link>
+const NAV_ITEMS = [
+  { label: "Pilares",       href: "#pilares" },
+  { label: "Herramientas", href: "#herramientas" },
+  { label: "Móvil",        href: "#movil" },
+  { label: "Comunidad",    href: "#comunidad" },
+];
 
-        <nav className="hidden md:flex items-center gap-8">
-          {[
-            { label: "Pilares", href: "#pilares" },
-            { label: "Herramientas", href: "#herramientas" },
-            { label: "Móvil", href: "#movil" },
-            { label: "Comunidad", href: "#comunidad" },
-          ].map(({ label, href }) => (
+function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setOpen(false);
+    smoothScrollTo(href);
+  };
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9] safe-top-bar">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-[60px] flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight hover:text-[#0d9488] transition-colors"
+          >
+            ReSet
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV_ITEMS.map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                onClick={(e) => handleNav(e, href)}
+                className="nav-link font-jetbrains text-[11px] uppercase tracking-[1.5px] text-[#64748b] hover:text-[#0f172a] transition-colors cursor-pointer"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] px-5 py-2.5 rounded-sm"
+            >
+              Entrar
+            </Link>
+            {/* Hamburger — solo mobile */}
+            <button
+              className="md:hidden flex flex-col justify-center gap-[5px] p-2 ml-1"
+              onClick={() => setOpen(true)}
+              aria-label="Abrir menú"
+            >
+              <span className="block w-5 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+              <span className="block w-5 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+              <span className="block w-3 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Overlay backdrop */}
+      <div
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+        className="md:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px] transition-opacity duration-400"
+        style={{ opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none" }}
+      />
+
+      {/* Sidebar drawer */}
+      <aside
+        className="md:hidden fixed top-0 right-0 h-full w-72 z-[70] bg-white shadow-2xl flex flex-col"
+        style={{
+          transform: open ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+        }}
+        aria-label="Menú de navegación"
+      >
+        {/* Sidebar header */}
+        <div className="flex items-center justify-between px-6 h-[60px] border-b border-[#f1f5f9] shrink-0">
+          <span className="font-playfair italic text-[20px] text-[#0f172a]">ReSet</span>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Cerrar menú"
+            className="text-[#94a3b8] hover:text-[#0f172a] transition-colors p-1"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Nav items */}
+        <nav className="flex flex-col flex-1 py-4 px-4 overflow-y-auto">
+          {NAV_ITEMS.map(({ label, href }, i) => (
             <a
               key={label}
               href={href}
-              className="nav-link font-jetbrains text-[11px] uppercase tracking-[1.5px] text-[#64748b] hover:text-[#0f172a] transition-colors"
+              onClick={(e) => handleNav(e, href)}
+              className="flex items-center justify-between px-2 py-4 border-b border-[#f8fafc] font-jetbrains text-[12px] uppercase tracking-[2px] text-[#0f172a] hover:text-[#0d9488] hover:pl-4 transition-all cursor-pointer"
+              style={{
+                transitionDuration: "0.3s",
+                transitionDelay: open ? `${i * 60}ms` : "0ms",
+                opacity: open ? 1 : 0,
+                transform: open ? "translateX(0)" : "translateX(16px)",
+              }}
             >
               {label}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </a>
           ))}
         </nav>
 
-        <Link
-          href="/login"
-          className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] px-5 py-2.5 rounded-sm"
-        >
-          Entrar
-        </Link>
-      </div>
-    </header>
+        {/* CTA */}
+        <div className="px-6 py-6 border-t border-[#f1f5f9] shrink-0">
+          <Link
+            href="/login"
+            onClick={() => setOpen(false)}
+            className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] py-3.5 rounded-sm w-full flex items-center justify-center gap-2"
+          >
+            Entrar a ReSet
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+          <p className="font-jetbrains text-[10px] uppercase tracking-[1px] text-[#94a3b8] text-center mt-3">
+            cada paso, un día a la paz.
+          </p>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Back To Top Button
+───────────────────────────────────────────────────────────────────────────── */
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight;
+      const total = document.documentElement.scrollHeight;
+      setVisible(scrolled > total * 0.72);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    const start = window.scrollY;
+    const duration = 1400;
+    const t0 = performance.now();
+    // easeOutQuart — desacelera suavemente al llegar al top
+    const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+    const animate = (now: number) => {
+      const p = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, start * (1 - ease(p)));
+      if (p < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  };
+
+  return (
+    <button
+      onClick={scrollToTop}
+      aria-label="Volver al inicio de la página"
+      className="fixed bottom-8 right-6 z-40 w-12 h-12 rounded-full flex items-center justify-center shadow-xl"
+      style={{
+        background: "linear-gradient(135deg, #0d9488 0%, #0891b2 100%)",
+        boxShadow: "0 4px 18px rgba(13,148,136,0.35)",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0) scale(1)" : "translateY(16px) scale(0.85)",
+        pointerEvents: visible ? "auto" : "none",
+        transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)",
+      }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2">
+        <path d="M4.5 15.75l7.5-7.5 7.5 7.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
   );
 }
 
@@ -319,16 +489,16 @@ function HeroSection() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-12 sm:py-24 flex items-center gap-16 w-full">
         {/* Copy */}
         <div className="flex-1 min-w-0 flex flex-col gap-6">
-          <p className="landing-hero-label font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+          <p className="landing-hero-label font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
             — Tu espacio de acompañamiento
           </p>
-          <h1 className="landing-hero-h1 font-playfair text-[clamp(36px,8vw,96px)] leading-[1] text-[#0f172a]">
+          <h1 className="landing-hero-h1 font-playfair text-[clamp(48px,8vw,108px)] leading-[1] text-[#0f172a]">
             Tu momento
             <br />
             <em>de ReSet</em>
           </h1>
           <p
-            className="landing-hero-desc text-[18px] text-[#64748b] leading-[1.65] max-w-[440px]"
+            className="landing-hero-desc text-[20px] text-[#64748b] leading-[1.65] max-w-[460px]"
             style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
           >
             ReSet es tu espacio digital de apoyo para el proceso de recuperación. Un lugar tranquilo para registrar tu avance, mantener el contacto con tu red y acceder a herramientas pensadas para cada etapa del camino.
@@ -408,10 +578,10 @@ function PilaresSection() {
     <section id="pilares" className="py-16 sm:py-32 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="text-center mb-16 reveal">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488] mb-4">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488] mb-4">
             — Metodología ReSet
           </p>
-          <h2 className="font-playfair text-[clamp(32px,5vw,56px)] text-[#0f172a]">
+          <h2 className="font-playfair text-[clamp(38px,5vw,68px)] text-[#0f172a]">
             Los tres pilares de tu calma
           </h2>
         </div>
@@ -465,22 +635,57 @@ function PilaresSection() {
 function HerbarioSection() {
   const tools = [
     {
-      emoji: "🌱",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <line x1="18" y1="32" x2="18" y2="14" stroke="#0d9488" strokeWidth="2" strokeLinecap="round" />
+          <path d="M18 24 Q12 20 9 13 Q17 13 18 22" fill="#0d9488" opacity="0.75" />
+          <path d="M18 20 Q24 16 27 9 Q19 11 18 20" fill="#0d9488" opacity="0.75" />
+          <ellipse cx="18" cy="33" rx="7" ry="2.5" fill="#1e293b" />
+        </svg>
+      ),
       title: "Racha de hábitos",
       desc: "Cada día que eliges avanzar queda grabado en tu jardín. Tu planta crece con cada jornada de compromiso contigo mismo.",
     },
     {
-      emoji: "🫁",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="14" r="8" stroke="#0ea5e9" strokeWidth="1.8" fill="none" />
+          <path d="M15 11 Q18 8 21 11 Q22 13 18 16 Q14 13 15 11Z" fill="#0ea5e9" opacity="0.5" />
+          <line x1="18" y1="22" x2="18" y2="26" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" />
+          <line x1="14" y1="26" x2="22" y2="26" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      ),
       title: "Técnicas de acompañamiento",
       desc: "Recursos diferenciados según tu rol: técnicas de autoregistro y manejo de cravings si estás en recuperación, o guías de acompañamiento si eres padrino o apoyo de alguien.",
     },
     {
-      emoji: "📓",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect x="7" y="5" width="20" height="26" rx="2" stroke="#f1c40f" strokeWidth="1.8" fill="none" />
+          <line x1="12" y1="13" x2="24" y2="13" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="18" x2="24" y2="18" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="23" x2="18" y2="23" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="7" cy="13" r="3" fill="#f1c40f" opacity="0.5" />
+          <circle cx="7" cy="18" r="3" fill="#f1c40f" opacity="0.5" />
+        </svg>
+      ),
       title: "Bitácora de estados",
       desc: "Escribe lo que sientes cuando lo sientes: estado de ánimo, nivel de craving, reflexiones cortas. Un espejo honesto sin juicio.",
     },
     {
-      emoji: "🔗",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="18" r="4" stroke="#a78bfa" strokeWidth="1.8" fill="none" />
+          <circle cx="7" cy="10" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="29" cy="10" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="7" cy="26" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="29" cy="26" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <line x1="14.5" y1="16" x2="10" y2="12" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="21.5" y1="16" x2="27" y2="12" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="14.5" y1="20" x2="10" y2="24" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="21.5" y1="20" x2="27" y2="24" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+        </svg>
+      ),
       title: "Red de confianza",
       desc: "Designa personas de tu círculo cercano. Cuando lo necesites, recibirán una notificación y un correo de alerta con un mensaje tuyo.",
     },
@@ -497,15 +702,15 @@ function HerbarioSection() {
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="text-center mb-16 reveal">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488] mb-4">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488] mb-4">
             — Herramientas para cada etapa
           </p>
-          <h2 className="font-playfair text-[clamp(32px,5vw,52px)] text-white">
+          <h2 className="font-playfair text-[clamp(38px,5vw,64px)] text-white">
             Tu kit de{" "}
             <em>recuperación</em>
           </h2>
           <p
-            className="mt-6 text-[16px] text-[#64748b] max-w-[520px] mx-auto leading-relaxed"
+            className="mt-6 text-[18px] text-[#64748b] max-w-[520px] mx-auto leading-relaxed"
             style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
           >
             Un lugar para respirar, registrar y empezar de nuevo. Cada herramienta en ReSet está pensada para acompañarte, sin prisa y sin juicio.
@@ -513,14 +718,14 @@ function HerbarioSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-0 border border-white/10 reveal">
-          {tools.map(({ emoji, title, desc }, i) => (
+          {tools.map(({ icon, title, desc }, i) => (
             <div
               key={title}
               className={`flex flex-col gap-4 p-5 sm:p-8 ${
                 i < 3 ? "border-b sm:border-b-0 sm:border-r border-white/10" : ""
               } hover:bg-white/5 transition-colors`}
             >
-              <span className="text-3xl">{emoji}</span>
+              <span>{icon}</span>
               <h3 className="font-playfair text-[18px] text-white italic">{title}</h3>
               <p
                 className="text-[13px] text-[#64748b] leading-relaxed"
@@ -605,16 +810,16 @@ function MobileSection() {
 
           {/* Texto */}
           <div className="flex-1 flex flex-col gap-5 reveal-right text-center lg:text-left">
-            <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+            <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
               — Acceso multiplataforma
             </p>
-            <h2 className="font-playfair text-[clamp(28px,4vw,44px)] text-[#0f172a] leading-tight">
+            <h2 className="font-playfair text-[clamp(34px,4vw,56px)] text-[#0f172a] leading-tight">
               Lleva tu recuperación
               <br />
               <em>en el bolsillo</em>
             </h2>
             <p
-              className="text-[16px] text-[#64748b] leading-relaxed max-w-[480px] mx-auto lg:mx-0"
+              className="text-[18px] text-[#64748b] leading-relaxed max-w-[480px] mx-auto lg:mx-0"
               style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
             >
               ReSet funciona en cualquier dispositivo: accede a tus herramientas, escribe en tu bitácora o contacta a tu red de apoyo desde el móvil, la tablet o la web, sin instalar nada adicional.
@@ -683,10 +888,10 @@ function ComunidadSection() {
 
         {/* Texto */}
         <div className="flex-1 min-w-0 flex flex-col gap-6 reveal-right">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
             — Espacios de encuentro
           </p>
-          <h2 className="font-playfair text-[clamp(36px,5vw,52px)] leading-[1.1] text-[#0f172a]">
+          <h2 className="font-playfair text-[clamp(40px,5vw,64px)] leading-[1.1] text-[#0f172a]">
             Nunca camines
             <br />
             <em>en soledad</em>
@@ -852,6 +1057,7 @@ export default function LandingPage() {
         <ComunidadSection />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

@@ -212,7 +212,7 @@ export default function RegisterPage() {
         </span>
       </Link>
       {/* Layout: columna única en móvil, 2 columnas en desktop (lg+) */}
-      <div className="w-full max-w-230 flex flex-col gap-6">
+      <div className="w-full max-w-230 flex flex-col gap-6 mt-14 sm:mt-16 lg:mt-0">
 
         {/* ── Selector de perfil ──────────────────────────────────────────── */}
         <div

@@ -221,6 +221,37 @@ body {
   padding-bottom: calc(var(--safe-inset-bottom) + 0.5rem);
 }
 
+/*
+ * ── Android WebView / Capacitor ───────────────────────────────────────────
+ *
+ * h-dvh no tiene soporte garantizado en el WebView de Capacitor en Android
+ * antiguo. `h-fill` proporciona el fallback correcto: 100vh por defecto y
+ * 100dvh en navegadores modernos que sí lo soportan.
+ */
+.h-fill {
+  height: 100vh;    /* fallback Android WebView < 108 */
+  height: 100dvh;   /* navegadores modernos */
+}
+
+/*
+ * Contenedor de scroll optimizado para Capacitor Android.
+ * — -webkit-overflow-scrolling:touch activa el scroll por inercia en WebView.
+ * — overscroll-behavior-y:contain evita que el scroll se "escape" al padre
+ *   y previene el pull-to-refresh nativo que causa artefactos visuales.
+ */
+.native-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/*
+ * Evitar el pull-to-refresh global del sistema en Capacitor.
+ * En una app nativa no tiene sentido y provoca glitches de repintado.
+ */
+html, body {
+  overscroll-behavior: none;
+}
+
 /* Toggle switch */
 .toggle-switch {
   position: relative;

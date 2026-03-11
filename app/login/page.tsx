@@ -99,6 +99,23 @@ export default function LoginPage() {
     <div
       className="min-h-screen w-full flex items-center justify-center relative overflow-hidden safe-top-padding login-bg"
     >
+      {/* ── Botón volver a la landing ────────────────────────────────────── */}
+      <Link
+        href="/"
+        className="fixed top-4 left-4 z-20 flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
+        aria-label="Volver al inicio"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span
+          className="text-[11px] tracking-[1.5px] uppercase"
+          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+        >
+          Inicio
+        </span>
+      </Link>
+
       {/* ── Engrane grande — inferior derecha ────────────────────────────── */}
       <div
         className="absolute pointer-events-none select-none animate-spin-gear hidden sm:block"
