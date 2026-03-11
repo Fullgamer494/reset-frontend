@@ -29,7 +29,6 @@ export default function ConfiguracionPage() {
     handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
-    handleAssignSponsor,
   } = useConfiguracion();
 
   // Estado local del formulario de "Añadir Par"
