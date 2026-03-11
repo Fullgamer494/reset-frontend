@@ -148,22 +148,22 @@ export default function InicioPage() {
 
               {/* Stats \u2014 borde superior en m\u00f3vil, borde izquierdo en sm+ */}
               <div
-                className="flex flex-col justify-center px-6 py-8 sm:px-12 sm:py-12 border-t-2 border-[rgba(59,130,246,0.1)] dark:border-[rgba(96,165,250,0.12)] sm:border-t-0 sm:border-l-2"
+                className="flex flex-col justify-center items-center sm:items-start px-8 py-10 sm:px-12 sm:py-12 border-t-2 border-[rgba(59,130,246,0.1)] dark:border-[rgba(96,165,250,0.12)] sm:border-t-0 sm:border-l-2"
               >
                 <p
-                  className="font-jetbrains uppercase text-[11px] text-[#1a365d] dark:text-sky-400 mb-8 tracking-[4px]"
+                  className="font-jetbrains uppercase text-[11px] text-[#1a365d] dark:text-sky-400 mb-8 tracking-[4px] text-center sm:text-left"
                 >
                   Mi Progreso
                 </p>
 
                 {/* Counter — días de racha reales */}
-                <div className="flex items-end gap-4 mb-10">
+                <div className="flex items-end gap-4 mb-10 justify-center sm:justify-start">
                   <span
-                    className="font-playfair font-bold italic leading-none text-[#1a365d] dark:text-slate-100 text-[58px] sm:text-[100px] md:text-[128px]"
+                    className="font-playfair font-bold italic leading-none text-[#1a365d] dark:text-slate-100 text-[64px] sm:text-[100px] md:text-[128px]"
                   >
                     {isLoading ? "—" : sobrietyDays}
                   </span>
-                  <div className="pb-5">
+                  <div className="pb-4 sm:pb-5">
                     {/* "días" / "cumplidos" \u2014 tama\u00f1os responsivos */}
                     <p
                       className="font-playfair italic text-[rgba(26,54,93,0.8)] dark:text-slate-200 leading-none text-[22px] sm:text-[30px]"
