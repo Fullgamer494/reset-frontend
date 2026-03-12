@@ -14,12 +14,12 @@ export interface RegisterData {
   role?: "ADICTO" | "PADRINO";
 }
 
-export interface AuthResponse {
-  accessToken: string;
-  user: User;
+export interface AddictionData {
+  custom_name: string;
+  classification: string;
+  is_active: boolean;
+  registered_at: string;
 }
-
-// ─── User ────────────────────────────────────────────────────────────────────
 
 export interface User {
   id: string;
@@ -27,9 +27,14 @@ export interface User {
   email: string;
   role: "ADICTO" | "PADRINO";
   sponsorCode?: string | null;
+  avatarUrl?: string | null;
   createdAt: string;
-  /** @deprecated Solo disponible en mocks — la API no devuelve addictionType */
-  addictionType?: string;
+  addiction?: AddictionData | null;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'sponsorCode'>;
 }
 
 // ─── Dashboard / Progress ────────────────────────────────────────────────────

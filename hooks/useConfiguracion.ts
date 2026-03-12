@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { getContacts, addContact } from "@/lib/api/emergency";
 import { requestSponsorship, terminateSponsorship } from "@/lib/api/sponsorship";
 import { useAuth } from "@/context/AuthContext";
+import { deleteAccount } from "@/lib/api/auth";
 import type { SupportPeer } from "@/types";
 
 // Estado del sponsorship del adicto (PENDING | ACTIVE | NONE)
@@ -14,11 +16,12 @@ export interface SponsorshipState {
 }
 
 export function useConfiguracion() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, clearAuth } = useAuth();
+  const router = useRouter();
 
   // Precarga el nombre del usuario autenticado
   const [username, setUsername] = useState(user?.name ?? "");
-  const [addictionType, setAddictionType] = useState(user?.addictionType ?? "");
+  const [addictionType, setAddictionType] = useState(user?.addiction?.custom_name ?? "");
   const [emergencyNotifs, setEmergencyNotifs] = useState(true);
   const [peers, setPeers] = useState<SupportPeer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,8 +44,8 @@ export function useConfiguracion() {
 
   // Sincronizar tipo de adicción cuando el usuario se carga desde storage
   useEffect(() => {
-    if (user?.addictionType) setAddictionType(user.addictionType);
-  }, [user?.addictionType]);
+    if (user?.addiction?.custom_name) setAddictionType(user.addiction.custom_name);
+  }, [user?.addiction?.custom_name]);
 
   // Cargar contactos de emergencia (= pares de apoyo en la UI)
   useEffect(() => {
@@ -168,6 +171,20 @@ export function useConfiguracion() {
     }
   };
 
+  // ── Borrado de cuenta ──────────────────────────────────────────────────
+  const [isDeleting, setIsDeleting] = useState(false);
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAccount();
+      clearAuth();
+      router.push("/login?deleted=true");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo borrar la cuenta.");
+      setIsDeleting(false);
+    }
+  };
+
   return {
     username,
     addictionType,
@@ -175,6 +192,7 @@ export function useConfiguracion() {
     peers,
     isLoading,
     isSaving,
+    isDeleting,
     error,
     /** Error exclusivo del formulario de añadir contacto. */
     peerError,
@@ -187,6 +205,7 @@ export function useConfiguracion() {
     sponsorshipError,
     handleRequestSponsorship,
     handleTerminateSponsorship,
+    handleDeleteAccount,
     setUsername,
     handleUpdateProfile,
     handleRemovePeer,

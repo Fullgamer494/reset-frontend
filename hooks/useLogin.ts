@@ -2,19 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api/auth";
+import { login, getProfile } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 
 export function useLogin() {
   const router = useRouter();
-  const { saveAuth } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const { saveAuth, clearAuth } = useAuth();
+  const [form, setForm] = useState({ 
+    email: "", 
+    password: "",
+    rememberMe: false 
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({ 
+      ...prev, 
+      [name]: type === 'checkbox' ? checked : value 
+    }));
     setError(null);
   };
 
@@ -40,14 +48,27 @@ export function useLogin() {
     setIsLoading(true);
     setError(null);
     try {
-      const { accessToken, user } = await login({
+      // 1. Login básico (obtenemos accessToken)
+      const loginResult = await login({
         email: form.email,
         password: form.password,
+        rememberMe: form.rememberMe,
       });
-      saveAuth(accessToken, user);
-      router.push(user.role === "PADRINO" ? "/acompanante" : "/dashboard");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Correo o contraseña incorrectos.');
+
+      // 2. Obtener perfil completo inmediatamente
+      const profileResult = await getProfile();
+
+      // 3. Guardar en el contexto (TOKEN primero, luego USER)
+      saveAuth(loginResult.accessToken, profileResult);
+      
+      router.push(profileResult.role === "PADRINO" ? "/acompanante" : "/dashboard");
+    } catch (err: any) {
+      if (err.code === 'EMAIL_NOT_VERIFIED') {
+        setError("Tu cuenta aún no ha sido verificada. Revisa tu correo electrónico para activarla.");
+      } else {
+        setError(err.message || "Credenciales incorrectas o problema de conexión.");
+      }
+      clearAuth(); 
     } finally {
       setIsLoading(false);
     }

@@ -20,23 +20,14 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
+import { User } from '@/types';
+import { getProfile } from '@/lib/api/auth';
 import { setToken } from '@/lib/api/client';
 import { storageSave, storageGet, storageRemove, STORAGE_KEYS } from '@/lib/storage';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
-export interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  role: 'ADICTO' | 'PADRINO';
-  /** Código de 8 caracteres del padrino — solo presente si role = 'PADRINO' */
-  sponsorCode?: string | null;
-  /** URL del avatar generado por DiceBear u otro servicio — null si no disponible */
-  avatarUrl?: string | null;
-  /** Nombre de la adición — solo presente si role = 'ADICTO' */
-  addictionType?: string | null;
-}
+export type AuthUser = User;
 
 interface AuthCtx {
   user: AuthUser | null;
@@ -67,33 +58,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function restoreSession() {
       try {
-        const [token, raw] = await Promise.all([
-          storageGet(STORAGE_KEYS.TOKEN),
-          storageGet(STORAGE_KEYS.USER),
-        ]);
-        if (token && raw) {
-          const parsedUser = JSON.parse(raw) as AuthUser;
-
-          // Sesión antigua: si el PADRINO no tiene sponsorCode guardado,
-          // intentar extraerlo del JWT (payload público — no requiere red).
-          if (parsedUser.role === 'PADRINO' && !parsedUser.sponsorCode) {
-            try {
-              const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-              const payload = JSON.parse(atob(b64)) as Record<string, unknown>;
-              const extracted = (payload.sponsorCode ?? payload.sponsor_code ?? null) as string | null;
-              if (extracted) {
-                parsedUser.sponsorCode = extracted;
-                // Actualizar storage con el dato recuperado
-                storageSave(STORAGE_KEYS.USER, JSON.stringify(parsedUser)).catch(() => {});
-              }
-            } catch { /* JWT malformado — ignorar */ }
-          }
-
+        const token = await storageGet(STORAGE_KEYS.TOKEN);
+        if (token) {
           setToken(token);   // pone el token en memoria para las llamadas HTTP
-          setUser(parsedUser);
+          
+          // Intentar obtener el perfil fresco del servidor
+          try {
+            const profile = await getProfile();
+            setUser(profile);
+            // Sincronizar storage con los datos frescos
+            storageSave(STORAGE_KEYS.USER, JSON.stringify(profile)).catch(() => {});
+          } catch (error) {
+            console.error("Error al restaurar sesión desde el servidor:", error);
+            // Si el servidor falla, intentar usar los datos locales como fallback
+            const raw = await storageGet(STORAGE_KEYS.USER);
+            if (raw) {
+              setUser(JSON.parse(raw) as AuthUser);
+            } else {
+              // Si no hay datos locales tampoco, limpiar sesión
+              clearAuth();
+            }
+          }
         }
       } catch {
-        // Si el storage está corrupto, seguir sin sesión (pedirá login)
+        // Al error de storage, seguimos sin sesión
       } finally {
         setIsRestoring(false);
       }
@@ -121,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ── Actualización parcial del usuario ────────────────────────────────────
   const updateUser = (partial: Partial<AuthUser>) => {
-    setUser((prev) => {
+    setUser((prev: AuthUser | null) => {
       if (!prev) return prev;
       const updated = { ...prev, ...partial };
       // Mantener storage sincronizado

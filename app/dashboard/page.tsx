@@ -70,7 +70,7 @@ export default function InicioPage() {
             aria-label="Mi perfil"
           >
             {user?.id
-              ? <img src={getAvatarUrl(user.id)} alt={initials} className="w-full h-full object-cover" />
+              ? <img src={getAvatarUrl(user.avatarUrl, user.id)} alt={initials} className="w-full h-full object-cover" />
               : initials}
           </Link>
         </div>

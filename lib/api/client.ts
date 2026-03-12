@@ -40,16 +40,21 @@ export async function apiRequest<T>(
       ...options,
       headers,
       signal: controller.signal,
+      credentials: 'include', // Requerido para device_id y 2FA
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({})) as { message?: string | string[]; error?: string };
-      // NestJS ValidationPipe puede devolver message como array de cadenas
+      const err = await res.json().catch(() => ({})) as { 
+        message?: string | string[]; 
+        error?: string;
+        code?: string; // Nuevo: Código de error específico
+      };
+      
       const rawMsg = err.message;
       const msg = Array.isArray(rawMsg)
-        ? rawMsg[0]                      // primera falla de validación
+        ? rawMsg[0]
         : (rawMsg ?? '');
-      // Mensajes legibles para los códigos de estado más comunes
+
       const fallbacks: Record<number, string> = {
         401: 'Correo o contraseña incorrectos.',
         403: 'No tienes permiso para realizar esta acción.',
@@ -59,7 +64,13 @@ export async function apiRequest<T>(
         429: 'Demasiados intentos. Espera un momento antes de volver a intentarlo.',
         500: 'Error interno del servidor. Inténtalo de nuevo más tarde.',
       };
-      throw new Error(msg || fallbacks[res.status] || `Error ${res.status}`);
+
+      // Adjuntamos el código al objeto de error si existe
+      const errorMessage = msg || fallbacks[res.status] || `Error ${res.status}`;
+      const errorObject = new Error(errorMessage) as any;
+      if (err.code) errorObject.code = err.code;
+      
+      throw errorObject;
     }
 
     const result = await res.json() as any;

@@ -13,6 +13,7 @@ export default function ConfiguracionPage() {
     peers,
     isLoading,
     isSaving,
+    isDeleting,
     error,
     peerError,
     saved,
@@ -23,12 +24,16 @@ export default function ConfiguracionPage() {
     sponsorshipError,
     handleRequestSponsorship,
     handleTerminateSponsorship,
+    handleDeleteAccount,
     setUsername,
     handleUpdateProfile,
     handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
   } = useConfiguracion();
+
+  // Estado local para confirmación de borrado
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Estado local del formulario de "Añadir Par"
   const [showAddPeer, setShowAddPeer] = useState(false);
@@ -429,8 +434,61 @@ export default function ConfiguracionPage() {
 
         </div>
 
+        {/* Zona de Peligro / Borrar Cuenta */}
+        <div className="mt-12 pt-8 border-t border-red-100 dark:border-red-900/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-red-500 mb-1">
+                Zona de Peligro
+              </h3>
+              <p className="font-playfair text-[13px] italic rs-text-caption">
+                Una vez eliminada, no podrás recuperar tu información ni acceder de nuevo.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="font-jetbrains h-10 px-6 border border-red-200 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-[10px] tracking-[1.5px] uppercase"
+            >
+              Borrar mi cuenta
+            </button>
+          </div>
+        </div>
+
+        {/* Modal de Confirmación de Borrado */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+            <div className="bg-(--surface-card) border border-(--ui-border) rounded-2xl max-w-sm w-full p-8 shadow-2xl animate-scale-in">
+              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-6 mx-auto">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
+                  <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h3 className="font-playfair text-xl text-center rs-text-heading mb-3">¿Estás seguro?</h3>
+              <p className="font-jetbrains text-[12px] text-center rs-text-muted mb-8 leading-relaxed">
+                Esta acción es irreversible y eliminará todo tu progreso. No enviamos notificaciones de borrado a tus contactos.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="w-full h-12 bg-red-500 hover:bg-red-600 text-white rounded-xl font-jetbrains text-[11px] tracking-[2px] uppercase transition-all shadow-lg shadow-red-500/20"
+                >
+                  {isDeleting ? "Eliminando..." : "Sí, borrar cuenta"}
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                  className="w-full h-12 border border-(--ui-border) rs-text-body rs-hover-card rounded-xl font-jetbrains text-[11px] tracking-[2px] uppercase transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Footer responsivo */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100 dark:border-slate-700/30">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100 dark:border-slate-700/30 mt-12">
           <p
             className="font-jetbrains text-[11px] tracking-[0.9px] uppercase rs-text-caption italic"
           >
