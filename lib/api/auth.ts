@@ -31,6 +31,13 @@ export interface LoginPayload {
 export interface AuthBasicResult {
   accessToken: string;
   user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'sponsorCode'>;
+  code?: string;
+  mfaToken?: string;
+}
+
+export interface Verify2FAPayload {
+  mfaToken: string;
+  code: string;
 }
 
 /**
@@ -69,6 +76,43 @@ export async function login(payload: LoginPayload): Promise<AuthBasicResult> {
       password: payload.password,
       rememberMe: payload.rememberMe,
     }),
+  });
+  const data = res?.data ?? res;
+
+  if (data?.code === '2FA_REQUIRED') {
+    return {
+      accessToken: '',
+      user: { id: '', name: '', email: '', role: 'ADICTO', sponsorCode: null },
+      code: '2FA_REQUIRED',
+      mfaToken: data.mfaToken,
+    };
+  }
+
+  const token: string = data?.accessToken ?? '';
+
+  if (token) setToken(token);
+
+  const apiUser = data?.user ?? {};
+
+  return {
+    accessToken: token,
+    user: {
+      id: apiUser.id ?? '',
+      name: apiUser.name ?? '',
+      email: apiUser.email ?? '',
+      role: (apiUser.role === 'PADRINO' ? 'PADRINO' : 'ADICTO') as 'ADICTO' | 'PADRINO',
+      sponsorCode: apiUser.sponsorCode ?? apiUser.sponsor_code ?? null,
+    },
+  };
+}
+
+/**
+ * Verifica el código OTP para completar el login con 2FA.
+ */
+export async function verify2FA(payload: Verify2FAPayload): Promise<AuthBasicResult> {
+  const res: any = await apiRequest('/auth/verify-2fa', {
+    method: 'POST',
+    body: JSON.stringify(payload),
   });
 
   const data = res?.data ?? res;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, getProfile } from "@/lib/api/auth";
+import { login, getProfile, verify2FA } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
 
 export function useLogin() {
@@ -13,6 +13,8 @@ export function useLogin() {
     password: "",
     rememberMe: false 
   });
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
+  const [otpCode, setOtpCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +57,12 @@ export function useLogin() {
         rememberMe: form.rememberMe,
       });
 
+      if (loginResult.code === '2FA_REQUIRED') {
+        setMfaToken(loginResult.mfaToken || null);
+        setIsLoading(false);
+        return; // Detener flujo para mostrar OTP
+      }
+
       // 2. Obtener perfil completo inmediatamente
       const profileResult = await getProfile();
 
@@ -74,13 +82,43 @@ export function useLogin() {
     }
   };
 
+  const handleVerify2FA = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otpCode || otpCode.length !== 6) {
+      setError("Ingresa el código de 6 dígitos.");
+      return;
+    }
+    if (!mfaToken) {
+      setError("Sesión de verificación expirada. Intenta login de nuevo.");
+      setMfaToken(null);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const verifyResult = await verify2FA({ mfaToken, code: otpCode });
+      const profileResult = await getProfile();
+      saveAuth(verifyResult.accessToken, profileResult);
+      router.push(profileResult.role === "PADRINO" ? "/acompanante" : "/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Código incorrecto o expirado.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     form,
+    otpCode,
+    setOtpCode,
+    mfaToken,
     showPassword,
     isLoading,
     error,
     setShowPassword,
     handleChange,
     handleSubmit,
+    handleVerify2FA,
   };
 }
