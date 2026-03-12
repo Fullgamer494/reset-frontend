@@ -26,10 +26,14 @@ export const metadata: Metadata = {
   description: "Un espacio seguro para sanar, reconectar y florecer en libertad.",
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/logo.png", type: "image/png", sizes: "192x192" },
+      { url: "/logo.png", type: "image/png", sizes: "32x32" },
+      { url: "/logo.png", type: "image/png", sizes: "16x16" },
     ],
+    shortcut: "/logo.png",
     apple: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/logo.png", type: "image/png", sizes: "180x180" },
     ],
   },
 };
