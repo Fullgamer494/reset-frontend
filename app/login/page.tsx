@@ -419,12 +419,12 @@ export default function LoginPage() {
 
           {/* Enlace de registro */}
           <div className="px-6 py-5 sm:px-9 flex items-center justify-center gap-1 login-card-footer">
-            <span className="text-sm italic font-playfair" style={{ color: 'var(--ui-text-body)' }}>
+            <span className="text-sm font-jetbrains" style={{ color: 'var(--ui-text-body)' }}>
               ¿No tienes cuenta?{" "}
             </span>
             <Link
               href="/register"
-              className="text-sm italic font-bold font-playfair text-sky-500 hover:text-sky-600 transition-colors"
+              className="text-sm font-bold font-jetbrains text-sky-500 hover:text-sky-600 transition-colors"
             >
               Regístrate
             </Link>
@@ -432,10 +432,10 @@ export default function LoginPage() {
         </div>
 
         {/* Footer mínimo */}
-        <p className="text-[11px] tracking-[1px] uppercase font-jetbrains text-center mt-6 italic" style={{ color: 'var(--ui-text-caption)' }}>
+        <p className="text-[11px] tracking-[1px] uppercase font-jetbrains text-center mt-6" style={{ color: 'var(--ui-text-caption)' }}>
           cada paso, un día a la paz.
         </p>
-        <p className="text-[10px] tracking-[0.5px] font-jetbrains text-center mt-3" style={{ color: 'var(--ui-text-caption)' }}>
+        <p className="text-[11px] tracking-[0.5px] font-jetbrains text-center mt-3" style={{ color: 'var(--ui-text-caption)' }}>
           Al usar ReSet aceptas nuestros{" "}
           <Link href="/terms" className="text-sky-500 hover:underline uppercase tracking-[0.5px]">
             Términos y Condiciones

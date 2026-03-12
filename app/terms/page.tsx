@@ -25,7 +25,7 @@ export default function TermsPage() {
           <span className="text-[11px] tracking-[1.5px] uppercase font-jetbrains">Volver</span>
         </button>
         <div className="flex-1" />
-        <span className="text-[10px] tracking-[1px] uppercase font-jetbrains" style={{ color: "var(--ui-text-caption)" }}>
+        <span className="text-[11px] tracking-[1px] uppercase font-jetbrains" style={{ color: "var(--ui-text-caption)" }}>
           Última actualización: {LAST_UPDATED}
         </span>
       </div>

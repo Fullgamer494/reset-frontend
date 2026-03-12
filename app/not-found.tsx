@@ -214,7 +214,7 @@ export default function NotFound() {
 
         {/* Footer mínimo */}
         <p
-          className="font-jetbrains text-[10px] uppercase tracking-[1px] italic mt-4"
+          className="font-jetbrains text-[11px] uppercase tracking-[1px] mt-4"
           style={{ color: "#94a3b8" }}
         >
           cada paso, un día a la paz.

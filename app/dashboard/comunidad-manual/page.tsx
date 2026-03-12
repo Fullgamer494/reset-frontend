@@ -70,7 +70,7 @@ export default function ComunidadManualPage() {
         </Link>
         <div>
           <p
-            className="text-[10px] tracking-[2px] uppercase"
+            className="text-[11px] tracking-[2px] uppercase"
             style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--ui-text-caption)" }}
           >
             Comunidad ReSet
@@ -89,7 +89,7 @@ export default function ComunidadManualPage() {
 
         {/* Intro */}
         <p
-          className="text-[15px] italic leading-relaxed"
+          className="text-[15px] leading-relaxed"
           style={{ fontFamily: "'Playfair Display', serif", color: "var(--ui-text-muted)" }}
         >
           Este espacio está diseñado para el acompañamiento mutuo, el respeto y el crecimiento compartido. Por favor lee estas pautas antes de participar.

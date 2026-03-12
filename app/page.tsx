@@ -425,7 +425,7 @@ function Navbar() {
               <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
-          <p className="font-jetbrains text-[10px] uppercase tracking-[1px] text-[#94a3b8] text-center mt-3">
+          <p className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] text-center mt-3">
             cada paso, un día a la paz.
           </p>
         </div>

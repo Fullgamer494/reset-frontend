@@ -54,7 +54,7 @@ export default function BitacoraPage() {
             Bitácora Diaria
           </h1>
           <p
-            className="font-playfair text-[12px] italic rs-text-caption"
+            className="font-jetbrains text-[13px] rs-text-caption"
           >
             Cada entrada queda guardada y ordenada en el tiempo.
           </p>
@@ -99,8 +99,8 @@ export default function BitacoraPage() {
                 style={{ background: moodTrack, accentColor: moodColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="font-jetbrains text-[10px] rs-text-caption">Muy bajo</span>
-                <span className="font-jetbrains text-[10px] rs-text-caption">Muy alto</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy bajo</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy alto</span>
               </div>
             </div>
 
@@ -128,8 +128,8 @@ export default function BitacoraPage() {
                 style={{ background: cravingTrack, accentColor: cravingColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="font-jetbrains text-[10px] rs-text-caption">Sin deseo</span>
-                <span className="font-jetbrains text-[10px] rs-text-caption">Muy intenso</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Sin deseo</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy intenso</span>
               </div>
             </div>
 
@@ -144,7 +144,7 @@ export default function BitacoraPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Dale un título a esta entrada..."
-              className="font-playfair italic w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 text-[14px] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
+              className="font-jetbrains w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 text-[14px] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
             />
 
             {/* Notas */}
@@ -158,7 +158,7 @@ export default function BitacoraPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Escribe aquí lo que tu alma necesite expresar..."
               rows={4}
-              className="font-playfair italic w-full bg-transparent border border-(--ui-border) rounded-lg p-4 text-[14px] leading-[1.8] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
+              className="font-jetbrains w-full bg-transparent border border-(--ui-border) rounded-lg p-4 text-[14px] leading-[1.8] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
             />
 
             {/* Toggle consumo */}
@@ -170,7 +170,7 @@ export default function BitacoraPage() {
                   ¿Consumiste hoy?
                 </p>
                 <p
-                  className="font-playfair text-[11px] italic rs-text-caption mt-0.5"
+                  className="font-jetbrains text-[12px] rs-text-caption mt-0.5"
                 >
                   Ser honesto ayuda a mantener tu racha actualizada.
                 </p>
@@ -198,12 +198,12 @@ export default function BitacoraPage() {
 
             {/* Feedback */}
             {error && (
-              <p className="font-jetbrains mb-3 text-[11px] text-red-400">
+              <p className="font-jetbrains mb-3 text-[12px] text-red-400">
                 {error}
               </p>
             )}
             {saved && (
-              <p className="font-jetbrains mb-3 text-[11px] text-teal-500">
+              <p className="font-jetbrains mb-3 text-[12px] text-teal-500">
                 Entrada guardada correctamente ✓
               </p>
             )}
@@ -259,7 +259,7 @@ export default function BitacoraPage() {
           {!isLoadingEntries && entries.length === 0 && (
             <div className="text-center py-14 border border-dashed border-slate-300 rounded-sm">
               <p
-                className="font-playfair text-[13px] italic rs-text-caption"
+                className="font-jetbrains text-[13px] rs-text-caption"
               >
                 Aún no hay entradas. ¡Escribe tu primera nota!
               </p>
@@ -288,7 +288,7 @@ export default function BitacoraPage() {
                         style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}`, color: colors.text }}
                       >
                         <span
-                          className="font-jetbrains text-[10px] uppercase tracking-[0.5px]"
+                          className="font-jetbrains text-[11px] uppercase tracking-[0.5px]"
                           style={{ color: colors.text }}
                         >
                           {entryMoodLabel}
@@ -298,7 +298,7 @@ export default function BitacoraPage() {
                       {/* Consumed badge */}
                       {entry.consumed && (
                         <span
-                          className="font-jetbrains text-[10px] uppercase tracking-[0.5px] px-2 py-0.5 rounded-full shrink-0"
+                          className="font-jetbrains text-[11px] uppercase tracking-[0.5px] px-2 py-0.5 rounded-full shrink-0"
                           style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", color: "#ef4444" }}
                         >
                           Consumo
@@ -334,7 +334,7 @@ export default function BitacoraPage() {
 
                   {/* Título */}
                   <h3
-                    className="font-playfair text-[17px] italic rs-text-body leading-snug mb-1.5"
+                    className="font-jetbrains text-[17px] rs-text-body leading-snug mb-1.5"
                   >
                     {entry.title || "Sin título"}
                   </h3>

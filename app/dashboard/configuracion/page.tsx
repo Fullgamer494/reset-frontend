@@ -32,8 +32,10 @@ export default function ConfiguracionPage() {
     handleToggleEmergencyNotifs,
   } = useConfiguracion();
 
-  // Estado local para confirmación de borrado
+  // Estado local para confirmación de borrado de cuenta
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  // Estado local para confirmación de borrado de padrino
+  const [showDeleteSponsorConfirm, setShowDeleteSponsorConfirm] = useState(false);
 
   // Estado local del formulario de "Añadir Par"
   const [showAddPeer, setShowAddPeer] = useState(false);
@@ -101,7 +103,7 @@ export default function ConfiguracionPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="font-playfair italic w-full h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 text-[15px] rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                  className="font-jetbrains w-full h-11 border border-(--ui-border) bg-(--surface-input) rounded-sm px-4 text-[15px] rs-text-body outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5">
@@ -119,27 +121,27 @@ export default function ConfiguracionPage() {
                 Tipo de Adicción
               </label>
               <div
-                className="font-playfair italic w-full h-11 border border-(--ui-border) bg-(--surface-card-inner) rounded-sm px-4 text-[14px] rs-text-body flex items-center opacity-70 select-none cursor-default"
+                className="font-jetbrains w-full h-11 border border-(--ui-border) bg-(--surface-card-inner) rounded-sm px-4 text-[14px] rs-text-body flex items-center opacity-70 select-none cursor-default"
               >
                 {addictionType || "No especificado"}
               </div>
-              <p className="font-jetbrains text-[10px] tracking-[0.5px] rs-text-caption">
+              <p className="font-jetbrains text-[11px] tracking-[0.5px] rs-text-caption">
                 Para cambiar tu tipo de adicción, contacta a soporte.
               </p>
             </div>
           </div>
 
           {error && (
-            <p className="font-jetbrains text-[11px] text-red-400 mb-3">{error}</p>
+            <p className="font-jetbrains text-[12px] text-red-400 mb-3">{error}</p>
           )}
           {saved && (
-            <p className="font-jetbrains text-[11px] text-teal-500 mb-3">Guardado correctamente ✓</p>
+            <p className="font-jetbrains text-[12px] text-teal-500 mb-3">Guardado correctamente ✓</p>
           )}
           <div className="flex justify-end">
             <button
               onClick={handleUpdateProfile}
               disabled={isSaving}
-              className="font-jetbrains h-10.5 px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors text-[10px] tracking-[2px] uppercase"
+              className="font-jetbrains h-10.5 px-6 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors text-[11px] tracking-[2px] uppercase"
             >
               Actualizar Perfil
             </button>
@@ -161,7 +163,7 @@ export default function ConfiguracionPage() {
             </div>
             <Link
               href="/dashboard/tutorial-padrino"
-              className="font-jetbrains text-[10px] tracking-[1px] rs-text-caption hover:text-[#0ea5e9] transition-colors"
+              className="font-jetbrains text-[11px] tracking-[1px] rs-text-caption hover:text-[#0ea5e9] transition-colors"
             >
               ¿Cómo funciona? →
             </Link>
@@ -171,7 +173,7 @@ export default function ConfiguracionPage() {
           {sponsorshipState.status === 'NONE' && (
             <>
               <p
-                className="font-playfair text-[11px] italic rs-text-caption mb-5 leading-relaxed"
+                className="font-jetbrains text-[13px] rs-text-caption mb-5 leading-relaxed"
               >
                 Tu padrino te compartirá un código de 8 caracteres. Ingrésalo aquí para enviarle una solicitud de apadrinamiento.
               </p>
@@ -195,13 +197,13 @@ export default function ConfiguracionPage() {
                 <button
                   onClick={() => { setSubmittedSponsorCode(sponsorCode); handleRequestSponsorship(); }}
                   disabled={isSponsorshipLoading || !sponsorCode.trim()}
-                  className="font-jetbrains h-11 w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white rounded-sm transition-colors text-[10px] tracking-[1.5px] uppercase"
+                  className="font-jetbrains h-11 w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white rounded-sm transition-colors text-[11px] tracking-[1.5px] uppercase"
                 >
                   {isSponsorshipLoading ? "Enviando…" : "Solicitar"}
                 </button>
               </div>
               {sponsorshipError && (
-                <p className="font-jetbrains mt-3 text-[11px] text-red-400">{sponsorshipError}</p>
+                <p className="font-jetbrains mt-3 text-[12px] text-red-400">{sponsorshipError}</p>
               )}
             </>
           )}
@@ -224,7 +226,7 @@ export default function ConfiguracionPage() {
                     className="font-jetbrains h-11 border border-(--ui-border) bg-(--surface-card-inner) rounded-sm px-4 rs-text-caption outline-none tracking-[4px] text-center opacity-60 cursor-not-allowed text-[15px]"
                   />
                 </div>
-                <div className="font-jetbrains h-11 px-5 border border-(--ui-border) bg-(--surface-card-inner) text-[10px] tracking-[1.5px] uppercase rs-text-caption rounded-sm flex items-center opacity-60 cursor-not-allowed shrink-0"
+                <div className="font-jetbrains h-11 px-5 border border-(--ui-border) bg-(--surface-card-inner) text-[11px] tracking-[1.5px] uppercase rs-text-caption rounded-sm flex items-center opacity-60 cursor-not-allowed shrink-0"
                 >
                   Enviado
                 </div>
@@ -237,7 +239,7 @@ export default function ConfiguracionPage() {
                   <p className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-sky-600 dark:text-sky-400 mb-1">
                     Solicitud enviada
                   </p>
-                  <p className="font-playfair text-[12px] italic rs-text-caption">
+                  <p className="font-jetbrains text-[12px] rs-text-caption">
                     Esperando a que tu padrino acepte la solicitud. Te notificaremos cuando lo haga.
                   </p>
                 </div>
@@ -254,21 +256,26 @@ export default function ConfiguracionPage() {
                 </svg>
                 <div>
                   <p className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-teal-600 dark:text-teal-400 mb-1">Apadrinamiento activo</p>
-                  <p className="font-playfair text-[12px] italic rs-text-caption">
+                  <p className="font-jetbrains text-[12px] rs-text-caption">
                     Tu padrino puede ver tu progreso y te acompañará en tu recuperación.
                   </p>
                 </div>
               </div>
               {sponsorshipError && (
-                <p className="font-jetbrains mb-2 text-[11px] text-red-400">{sponsorshipError}</p>
+                <p className="font-jetbrains mb-2 text-[12px] text-red-400">{sponsorshipError}</p>
               )}
-              <button
-                onClick={handleTerminateSponsorship}
-                disabled={isSponsorshipLoading}
-                className="font-jetbrains text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors disabled:opacity-50"
-              >
-                {isSponsorshipLoading ? "Procesando…" : "Terminar apadrinamiento"}
-              </button>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowDeleteSponsorConfirm(true)}
+                  disabled={isSponsorshipLoading}
+                  className="font-jetbrains flex items-center gap-2 h-10 px-5 border border-red-200 dark:border-red-900/40 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-sm transition-colors text-[11px] tracking-[1.5px] uppercase disabled:opacity-50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Borrar padrino
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -313,7 +320,7 @@ export default function ConfiguracionPage() {
                     value={peerName}
                     onChange={(e) => setPeerName(e.target.value)}
                     placeholder="Ej: María González"
-                    className="font-playfair italic h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
+                    className="font-jetbrains h-10 border border-(--ui-border) bg-(--surface-input) rounded-sm px-3 rs-text-body text-[13px] outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -384,7 +391,7 @@ export default function ConfiguracionPage() {
           )}
 
           <p
-            className="font-playfair text-[11px] italic rs-text-caption mb-5 leading-relaxed"
+            className="font-jetbrains text-[13px] rs-text-caption mb-5 leading-relaxed"
           >
             Estas son las personas que recibirán una alerta si decides activar tu &apos;Raíz de Emergencia&apos;.
           </p>
@@ -410,7 +417,7 @@ export default function ConfiguracionPage() {
               className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto] gap-4 py-3 border-t border-slate-50 dark:border-slate-700/20 items-center"
             >
               <p
-                className="font-playfair text-[14px] italic rs-text-body"
+                className="font-jetbrains text-[14px] rs-text-body"
               >
                 {peer.name}
               </p>
@@ -441,20 +448,56 @@ export default function ConfiguracionPage() {
               <h3 className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-red-500 mb-1">
                 Zona de Peligro
               </h3>
-              <p className="font-playfair text-[13px] italic rs-text-caption">
+              <p className="font-jetbrains text-[13px] rs-text-caption">
                 Una vez eliminada, no podrás recuperar tu información ni acceder de nuevo.
               </p>
             </div>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="font-jetbrains h-10 px-6 border border-red-200 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-[10px] tracking-[1.5px] uppercase"
+              className="font-jetbrains h-10 px-6 border border-red-200 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-[11px] tracking-[1.5px] uppercase"
             >
               Borrar mi cuenta
             </button>
           </div>
         </div>
 
-        {/* Modal de Confirmación de Borrado */}
+        {/* Modal de Confirmación de Borrado de Padrino */}
+        {showDeleteSponsorConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+            <div className="bg-(--surface-card) border border-(--ui-border) rounded-2xl max-w-sm w-full p-8 shadow-2xl animate-scale-in">
+              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-6 mx-auto">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
+                  <path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h3 className="font-playfair text-xl text-center rs-text-heading mb-3">¿Borrar padrino?</h3>
+              <p className="font-jetbrains text-[12px] text-center rs-text-muted mb-8 leading-relaxed">
+                Se terminará la conexión con tu padrino de inmediato. Podrás vincular uno nuevo cuando quieras.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteSponsorConfirm(false);
+                    handleTerminateSponsorship();
+                  }}
+                  disabled={isSponsorshipLoading}
+                  className="w-full h-12 bg-red-500 hover:bg-red-600 text-white rounded-xl font-jetbrains text-[11px] tracking-[2px] uppercase transition-all shadow-lg shadow-red-500/20 disabled:opacity-60"
+                >
+                  {isSponsorshipLoading ? "Procesando…" : "Sí, borrar padrino"}
+                </button>
+                <button
+                  onClick={() => setShowDeleteSponsorConfirm(false)}
+                  disabled={isSponsorshipLoading}
+                  className="w-full h-12 border border-(--ui-border) rs-text-body rs-hover-card rounded-xl font-jetbrains text-[11px] tracking-[2px] uppercase transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de Confirmación de Borrado de Cuenta */}
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-(--surface-card) border border-(--ui-border) rounded-2xl max-w-sm w-full p-8 shadow-2xl animate-scale-in">
@@ -490,7 +533,7 @@ export default function ConfiguracionPage() {
         {/* Footer responsivo */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 pt-4 border-t border-slate-100 dark:border-slate-700/30 mt-12">
           <p
-            className="font-jetbrains text-[11px] tracking-[0.9px] uppercase rs-text-caption italic"
+            className="font-jetbrains text-[11px] tracking-[0.9px] uppercase rs-text-caption"
           >
             Oasis de Sobriedad — Gestión de Privacidad
           </p>

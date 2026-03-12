@@ -179,12 +179,12 @@ export default function ForgotPasswordPage() {
 
           {/* Footer */}
           <div className="px-6 py-5 sm:px-9 flex items-center justify-center gap-1 login-card-footer">
-            <span className="text-sm italic font-playfair" style={{ color: "var(--ui-text-body)" }}>
+              <span className="text-sm font-jetbrains" style={{ color: "var(--ui-text-body)" }}>
               ¿Recordaste tu contraseña?{" "}
             </span>
             <Link
               href="/login"
-              className="text-sm italic font-bold font-playfair text-sky-500 hover:text-sky-600 transition-colors"
+                className="text-sm font-bold font-jetbrains text-sky-500 hover:text-sky-600 transition-colors"
             >
               Inicia sesión
             </Link>
@@ -192,7 +192,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* Footer mínimo */}
-        <p className="text-[11px] tracking-[1px] uppercase font-jetbrains text-center mt-6 italic" style={{ color: "var(--ui-text-caption)" }}>
+        <p className="text-[11px] tracking-[1px] uppercase font-jetbrains text-center mt-6" style={{ color: "var(--ui-text-caption)" }}>
           cada paso, un día a la paz.
         </p>
       </div>

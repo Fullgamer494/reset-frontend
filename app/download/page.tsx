@@ -168,7 +168,7 @@ export default function DownloadPage() {
               </svg>
               Descargar ReSet para Android
             </a>
-            <p className="font-jetbrains text-[10px] tracking-[1px] mt-3" style={{ color: "var(--ui-text-caption)" }}>
+            <p className="font-jetbrains text-[11px] tracking-[1px] mt-3" style={{ color: "var(--ui-text-caption)" }}>
               reset.apk · Android 8.0+
             </p>
           </div>
@@ -203,7 +203,7 @@ export default function DownloadPage() {
                   {step.icon}
                 </div>
                 <span
-                  className="font-jetbrains text-[10px] tracking-[1px]"
+                  className="font-jetbrains text-[11px] tracking-[1px]"
                   style={{ color: "var(--ui-text-caption)" }}
                 >
                   {step.number}
@@ -260,7 +260,7 @@ export default function DownloadPage() {
           <a
             href={APK_URL}
             download="reset.apk"
-            className="inline-flex items-center gap-2 font-jetbrains text-[10px] tracking-[1.5px] uppercase text-sky-600 hover:text-sky-500 transition-colors mb-4"
+            className="inline-flex items-center gap-2 font-jetbrains text-[11px] tracking-[1.5px] uppercase text-sky-600 hover:text-sky-500 transition-colors mb-4"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M12 16v-8m0 8l-3-3m3 3l3-3M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1" strokeLinecap="round" strokeLinejoin="round" />

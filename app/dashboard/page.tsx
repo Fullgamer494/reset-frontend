@@ -241,7 +241,7 @@ export default function InicioPage() {
               <div className="absolute inset-3 border border-(--ui-border-subtle) pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
-                  className="font-jetbrains uppercase text-[10px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
+                  className="font-jetbrains uppercase text-[11px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
                 >
                   Última Nota
                 </p>
@@ -275,7 +275,7 @@ export default function InicioPage() {
               <div className="absolute inset-3 border border-(--ui-border-subtle) pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
-                  className="font-jetbrains uppercase text-[10px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
+                  className="font-jetbrains uppercase text-[11px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
                 >
                   Comunidad
                 </p>
@@ -312,7 +312,7 @@ export default function InicioPage() {
               <div className="absolute inset-3 border border-(--ui-border-subtle) pointer-events-none" />
               <div className="relative z-10 p-6 pt-7">
                 <p
-                  className="font-jetbrains uppercase text-[10px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
+                  className="font-jetbrains uppercase text-[11px] text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-4 tracking-[0.9px]"
                 >
                   Próximo Hito
                 </p>
@@ -413,7 +413,7 @@ export default function InicioPage() {
                   {tip.nombre}
                 </p>
                 <p
-                  className="font-playfair text-[13px] italic text-[rgba(26,54,93,0.55)] dark:text-slate-400 leading-relaxed"
+                  className="font-playfair text-[13px] text-[rgba(26,54,93,0.55)] dark:text-slate-400 leading-relaxed"
                 >
                   {tip.hint}
                 </p>

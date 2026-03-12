@@ -258,7 +258,7 @@ export default function ForoPage() {
                       )}
                       {/* Feedback de reporte */}
                       {commentFeedback[`report_${post.id}`] && (
-                        <span className="text-[11px] text-sky-400 italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{commentFeedback[`report_${post.id}`]}</span>
+                        <span className="text-[12px] text-sky-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{commentFeedback[`report_${post.id}`]}</span>
                       )}
                       {/* Borrar (solo si es mío) */}
                       {post.authorId === currentUserId && (
@@ -411,7 +411,7 @@ export default function ForoPage() {
 
               {/* Error al cargar */}
               {!isCommentsLoading && commentError && comments.length === 0 && (
-                <p className="text-[11px] text-red-400 italic py-4" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{commentError}</p>
+                <p className="text-[12px] text-red-400 py-4" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{commentError}</p>
               )}
 
               {/* Lista vacía */}
@@ -420,7 +420,7 @@ export default function ForoPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="1">
                     <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <p className="text-[11px] uppercase tracking-[1px] rs-text-caption italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sé el primero en comentar</p>
+                  <p className="text-[11px] uppercase tracking-[1px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sé el primero en comentar</p>
                 </div>
               )}
 

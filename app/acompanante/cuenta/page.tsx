@@ -139,7 +139,7 @@ export default function MiCuentaPage() {
                 {user.sponsorCode}
               </p>
               <p
-                className="text-[10px] tracking-[1px] uppercase text-teal-500/70 dark:text-teal-400/60"
+                className="text-[11px] tracking-[1px] uppercase text-teal-500/70 dark:text-teal-400/60"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Comparte este código con tu ahijado para que solicite el apadrinamiento
@@ -160,7 +160,7 @@ export default function MiCuentaPage() {
                 <button
                   type="button"
                   onClick={logout}
-                  className="text-[10px] tracking-[1px] uppercase text-amber-500 hover:text-amber-600 underline transition-colors"
+                  className="text-[11px] tracking-[1px] uppercase text-amber-500 hover:text-amber-600 underline transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Cierra sesión y vuelve a entrar para verlo →
@@ -198,7 +198,7 @@ export default function MiCuentaPage() {
               <p className="text-[13px] italic rs-text-caption" style={{ fontFamily: "'Playfair Display', serif" }}>
                 Aún no tienes un ahijado activo.
               </p>
-              <p className="text-[10px] tracking-[0.5px] rs-text-caption max-w-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] tracking-[0.5px] rs-text-caption max-w-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Comparte tu código de padrino para que alguien solicite tu apoyo.
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function MiCuentaPage() {
                     showTerminateConfirm ? (
                       <div className="flex items-center gap-2">
                         <span
-                          className="text-[10px] tracking-[0.5px] rs-text-caption"
+                          className="text-[11px] tracking-[0.5px] rs-text-caption"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           ¿Terminar?
@@ -246,7 +246,7 @@ export default function MiCuentaPage() {
                         <button
                           type="button"
                           onClick={() => { handleTerminateSponsorship(); setShowTerminateConfirm(false); }}
-                          className="text-[10px] tracking-[1px] uppercase text-white bg-red-500 hover:bg-red-600 px-2 py-0.5 rounded transition-colors"
+                          className="text-[11px] tracking-[1px] uppercase text-white bg-red-500 hover:bg-red-600 px-2 py-0.5 rounded transition-colors"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           Sí
@@ -254,7 +254,7 @@ export default function MiCuentaPage() {
                         <button
                           type="button"
                           onClick={() => setShowTerminateConfirm(false)}
-                          className="text-[10px] tracking-[1px] uppercase rs-text-muted hover:rs-text-body transition-colors"
+                          className="text-[11px] tracking-[1px] uppercase rs-text-muted hover:rs-text-body transition-colors"
                           style={{ fontFamily: "'JetBrains Mono', monospace" }}
                         >
                           No
@@ -264,7 +264,7 @@ export default function MiCuentaPage() {
                       <button
                         type="button"
                         onClick={() => setShowTerminateConfirm(true)}
-                        className="text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
+                        className="text-[11px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
                         style={{ fontFamily: "'JetBrains Mono', monospace" }}
                       >
                         Terminar
@@ -292,7 +292,7 @@ export default function MiCuentaPage() {
           </div>
 
           <p
-            className="text-[11px] italic rs-text-caption mb-5 leading-relaxed"
+            className="text-[13px] rs-text-caption mb-5 leading-relaxed"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Elige cómo quieres recibir notificaciones cuando tu ahijado active el protocolo de emergencia.

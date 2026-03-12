@@ -149,7 +149,7 @@ export default function MonitoreoPage() {
                       {i + 1}.
                     </span>
                     <p
-                      className="text-[11px] italic text-teal-700 dark:text-teal-300 leading-relaxed"
+                      className="text-[12px] text-teal-700 dark:text-teal-300 leading-relaxed"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {step}
@@ -193,7 +193,7 @@ export default function MonitoreoPage() {
                   Protocolo de Emergencia
                 </p>
                 <p
-                  className="text-[13px] italic text-red-700 dark:text-red-400 mb-2"
+                  className="text-[13px] text-red-700 dark:text-red-400 mb-2"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Cuando tengas un ahijado conectado...
@@ -378,7 +378,7 @@ export default function MonitoreoPage() {
             <p className="text-[16px] font-normal rs-text-heading leading-tight mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.nombre}
             </p>
-            <p className="text-[11px] italic rs-text-caption leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[12px] rs-text-caption leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
               {tipP.hint}
             </p>
           </div>
@@ -403,7 +403,7 @@ export default function MonitoreoPage() {
               <p className="text-[11px] tracking-[1.5px] uppercase text-red-400 mb-1.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Protocolo de Emergencia
               </p>
-              <p className="text-[13px] italic text-red-700 dark:text-red-400 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <p className="text-[13px] text-red-700 dark:text-red-400 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                 Si {godchildName} presiona el botón &apos;Raíz de Emergencia&apos;...
               </p>
               <p className="text-[11px] text-red-500 dark:text-red-400/80 leading-relaxed" style={{ fontFamily: "'JetBrains Mono', monospace" }}>

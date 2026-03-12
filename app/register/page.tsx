@@ -244,12 +244,12 @@ export default function RegisterPage() {
               </span>
               <div>
                 <p
-                  className="text-[11px] font-medium"
+                  className="text-[13px] font-medium"
                   style={{ fontFamily: "'Playfair Display', serif", color: role === "user" ? "#0ea5e9" : 'var(--ui-text-muted)' }}
                 >
                   En Recuperación
                 </p>
-                <p className="text-[11px] text-muted mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[12px] text-muted mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   Busco apoyo y guía
                 </p>
               </div>
@@ -275,12 +275,12 @@ export default function RegisterPage() {
               </span>
               <div>
                 <p
-                  className="text-[11px] font-medium"
+                  className="text-[13px] font-medium"
                   style={{ fontFamily: "'Playfair Display', serif", color: role === "companion" ? "#0d9488" : 'var(--ui-text-muted)' }}
                 >
                   Padrino / Mentor
                 </p>
-                <p className="text-[11px] text-muted mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                <p className="text-[12px] text-muted mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   Quiero acompañar a otros
                 </p>
               </div>
@@ -295,7 +295,7 @@ export default function RegisterPage() {
           {/* Branding */}
           <div className="px-4">
             <p
-              className="text-[11px] tracking-[2px] uppercase text-muted italic mb-1"
+              className="text-[11px] tracking-[2px] uppercase text-muted mb-1"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               — Comienza tu Viaje —
@@ -346,7 +346,7 @@ export default function RegisterPage() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Como desees ser llamado..."
-                  className="font-playfair input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px] italic"
+                  className="font-jetbrains input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px]"
                 />
               </div>
 
@@ -367,7 +367,7 @@ export default function RegisterPage() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="tu@email.com"
-                  className="font-playfair input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px] italic"
+                  className="font-jetbrains input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px]"
                 />
               </div>
 
@@ -383,7 +383,7 @@ export default function RegisterPage() {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="font-playfair input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px] italic"
+                  className="font-jetbrains input-line w-full border-0 border-b bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[14px]"
                 />
               </div>
 
@@ -400,7 +400,7 @@ export default function RegisterPage() {
                     value={form.confirmPassword}
                     onChange={handleChange}
                     placeholder="••••••••"
-                    className="font-playfair input-line w-full border-0 border-b bg-transparent py-2 min-h-11 pr-8 outline-none focus:border-sky-400 transition-colors text-[14px] italic"
+                    className="font-jetbrains input-line w-full border-0 border-b bg-transparent py-2 min-h-11 pr-8 outline-none focus:border-sky-400 transition-colors text-[14px]"
                     autoComplete="new-password"
                   />
                   <button
@@ -425,7 +425,7 @@ export default function RegisterPage() {
                 {/* Indicador visual de coincidencia */}
                 {form.confirmPassword.length > 0 && (
                   <p
-                    className="text-[10px] tracking-wide"
+                    className="text-[12px] tracking-wide"
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       color: form.password === form.confirmPassword ? '#22c55e' : '#f87171',
@@ -454,7 +454,7 @@ export default function RegisterPage() {
                 Paso 2: Elige tu Camino
               </p>
               <h2
-                className="text-[24px] italic mb-6 leading-tight"
+                className="text-[24px] mb-6 leading-tight"
                 style={{ fontFamily: "'Playfair Display', serif", color: 'var(--ui-text-heading)' }}
               >
                 ¿En qué área buscas renovarte?
@@ -479,7 +479,7 @@ export default function RegisterPage() {
                         {ADDICTION_ICONS[type.id]}
                       </span>
                       <span
-                        className="text-[11px] tracking-[1px] uppercase"
+                        className="text-[12px] tracking-[1px] uppercase"
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           color: isSelected ? "#0ea5e9" : 'var(--ui-text-caption)',
@@ -520,7 +520,7 @@ export default function RegisterPage() {
                         </span>
                         <div>
                           <p
-                            className="text-[11px] font-medium"
+                            className="text-[12px] font-medium"
                             style={{
                               fontFamily: "'Playfair Display', serif",
                               color: addictionClassification === "conductual" ? "#0ea5e9" : 'var(--ui-text-muted)',
@@ -528,7 +528,7 @@ export default function RegisterPage() {
                           >
                             Conductual
                           </p>
-                          <p className="text-[11px] rs-text-caption mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          <p className="text-[12px] rs-text-caption mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                             Compras, juegos, etc.
                           </p>
                         </div>
@@ -550,7 +550,7 @@ export default function RegisterPage() {
                         </span>
                         <div>
                           <p
-                            className="text-[11px] font-medium"
+                            className="text-[12px] font-medium"
                             style={{
                               fontFamily: "'Playfair Display', serif",
                               color: addictionClassification === "sustancia" ? "#0ea5e9" : 'var(--ui-text-muted)',
@@ -558,7 +558,7 @@ export default function RegisterPage() {
                           >
                             De Sustancia
                           </p>
-                          <p className="text-[11px] rs-text-caption mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                          <p className="text-[12px] rs-text-caption mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                             Tabaco, cafeína, etc.
                           </p>
                         </div>
@@ -579,7 +579,7 @@ export default function RegisterPage() {
                       value={otherDescription}
                       onChange={(e) => setOtherDescription(e.target.value)}
                       placeholder="Ej: Tabaquismo, Compras, etc."
-                      className="font-playfair w-full border-0 border-b border-(--ui-border) bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[12px] italic input-line"
+                      className="font-jetbrains w-full border-0 border-b border-(--ui-border) bg-transparent py-2 min-h-11 outline-none focus:border-sky-400 transition-colors text-[13px] input-line"
                     />
                   </div>
                 </div>
@@ -631,13 +631,13 @@ export default function RegisterPage() {
                 Paso 2: Tu Rol
               </p>
               <h2
-                className="text-[24px] italic mb-2 leading-tight"
+                className="text-[24px] mb-2 leading-tight"
                 style={{ fontFamily: "'Playfair Display', serif", color: 'var(--ui-text-heading)' }}
               >
                 Bienvenido, Padrino
               </h2>
               <p
-                className="text-[13px] italic mb-6 leading-relaxed"
+                className="text-[14px] mb-6 leading-relaxed"
                 style={{ fontFamily: "'Playfair Display', serif", color: 'var(--ui-text-muted)' }}
               >
                 Tu experiencia y compromiso serán un faro de esperanza para quienes caminan hacia la recuperación.
@@ -666,7 +666,7 @@ export default function RegisterPage() {
                       </svg>
                     </span>
                     <p
-                      className="text-[11px] rs-text-muted leading-relaxed"
+                      className="text-[12px] rs-text-muted leading-relaxed"
                       style={{ fontFamily: "'JetBrains Mono', monospace" }}
                     >
                       {text}
@@ -721,14 +721,14 @@ export default function RegisterPage() {
       {/* Footer — en flujo normal, no fijo */}
       <div className="w-full flex items-center justify-between pt-6 pb-2">
         <p
-          className="text-[11px] tracking-[1px] uppercase text-slate-400 italic"
+          className="text-[11px] tracking-[1px] uppercase text-slate-400"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           Oasis de Sobriedad — Sistema de Registro
         </p>
         <Link
           href="/login"
-          className="text-[11px] tracking-[1px] uppercase text-sky-500 hover:text-sky-600 transition-colors italic"
+          className="text-[11px] tracking-[1px] uppercase text-sky-500 hover:text-sky-600 transition-colors"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
         >
           ¿Ya tienes cuenta?

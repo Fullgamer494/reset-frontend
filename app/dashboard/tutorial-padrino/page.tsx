@@ -105,7 +105,7 @@ export default function TutorialPadrinoPage() {
         <p className="font-jetbrains text-[11px] tracking-[1.5px] uppercase rs-text-caption mb-3">
           Cómo conectarte con alguien de confianza
         </p>
-        <p className="font-playfair italic text-[15px] rs-text-body leading-relaxed mb-10 max-w-lg">
+        <p className="font-playfair text-[15px] rs-text-body leading-relaxed mb-10 max-w-lg">
           El apadrinamiento es una de las herramientas más poderosas en la recuperación.
           Esta guía te explica cómo funciona y qué esperar.
         </p>
@@ -143,7 +143,7 @@ export default function TutorialPadrinoPage() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <span
-                      className="font-jetbrains text-[10px] tracking-[1.5px] px-2 py-0.5 rounded-full"
+                      className="font-jetbrains text-[11px] tracking-[1.5px] px-2 py-0.5 rounded-full"
                       style={{ background: "var(--surface-card-inner)", color: "var(--ui-text-caption)" }}
                     >
                       {step.number}
@@ -228,7 +228,7 @@ export default function TutorialPadrinoPage() {
               <p className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-red-500 mb-1">
                 Alertas de emergencia
               </p>
-              <p className="font-playfair italic text-[14px] text-red-700 dark:text-red-300 mb-1.5 leading-snug">
+              <p className="font-playfair text-[14px] text-red-700 dark:text-red-300 mb-1.5 leading-snug">
                 Tu padrino es el primero en ser notificado
               </p>
               <p className="font-jetbrains text-[11px] text-red-600 dark:text-red-400/80 leading-relaxed">
@@ -277,7 +277,7 @@ export default function TutorialPadrinoPage() {
           </div>
           <Link
             href="/dashboard/configuracion"
-            className="shrink-0 font-jetbrains text-[10px] tracking-[2px] uppercase h-10 px-6 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white rounded-sm inline-flex items-center gap-2 transition-colors"
+            className="shrink-0 font-jetbrains text-[11px] tracking-[2px] uppercase h-10 px-6 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white rounded-sm inline-flex items-center gap-2 transition-colors"
           >
             Ir a Configuración
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">

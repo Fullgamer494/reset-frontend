@@ -151,7 +151,7 @@ export default function ErrorPage({
         </div>
 
         <p
-          className="font-jetbrains text-[10px] uppercase tracking-[1px] italic mt-2"
+          className="font-jetbrains text-[11px] uppercase tracking-[1px] mt-2"
           style={{ color: "#94a3b8" }}
         >
           cada paso, un día a la paz.
