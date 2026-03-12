@@ -159,13 +159,22 @@ export default function MonitoreoPage() {
               </ol>
             </div>
 
-            <Link
-              href="/acompanante/cuenta"
-              className="inline-flex items-center gap-2 text-[11px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              Ver mi perfil →
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Link
+                href="/acompanante/cuenta"
+                className="inline-flex items-center gap-2 text-[11px] tracking-[1.5px] uppercase text-teal-600 border border-teal-200 hover:bg-teal-50 transition-colors px-6 py-2.5 rounded"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                Ver mi perfil →
+              </Link>
+              <Link
+                href="/acompanante/tutorial"
+                className="inline-flex items-center gap-2 text-[11px] tracking-[1.5px] uppercase rs-text-caption hover:text-teal-500 transition-colors px-4 py-2.5"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                Guía completa →
+              </Link>
+            </div>
           </div>
 
           {/* Protocolo siempre visible */}
