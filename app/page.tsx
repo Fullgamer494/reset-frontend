@@ -956,7 +956,7 @@ function Footer() {
             <div>
               <p className="font-playfair italic text-[24px] text-[#0f172a] leading-none">ReSet</p>
               <p className="font-jetbrains text-[11px] text-[#94a3b8] tracking-[2px] uppercase mt-1">
-                by Hagging Lines
+                by Hanging Lines
               </p>
             </div>
             <p
@@ -979,7 +979,7 @@ function Footer() {
               Producto
             </h5>
             <ul className="flex flex-col gap-4">
-              {["Herramientas ReSet", "Pares de Apoyo", "Comunidad", "Precios"].map((item) => (
+              {["Herramientas ReSet", "Pares de Apoyo", "Comunidad"].map((item) => (
                 <li key={item}>
                   <a
                     href="/login"
@@ -999,7 +999,7 @@ function Footer() {
               Compañía
             </h5>
             <ul className="flex flex-col gap-4">
-              {["Nosotros", "Impacto", "Blog", "Contacto"].map((item) => (
+              {["Nosotros", "Impacto", "Contacto"].map((item) => (
                 <li key={item}>
                   <a
                     href="#"
@@ -1018,18 +1018,15 @@ function Footer() {
         {/* Bottom */}
         <div className="border-t border-[#f8fafc] pt-8 sm:pt-12 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8]">
-            © 2026 Hagging Lines. Todos los derechos reservados.
+            © 2026 Hanging Lines. Todos los derechos reservados.
           </p>
           <div className="flex gap-8">
-            {["Privacidad", "Términos", "Cookies"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] hover:text-[#0f172a] transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+            <a
+              href="/terms"
+              className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+            >
+              Privacidad &amp; Términos
+            </a>
           </div>
         </div>
       </div>

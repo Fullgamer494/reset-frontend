@@ -1,26 +1,29 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const LAST_UPDATED = "2026-03-10";
 
 export default function TermsPage() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen w-full relative safe-top-padding login-bg">
 
       {/* ── Botón Volver ─────────────────────────────────────────────── */}
       <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 border-b" style={{ background: "var(--surface-card)", borderColor: "var(--ui-border-subtle)" }}>
-        <Link
-          href="/register"
+        <button
+          onClick={() => router.back()}
           className="flex items-center gap-2 hover:text-sky-500 transition-colors"
           style={{ color: "var(--ui-text-caption)" }}
-          aria-label="Volver al registro"
+          aria-label="Volver"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span className="text-[11px] tracking-[1.5px] uppercase font-jetbrains">Volver</span>
-        </Link>
+        </button>
         <div className="flex-1" />
         <span className="text-[10px] tracking-[1px] uppercase font-jetbrains" style={{ color: "var(--ui-text-caption)" }}>
           Última actualización: {LAST_UPDATED}
