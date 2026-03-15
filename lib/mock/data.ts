@@ -239,9 +239,7 @@ export const MOCK_MESSAGE_LIBRARY: MessageLibraryItem[] = [
 export const MOCK_COMPANION_PROFILE: CompanionProfile = {
   name: "Martina García",
   email: "martina.g@correo.com",
-  phone: "+34 612 345 678",
   emailAlerts: true,
-  smsAlerts: false,
 };
 
 export const MOCK_SUPPORTED_USERS: SupportedUser[] = [
