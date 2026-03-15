@@ -388,7 +388,7 @@ export default function ConfiguracionPage() {
               )}
               <div className="flex gap-2 justify-end">
                 <button
-                  onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerPhone(""); setPeerRelationship(""); setPeerEmail(""); }}
+                  onClick={() => { setShowAddPeer(false); setPeerName(""); setPeerRelationship(""); setPeerEmail(""); }}
                   className="font-jetbrains h-9 px-4 border border-(--ui-border) rs-text-caption hover:text-slate-600 rounded-sm text-[11px] tracking-[1px] uppercase transition-colors"
                 >
                   Cancelar
