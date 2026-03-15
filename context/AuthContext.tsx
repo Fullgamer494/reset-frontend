@@ -18,6 +18,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   type ReactNode,
 } from 'react';
 import { User } from '@/types';
@@ -92,25 +93,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // ── Guardar ───────────────────────────────────────────────────────────────
-  const saveAuth = (token: string, u: AuthUser) => {
+  const saveAuth = useCallback((token: string, u: AuthUser) => {
     setToken(token);
     setUser(u);
     // Persistir de forma asíncrona (fire-and-forget).
     // Si falla (p.ej. almacenamiento lleno), la sesión en memoria sigue activa.
     storageSave(STORAGE_KEYS.TOKEN, token).catch(() => {});
     storageSave(STORAGE_KEYS.USER, JSON.stringify(u)).catch(() => {});
-  };
+  }, []);
 
   // ── Limpiar ───────────────────────────────────────────────────────────────
-  const clearAuth = () => {
+  const clearAuth = useCallback(() => {
     setToken(null);
     setUser(null);
     storageRemove(STORAGE_KEYS.TOKEN).catch(() => {});
     storageRemove(STORAGE_KEYS.USER).catch(() => {});
-  };
+  }, []);
 
   // ── Actualización parcial del usuario ────────────────────────────────────
-  const updateUser = (partial: Partial<AuthUser>) => {
+  const updateUser = useCallback((partial: Partial<AuthUser>) => {
     setUser((prev: AuthUser | null) => {
       if (!prev) return prev;
       const updated = { ...prev, ...partial };
@@ -118,9 +119,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       storageSave(STORAGE_KEYS.USER, JSON.stringify(updated)).catch(() => {});
       return updated;
     });
-  };
+  }, []);
 
-  const refreshProfile = async () => {
+  const refreshProfile = useCallback(async () => {
     try {
       const profile = await getProfile();
       setUser(profile);
@@ -128,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.error("Error al refrescar perfil:", err);
     }
-  };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, saveAuth, clearAuth, updateUser, isRestoring, refreshProfile }}>
