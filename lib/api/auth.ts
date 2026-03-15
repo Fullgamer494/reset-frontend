@@ -170,6 +170,7 @@ export async function getProfile(): Promise<AuthProfileResult> {
       email: data.sponsor.email,
       avatarUrl: data.sponsor.avatarUrl ?? data.sponsor.avatar_url ?? null,
       sponsorshipId: data.sponsor.sponsorshipId ?? data.sponsor.sponsorship_id ?? null,
+      status: data.sponsor.status ?? 'ACTIVE',
     } : null,
   };
 }

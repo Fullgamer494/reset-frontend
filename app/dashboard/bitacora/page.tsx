@@ -110,7 +110,7 @@ export default function BitacoraPage() {
                 <p
                   className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted"
                 >
-                  Nivel de Craving
+                  Nivel de Craving <span className="lowercase text-[10px] opacity-70">(ansia o deseo intenso de consumir)</span>
                 </p>
                 <span
                   className="font-jetbrains text-[13px] tabular-nums"

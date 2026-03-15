@@ -50,14 +50,18 @@ export function useConfiguracion() {
   // Sincronizar estado de apadrinamiento con el perfil del usuario
   useEffect(() => {
     if (user?.sponsor) {
+      // Mapear el status del backend (que ahora devolvemos si es ACTIVE o PENDING)
+      const apiStatus = (user.sponsor as any).status || 'ACTIVE';
       setSponsorshipState({
-        status: 'ACTIVE',
+        status: apiStatus as SponsorshipStatus,
         sponsorshipId: user.sponsor.sponsorshipId,
       });
+      // Si el estado es PENDING o ACTIVE, podemos inferir el código o simplemente vaciar el input
+      if (apiStatus === 'PENDING' || apiStatus === 'ACTIVE') {
+        setSponsorCode("");
+      }
     } else {
-      // Si no hay sponsor en el usuario, pero tampoco estamos en carga inicial,
-      // reseteamos a NONE (a menos que estemos esperando una solicitud PENDING local)
-      setSponsorshipState((prev) => (prev.status === 'ACTIVE' ? { status: 'NONE' } : prev));
+      setSponsorshipState((prev) => (prev.status === 'ACTIVE' || prev.status === 'PENDING' ? { status: 'NONE' } : prev));
     }
   }, [user?.sponsor]);
 

@@ -27,6 +27,7 @@ export interface SponsorData {
   email: string;
   avatarUrl?: string | null;
   sponsorshipId?: string;
+  status?: 'PENDING' | 'ACTIVE';
 }
 
 export interface User {

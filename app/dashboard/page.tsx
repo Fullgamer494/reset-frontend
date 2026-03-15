@@ -12,7 +12,7 @@ import { getMyNotes, type EncouragementNote } from "@/lib/api/encouragement";
 // Técnica del día — rota según el día de la semana
 const TIPS_DIARIOS = [
   { nombre: "Respiración 4-7-8", hint: "Inhala 4 seg, retén 7, exhala 8. Repite 3 veces para calmar el sistema nervioso." },
-  { nombre: "Regla de los 15 Minutos", hint: "Cuando sientas un craving, espera solo 15 minutos. El impulso suele pasar solo." },
+  { nombre: "Regla de los 15 Minutos", hint: "Cuando sientas un craving (ansia o deseo intenso de consumir), espera solo 15 minutos. El impulso suele pasar solo." },
   { nombre: "Grounding 5-4-3-2-1", hint: "Nombra 5 cosas que ves, 4 que tocas, 3 que escuchas, 2 que hueles, 1 que saboreas." },
   { nombre: "Diario de Gratitud", hint: "Anota 3 cosas pequeñas que agradeces hoy. Cambia el foco del cerebro hacia lo positivo." },
   { nombre: "Hábito Ancla", hint: "Ata un nuevo hábito a uno que ya tienes. Después del café → escribe una línea en tu bitácora." },
@@ -339,45 +339,6 @@ export default function InicioPage() {
 
         </div>
 
-        {/* ── Mensaje de tu Padrino ──
-             TODO: reemplazar con datos reales del endpoint de mensajería cuando esté disponible.
-             Por ahora muestra el último mensaje de la biblioteca de muestra.
-        */}
-        <div className="mt-4 relative pt-3.75">
-          <div className="absolute left-[60%] top-0 z-20 pointer-events-none">
-            <div
-              className="w-17.5 h-7.25 bg-[rgba(186,230,253,0.4)]"
-              style={{ backdropFilter: "blur(0.5px)", transform: "rotate(2deg)" }}
-            />
-          </div>
-          <div
-            className="bg-(--surface-card) border border-(--ui-border) relative"
-            style={{ boxShadow: "8px 8px 0px 0px rgba(26,54,93,0.05)" }}
-          >
-            <div className="absolute inset-3 border border-(--ui-border-subtle) pointer-events-none" />
-            <div className="relative z-10 p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-              {/* Ícono */}
-              <div className="shrink-0 w-10 h-10 rounded-full bg-[#f0f9ff] dark:bg-sky-900/20 border border-[rgba(14,165,233,0.15)] flex items-center justify-center">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="1.5">
-                  <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              {/* Texto */}
-              <div className="flex-1 min-w-0">
-                <p
-                  className="font-jetbrains text-[11px] tracking-[1.5px] uppercase text-[rgba(60,107,174,0.6)] dark:text-sky-400 mb-1"
-                >
-                  Mensaje de {user?.sponsor?.name ?? "tu Padrino"}
-                </p>
-                <p
-                  className="font-playfair text-[16px] italic text-[rgba(26,54,93,0.8)] dark:text-slate-300 leading-relaxed"
-                >
-                  &ldquo;Recuerda por qué empezaste este camino. Eres más fuerte de lo que crees.&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* ── Técnica del día ── */}
         <div className="mt-6 relative pt-3.75">
