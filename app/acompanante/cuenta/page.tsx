@@ -6,6 +6,20 @@ import { useMiCuenta } from "@/hooks/useMiCuenta";
 import { useSession } from "@/hooks/useSession";
 import { useAuth } from "@/context/AuthContext";
 
+function formatAbsoluteDate(isoDate: string | undefined): string {
+  if (!isoDate) return "Fecha no disponible";
+  try {
+    const d = new Date(isoDate);
+    return d.toLocaleString('es-MX', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
 export default function MiCuentaPage() {
   const { user } = useAuth();
   const {
@@ -223,6 +237,14 @@ export default function MiCuentaPage() {
                   >
                     Adicción: {supportedUser.addictionType} — {supportedUser.sobrietyDays} días de recuperación
                   </p>
+                  {supportedUser.godchildCreatedAt && (
+                    <p
+                      className="text-[10px] rs-text-caption text-slate-500 mt-1"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      Registrado el: {formatAbsoluteDate(supportedUser.godchildCreatedAt)}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
                   <span

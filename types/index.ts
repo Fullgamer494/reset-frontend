@@ -175,6 +175,7 @@ export interface SupportedUser {
   addictionType: string;
   sobrietyDays: number;
   status: 'Activo' | 'Inactivo';
+  godchildCreatedAt?: string; // Fecha de registro del ahijado
 }
 
 export interface CompanionActivity {

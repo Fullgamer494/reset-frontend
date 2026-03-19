@@ -15,8 +15,10 @@ export interface GodchildInfo {
 export interface GodchildStats {
   sobrietyDays: number;
   notesThisWeek: number;
-  consistency: number;         // 0–100
+  averageCraving: number;       // 0-10: Nivel promedio de ansia
+  totalRelapses: number;        // Recaídas totales en la relación
   lastActiveAt: string | null;
+  godchildCreatedAt: string;    // Fecha de registro del ahijado
 }
 
 export interface RecentLogEntry {
@@ -60,8 +62,10 @@ function mapProfile(data: GodchildProfileResponse): {
     stats: {
       sobrietyDays: statistics.dayCounter,
       notesThisWeek: recentLogs.length, // proxy: logs en el periodo devuelto
-      consistency: 0, // La API no devuelve un % de consistencia directamente
+      averageCraving: Math.round(statistics.averageCraving * 10) / 10, // Redondeado a 1 decimal
+      totalRelapses: statistics.totalRelapses,
       lastActiveAt,
+      godchildCreatedAt: godchild.createdAt, // Fecha de registro del ahijado
     },
     recentLogs: recentLogs.map((log, idx) => ({
       id: `${log.logDate}-${idx}`,

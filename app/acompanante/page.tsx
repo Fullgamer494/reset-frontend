@@ -41,6 +41,20 @@ function formatRelativeDate(isoDate: string): string {
   }
 }
 
+function formatAbsoluteDate(isoDate: string): string {
+  if (!isoDate) return "Fecha no disponible";
+  try {
+    const d = new Date(isoDate);
+    return d.toLocaleString('es-MX', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function MonitoreoPage() {
@@ -292,32 +306,62 @@ export default function MonitoreoPage() {
                     {stats?.notesThisWeek ?? 0}
                   </p>
                   <p className="text-[11px] rs-text-caption tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                    Notas totales
+                    Registros
                   </p>
                 </div>
                 <div className="w-px bg-slate-100 dark:bg-slate-700/40" />
                 <div>
-                  <p className="text-[24px] font-normal text-teal-600 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {stats?.consistency ?? 0}%
-                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-[24px] font-normal text-amber-600 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      {stats?.averageCraving ?? 0}
+                    </p>
+                    <p className="text-[12px] text-slate-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      /10
+                    </p>
+                  </div>
                   <p className="text-[11px] rs-text-caption tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                    Constancia
+                    Promedio de Ansia
                   </p>
                 </div>
+                {stats?.totalRelapses !== undefined && stats.totalRelapses > 0 && (
+                  <>
+                    <div className="w-px bg-slate-100 dark:bg-slate-700/40" />
+                    <div>
+                      <p className="text-[24px] font-normal text-red-500 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        {stats.totalRelapses}
+                      </p>
+                      <p className="text-[11px] rs-text-caption tracking-[0.8px] uppercase mt-0.5" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                        Recaídas
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {/* Indicador online */}
-              {recentLogs.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <div className="relative flex items-center justify-center w-4 h-4">
-                    <div className="absolute w-4 h-4 rounded-full bg-teal-300 animate-pulse-ring" />
-                    <div className="w-2 h-2 rounded-full bg-teal-500 relative z-10" />
+              {/* Indicador online y fechas importantes */}
+              <div className="space-y-2 pt-2">
+                {recentLogs.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex items-center justify-center w-4 h-4">
+                      <div className="absolute w-4 h-4 rounded-full bg-teal-300 animate-pulse-ring" />
+                      <div className="w-2 h-2 rounded-full bg-teal-500 relative z-10" />
+                    </div>
+                    <p className="text-[11px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      Última actividad: {formatRelativeDate(recentLogs[0].date)}
+                    </p>
                   </div>
-                  <p className="text-[11px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                    Última actividad: {formatRelativeDate(recentLogs[0].date)}
-                  </p>
-                </div>
-              )}
+                )}
+                {stats?.godchildCreatedAt && (
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M12 8v4l3 1.5m-7-11c4.97 0 9 3.582 9 8s-4.03 8-9 8-9-3.582-9-8 4.03-8 9-8z" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <p className="text-[11px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      Registrado el: {formatAbsoluteDate(stats.godchildCreatedAt)}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -48,6 +48,7 @@ export function useMiCuenta() {
             addictionType: g.addiction?.custom_name ?? '',
             sobrietyDays: data.statistics.dayCounter,
             status: data.sponsorship.status === 'ACTIVE' ? 'Activo' : 'Inactivo',
+            godchildCreatedAt: g.createdAt, // Fecha de registro del ahijado
           },
         ]);
       })
