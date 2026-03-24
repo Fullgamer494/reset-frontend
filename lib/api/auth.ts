@@ -25,7 +25,8 @@ function asNullableString(value: unknown): string | null {
   return typeof value === 'string' ? value : null;
 }
 
-function parseRole(value: unknown): 'ADICTO' | 'PADRINO' {
+function parseRole(value: unknown): 'ADICTO' | 'PADRINO' | 'ADMIN' {
+  if (value === 'ADMIN') return 'ADMIN';
   return value === 'PADRINO' ? 'PADRINO' : 'ADICTO';
 }
 

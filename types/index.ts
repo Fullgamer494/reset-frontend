@@ -11,7 +11,7 @@ export interface RegisterData {
   password: string;
   addictionType: string;
   otherDescription?: string;
-  role?: "ADICTO" | "PADRINO";
+  role?: "ADICTO" | "PADRINO" | "ADMIN";
 }
 
 export interface AddictionData {
@@ -34,7 +34,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: "ADICTO" | "PADRINO";
+  role: "ADICTO" | "PADRINO" | "ADMIN";
   sponsorCode?: string | null;
   avatarUrl?: string | null;
   createdAt: string;

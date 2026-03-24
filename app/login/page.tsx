@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useLogin } from "@/hooks/useLogin";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 /* ─── SVG: Engrane ──────────────────────────────────────────────────────────
    Componente inline — no depende de librerías externas.
@@ -106,6 +108,19 @@ export default function LoginPage() {
     handleSubmit,
     handleVerify2FA 
   } = useLogin();
+  const router = useRouter();
+
+  // ─── Easter Egg: Redirección a Admin ────────────────────────────────────
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl + Alt + Shift + A
+      if (e.ctrlKey && e.altKey && e.shiftKey && e.key === "A") {
+        router.push("/admin/login");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [router]);
 
   return (
     <div
