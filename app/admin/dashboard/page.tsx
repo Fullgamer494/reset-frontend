@@ -149,9 +149,10 @@ export default function AdminDashboard() {
     usuarios: streakDistObj[key as keyof typeof streakDistObj]
   }));
 
-  const mapDate = (isoString: string) => {
+  const mapDate = (isoString: any): string => {
+    if (!isoString || typeof isoString !== 'string') return String(isoString || '');
     const d = new Date(isoString);
-    if (isNaN(d.getTime())) return isoString;
+    if (isNaN(d.getTime())) return String(isoString);
     return d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
   };
 
@@ -229,7 +230,7 @@ export default function AdminDashboard() {
                   <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{fill: '#f59e0b', fontSize: 11}} />
                   <Tooltip 
                     contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                    labelFormatter={mapDate}
+                    labelFormatter={(label: any) => mapDate(label)}
                   />
                   <Line yAxisId="left" type="monotone" name="Emoción (1-10)" dataKey="avgEmotion" stroke="#0ea5e9" strokeWidth={3} dot={false} />
                   <Line yAxisId="right" type="monotone" name="Craving (1-5)" dataKey="avgCraving" stroke="#f59e0b" strokeWidth={3} strokeDasharray="5 5" dot={false} />
@@ -257,7 +258,7 @@ export default function AdminDashboard() {
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: number, name: string) => [`${value} usuarios`, name]}
+                    formatter={(value: any, name: any) => [`${value} usuarios`, String(name)]}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -292,7 +293,7 @@ export default function AdminDashboard() {
                   <Tooltip 
                     cursor={{fill: '#f8fafc'}}
                     contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                    labelFormatter={mapDate}
+                    labelFormatter={(label: any) => mapDate(label)}
                   />
                   <Bar dataKey="count" name="Registros" fill="#7dd3fc" radius={[6, 6, 0, 0]} barSize={20} />
                 </BarChart>
