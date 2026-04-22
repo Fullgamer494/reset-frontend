@@ -41,6 +41,20 @@ function formatRelativeDate(isoDate: string): string {
   }
 }
 
+function formatAbsoluteDate(isoDate: string): string {
+  if (!isoDate) return "";
+  try {
+    const d = new Date(isoDate);
+    return d.toLocaleDateString("es", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function MonitoreoPage() {

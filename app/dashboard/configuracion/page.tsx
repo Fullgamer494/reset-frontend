@@ -23,12 +23,10 @@ export default function ConfiguracionPage() {
     sponsorshipError,
     handleRequestSponsorship,
     handleTerminateSponsorship,
-    setUsername,
-    setAddictionType,
-    handleUpdateProfile,
-    handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
+    handleDeleteAccount,
+    handleRelapse,
   } = useConfiguracion();
 
   // Estado local para confirmación de borrado de cuenta
