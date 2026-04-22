@@ -41,20 +41,6 @@ function formatRelativeDate(isoDate: string): string {
   }
 }
 
-function formatAbsoluteDate(isoDate: string): string {
-  if (!isoDate) return "Fecha no disponible";
-  try {
-    const d = new Date(isoDate);
-    return d.toLocaleString('es-MX', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric'
-    });
-  } catch {
-    return isoDate;
-  }
-}
-
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function MonitoreoPage() {

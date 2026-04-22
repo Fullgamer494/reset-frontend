@@ -214,9 +214,11 @@ export function useConfiguracion() {
     sponsorshipError,
     handleRequestSponsorship,
     handleTerminateSponsorship,
-    handleDeleteAccount,
+    setUsername,
+    setAddictionType,
+    handleUpdateProfile,
+    handleRemovePeer,
     handleAddPeer,
     handleToggleEmergencyNotifs,
-    handleRelapse,
   };
 }
