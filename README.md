@@ -1,4 +1,4 @@
-# 🌱 ReSet - Plataforma de Recuperación y Acompañamiento
+# ReSet - Plataforma de Recuperación y Acompañamiento
 
 <div align="center">
 
@@ -11,26 +11,38 @@
 
 **Una plataforma fullstack para recuperación de adicciones con acompañamiento personalizado y comunidad**
 
-[🚀 Demo](#demo) • [📖 Documentación](#documentación) • [🏗️ Arquitectura](#arquitectura) • [🔐 Seguridad](#seguridad)
+[Demo](#demo) • [Documentación](#documentación) • [Arquitectura](#arquitectura) • [Seguridad](#seguridad)
 
 </div>
 
 ---
 
-## 🎯 Descripción
+## Descripción
 
 **ReSet** es una aplicación web y móvil que facilita el proceso de recuperación de adicciones mediante:
 
-- 🌿 **Gamificación**: Sigue el crecimiento de tu planta virtual (Semilla → Árbol → Ciprés) según tu racha de sobriedad
-- 💬 **Rastreo Emocional**: Registra tu estado de ánimo en 10 emociones diferentes (feliz, motivado, ansioso, etc.)
-- 👥 **Sistema de Apadrinamiento**: PADRINOS que acompañan a ADICTOS en su recuperación 1:1
-- 🏘️ **Comunidad Anónima**: Foro de posts anónimos con Tags y reacciones
-- 📊 **Dashboard Personalizado**: Historial de progreso, bitácora y estadísticas
-- 📱 **Multiplataforma**: Web + iOS/Android con Capacitor
+- **Gamificación**: Sigue el crecimiento de tu planta virtual (Semilla -> Árbol -> Ciprés) según tu racha de sobriedad
+- **Rastreo Emocional**: Registra tu estado de ánimo en 10 emociones diferentes (feliz, motivado, ansioso, etc.)
+- **Sistema de Apadrinamiento**: PADRINOS que acompañan a ADICTOS en su recuperación 1:1
+- **Comunidad Anónima**: Foro de posts anónimos con Tags y reacciones
+- **Dashboard Personalizado**: Historial de progreso, bitácora y estadísticas
+- **Multiplataforma**: Web + iOS/Android con Capacitor
 
 ---
 
-## 🚀 Inicio Rápido
+## Integración Completa de la Plataforma
+
+Para desplegar y utilizar la plataforma ReSet en su totalidad, es necesario clonar y configurar los siguientes repositorios:
+
+1. **Frontend (este repositorio)**: App web y móvil (Next.js + Capacitor).
+2. **Backend**: Servicio principal y base de datos.
+   - Repositorio: [https://github.com/JILZXY/resetBack-end.git](https://github.com/JILZXY/resetBack-end.git)
+3. **Infraestructura**: Configuración de contenedores, servidores y despliegue.
+   - Repositorio: [https://github.com/Fullgamer494/reset-infra.git](https://github.com/Fullgamer494/reset-infra.git)
+
+---
+
+## Inicio Rápido
 
 ### Requisitos Previos
 
@@ -39,10 +51,10 @@ Node.js >= 20.x
 npm >= 10.x
 ```
 
-### Instalación
+### Instalación del Frontend
 
 ```bash
-# 1. Clonar y entrar al proyecto
+# 1. Clonar y entrar al proyecto frontend
 git clone https://github.com/tu-usuario/front-reset.git
 cd front-reset
 
@@ -51,7 +63,7 @@ npm install
 
 # 3. Configurar variables de entorno
 cp .env.example .env.local
-# Editar .env.local con tu configuración
+# Editar .env.local para que apunte al servicio backend local/remoto
 
 # 4. Ejecutar servidor de desarrollo
 npm run dev
@@ -61,7 +73,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 ---
 
-## 📦 Comandos Disponibles
+## Comandos Disponibles
 
 | Comando | Descripción |
 |---------|------------|
@@ -76,7 +88,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 ---
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 ```
 front-reset/
@@ -120,43 +132,47 @@ front-reset/
     └── theme.ts
 ```
 
-### 🔀 Flujo de Datos
+### Flujo de Datos
 
 ```
 Usuario
-  ↓
-┌─────────────────────────────────────┐
-│ Component (UI)                      │
-└─────────────────────────────────────┘
-  ↓ useState, useContext
-┌─────────────────────────────────────┐
-│ Custom Hook (useDashboard, useForo) │  ← Lógica de negocio
-└─────────────────────────────────────┘
-  ↓ async/await
-┌─────────────────────────────────────┐
-│ API Client (lib/api/*)              │  ← HTTP requests
-└─────────────────────────────────────┘
-  ↓
-┌─────────────────────────────────────┐
-│ Backend API (Node.js/Prisma)        │
-└─────────────────────────────────────┘
+  |
+  v
++-------------------------------------+
+| Component (UI)                      |
++-------------------------------------+
+  | useState, useContext
+  v
++-------------------------------------+
+| Custom Hook (useDashboard, useForo) |  <- Lógica de negocio
++-------------------------------------+
+  | async/await
+  v
++-------------------------------------+
+| API Client (lib/api/*)              |  <- HTTP requests
++-------------------------------------+
+  |
+  v
++-------------------------------------+
+| Backend API (Node.js/Prisma)        |
++-------------------------------------+
 ```
 
 ---
 
-## 🔐 Seguridad
+## Seguridad
 
-### ✅ Implementado
+### Implementado
 
-- ✓ **JWT Tokens** en memoria (no localStorage)
-- ✓ **Cookies httpOnly** con `samesite=lax`
-- ✓ **Validación de Email** y contraseña en client
-- ✓ **Timeout de Requests** (15 segundos)
-- ✓ **Dispositivos de Confianza** (device_id en cookies)
-- ✓ **Autenticación de 2 Factores** (código MFA)
-- ✓ **Middleware JWT** con validación de expiración
+- [x] **JWT Tokens** en memoria (no localStorage)
+- [x] **Cookies httpOnly** con `samesite=lax`
+- [x] **Validación de Email** y contraseña en client
+- [x] **Timeout de Requests** (15 segundos)
+- [x] **Dispositivos de Confianza** (device_id en cookies)
+- [x] **Autenticación de 2 Factores** (código MFA)
+- [x] **Middleware JWT** con validación de expiración
 
-### 🔜 Por Implementar (Crítico)
+### Por Implementar (Crítico)
 
 - [ ] **Headers de Seguridad** (CSP, HSTS, X-Frame-Options)
 - [ ] **Encriptación de Storage** (tweetnacl.js)
@@ -166,39 +182,39 @@ Usuario
 
 ---
 
-## 📊 Características Principales
+## Características Principales
 
-### 1. 🎮 Sistema de Gamificación
+### 1. Sistema de Gamificación
 - Planta que crece en 5 etapas
 - Racha de días de sobriedad
 - Puntos de logro (achievements)
 - Desafíos semanales
 
-### 2. 💭 Rastreo Emocional
+### 2. Rastreo Emocional
 10 emociones registradas:
-- 😊 Feliz, 💪 Motivado, 🙏 Agradecido, 🌟 Esperanzado, 😌 Calmado
-- 😰 Ansioso, 😕 Confundido, 😫 Agotado, 😢 Triste, 😠 Enojado
+- Feliz, Motivado, Agradecido, Esperanzado, Calmado
+- Ansioso, Confundido, Agotado, Triste, Enojado
 
-### 3. 👥 Acompañamiento
+### 3. Acompañamiento
 - PADRINO: Profesional o persona en recuperación avanzada
 - ADICTO: Persona en recuperación activa
 - Seguimiento de sesiones
 - Validaciones de hitos
 
-### 4. 🏘️ Comunidad
+### 4. Comunidad
 - Posts anónimos con 6 Tags categorizados
 - Sistema de reacciones (likes)
 - Persistencia offline (local + sync)
 - Moderación integrada
 
-### 5. 📱 Multiplataforma
+### 5. Multiplataforma
 - **Web**: Responsive, Next.js
 - **iOS/Android**: Capacitor con acceso a APIs nativas
 - **Sincronización**: Estado consistente entre plataformas
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 ### Frontend
 - **Framework**: Next.js 16.1.6 (App Router)
@@ -222,7 +238,7 @@ Usuario
 
 ---
 
-## 📚 Documentación
+## Documentación
 
 ### Guías Disponibles
 - [Constantes y Configuración](lib/constants.ts) - Valores globales
@@ -261,7 +277,7 @@ PATCH  /api/v1/sponsorships/:id/accept
 
 ---
 
-## 🧪 Testing (Por Implementar)
+## Testing (Por Implementar)
 
 ```bash
 # Ejecutar tests
@@ -275,26 +291,26 @@ npm run test:watch
 ```
 
 Objetivos de cobertura:
-- ✅ Autenticación: 80%
-- ✅ API Clients: 75%
-- ✅ Hooks: 70%
-- ✅ Utilities: 90%
+- [x] Autenticación: 80%
+- [x] API Clients: 75%
+- [x] Hooks: 70%
+- [x] Utilities: 90%
 
 ---
 
-## 📈 Métricas de Calidad
+## Métricas de Calidad
 
 | Métrica | Valor | Estándar |
 |---------|-------|----------|
-| **TypeScript Coverage** | 100% | ≥ 95% |
+| **TypeScript Coverage** | 100% | >= 95% |
 | **ESLint Errors** | 0 | 0 |
 | **Bundle Size** | ~45KB gzipped | < 100KB |
-| **Lighthouse Score** | 85 | ≥ 80 |
-| **Test Coverage** | 0% ⚠️ | ≥ 70% |
+| **Lighthouse Score** | 85 | >= 80 |
+| **Test Coverage** | 0% | >= 70% |
 
 ---
 
-## 🤝 Contribuir
+## Contribuir
 
 ```bash
 # 1. Fork el repositorio
@@ -319,22 +335,22 @@ git push origin feature/my-feature
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Distribuido bajo licencia MIT. Ver [LICENSE](LICENSE) para detalles.
 
 ---
 
-## 📞 Contacto y Soporte
+## Contacto y Soporte
 
-- 📧 Email: support@reset-app.com
-- 💬 Issues: [GitHub Issues](https://github.com/tu-usuario/front-reset/issues)
-- 🐛 Reportar bugs: Usa template de issue
-- 💡 Feature requests: Abre una discussion
+- Email: support@reset-app.com
+- Issues: [GitHub Issues](https://github.com/tu-usuario/front-reset/issues)
+- Reportar bugs: Usa template de issue
+- Feature requests: Abre una discussion
 
 ---
 
-## 🎓 Recursos Educativos
+## Recursos Educativos
 
 - [Next.js Docs](https://nextjs.org/docs)
 - [React Hooks](https://react.dev/reference/react)
@@ -346,8 +362,8 @@ Distribuido bajo licencia MIT. Ver [LICENSE](LICENSE) para detalles.
 
 <div align="center">
 
-**Hecho con ❤️ para la recuperación y el bienestar**
+**Hecho con pasión para la recuperación y el bienestar**
 
-⭐ Si este proyecto te ayuda, considera darle una star en GitHub
+Si este proyecto te ayuda, considera darle una star en GitHub
 
 </div>
