@@ -9,6 +9,22 @@ import type { NextConfig } from "next";
  */
 const isCapacitor = process.env.CAPACITOR === "1";
 
+const apiOrigin = (() => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) return null;
+
+  try {
+    return new URL(apiUrl).origin;
+  } catch {
+    return null;
+  }
+})();
+
+const connectSrc = ["'self'"];
+if (apiOrigin) {
+  connectSrc.push(apiOrigin);
+}
+
 /**
  * Headers de seguridad para proteger contra ataques comunes (OWASP)
  * Solo aplicables en SSR (no en export/Capacitor)
@@ -16,7 +32,7 @@ const isCapacitor = process.env.CAPACITOR === "1";
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.reset-app.com;",
+    value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src ${connectSrc.join(' ')};`,
   },
   {
     key: "Strict-Transport-Security",
