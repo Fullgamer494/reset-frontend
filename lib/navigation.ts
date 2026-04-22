@@ -40,6 +40,8 @@ export const PARENT_ROUTES: Record<string, string> = {
   "/acompanante/mensajes":     "/acompanante",
   "/acompanante/cuenta":       "/acompanante",
   "/acompanante/tecnicas":     "/acompanante",
+  "/acompanante/tutorial":     "/acompanante",
+  "/dashboard/tutorial-padrino": "/dashboard/configuracion",
 };
 
 /** Títulos legibles por ruta, para la barra superior móvil. */
@@ -56,6 +58,8 @@ export const ROUTE_LABELS: Record<string, string> = {
   "/acompanante/mensajes":     "Mensajes",
   "/acompanante/cuenta":       "Mi Cuenta",
   "/acompanante/tecnicas":     "Técnicas",
+  "/acompanante/tutorial":     "Guía del Acompañante",
+  "/dashboard/tutorial-padrino": "Guía del Padrino",
 };
 
 /** Devuelve true si la ruta es raíz (no debe navegar hacia atrás). */

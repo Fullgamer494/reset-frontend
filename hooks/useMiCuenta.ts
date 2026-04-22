@@ -11,9 +11,7 @@ export function useMiCuenta() {
   const [profile, setProfile] = useState<CompanionProfile>({
     name: user?.name ?? "",
     email: user?.email ?? "",
-    phone: "",
     emailAlerts: false,
-    smsAlerts: false,
   });
   const [supportedUsers, setSupportedUsers] = useState<SupportedUser[]>([]);
   const [activeSponsorshipId, setActiveSponsorshipId] = useState<string | null>(null);
@@ -50,6 +48,7 @@ export function useMiCuenta() {
             addictionType: g.addiction?.custom_name ?? '',
             sobrietyDays: data.statistics.dayCounter,
             status: data.sponsorship.status === 'ACTIVE' ? 'Activo' : 'Inactivo',
+            godchildCreatedAt: g.createdAt, // Fecha de registro del ahijado
           },
         ]);
       })

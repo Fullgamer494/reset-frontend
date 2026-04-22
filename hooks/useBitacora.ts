@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createLog, getLogs } from "@/lib/api/tracking";
-import type { DailyLogResponse } from "@/lib/api/tracking";
+import type { DailyLogResponse, TrackingLogFilters } from "@/lib/api/tracking";
 import {
   getMoodLabel,
   getMoodColor,
@@ -12,6 +12,8 @@ import {
 import type { JournalEntry, MoodId } from "@/types";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
+
+const DEFAULT_RECENT_LIMIT = 30;
 
 const NUMBER_TO_MOOD: Array<[number, MoodId]> = [
   [9, "feliz"],
@@ -32,23 +34,106 @@ function closestMood(value: number): MoodId {
   )[1];
 }
 
+function getTimestamp(raw: DailyLogResponse): string {
+  return (
+    raw.createdAt ??
+    raw.created_at ??
+    raw.logDate ??
+    raw.log_date ??
+    new Date().toISOString()
+  );
+}
+
+function getEmotionLevel(raw: DailyLogResponse): number {
+  if (typeof raw.emotionalState?.level === "number") return raw.emotionalState.level;
+  if (typeof (raw as DailyLogResponse & { emotional_state?: number }).emotional_state === "number") {
+    return (raw as DailyLogResponse & { emotional_state?: number }).emotional_state ?? 5;
+  }
+  if (typeof (raw as DailyLogResponse & { emotionalStateLevel?: number }).emotionalStateLevel === "number") {
+    return (raw as DailyLogResponse & { emotionalStateLevel?: number }).emotionalStateLevel ?? 5;
+  }
+  return 5;
+}
+
+function parseYmdFromDate(rawDate?: string): { year: number; month: number; day: number } | null {
+  if (!rawDate) return null;
+
+  const match = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    return {
+      year: Number(match[1]),
+      month: Number(match[2]),
+      day: Number(match[3]),
+    };
+  }
+
+  const parsed = new Date(rawDate);
+  if (Number.isNaN(parsed.getTime())) return null;
+
+  return {
+    year: parsed.getUTCFullYear(),
+    month: parsed.getUTCMonth() + 1,
+    day: parsed.getUTCDate(),
+  };
+}
+
+function applyClientSideFilters(data: DailyLogResponse[], filters: TrackingLogFilters): DailyLogResponse[] {
+  const { year, month, day, from, to } = filters;
+
+  if (year !== undefined || month !== undefined || day !== undefined) {
+    return data.filter((item) => {
+      const sourceDate = item.logDate ?? item.log_date ?? item.createdAt ?? item.created_at;
+      const ymd = parseYmdFromDate(sourceDate);
+      if (!ymd) return false;
+      if (year !== undefined && ymd.year !== year) return false;
+      if (month !== undefined && ymd.month !== month) return false;
+      if (day !== undefined && ymd.day !== day) return false;
+      return true;
+    });
+  }
+
+  if (from || to) {
+    const fromTime = from ? new Date(from).getTime() : Number.NEGATIVE_INFINITY;
+    const toTime = to ? new Date(to).getTime() : Number.POSITIVE_INFINITY;
+    return data.filter((item) => {
+      const sourceDate = item.logDate ?? item.log_date ?? item.createdAt ?? item.created_at;
+      const valueTime = sourceDate ? new Date(sourceDate).getTime() : Number.NaN;
+      return Number.isFinite(valueTime) && valueTime >= fromTime && valueTime <= toTime;
+    });
+  }
+
+  return data;
+}
+
 /** Convierte un registro diario de la API al formato JournalEntry del UI. */
 function normalizeEntry(raw: DailyLogResponse): JournalEntry {
-  const dateStr = raw.logDate ?? '';
-  const emotionLevel = raw.emotionalState?.level ?? 5;
+  const timestamp = getTimestamp(raw);
+  const dateStr = raw.logDate ?? raw.log_date ?? timestamp;
+  const emotionLevel = getEmotionLevel(raw);
   return {
     id: raw.id ?? String(Date.now()),
     title: dateStr ? dateStr.split('T')[0] : '',
     mood: closestMood(emotionLevel),
     notes: raw.notes ?? '',
     consumed: raw.consumed ?? false,
-    createdAt: raw.logDate ?? new Date().toISOString(),
+    createdAt: timestamp,
   };
 }
 
 // ─── Hook ───────────────────────────────────────────────────────────────────
 
-export function useBitacora() {
+export function useBitacora(filters: TrackingLogFilters = {}) {
+  const { year, month, day, from, to, userId, page, limit } = filters;
+  const hasActiveTrackingFilters =
+    year !== undefined ||
+    month !== undefined ||
+    day !== undefined ||
+    from !== undefined ||
+    to !== undefined ||
+    userId !== undefined ||
+    page !== undefined ||
+    limit !== undefined;
+
   // ── Lista de entradas ────────────────────────────────────────────────────────
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [isLoadingEntries, setIsLoadingEntries] = useState(true);
@@ -64,23 +149,43 @@ export function useBitacora() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  // Cargar entradas al montar
   useEffect(() => {
-    getLogs(30)
-      .then((data) => {
+    let cancelled = false;
+
+    async function loadEntries() {
+      setIsLoadingEntries(true);
+      setError(null);
+
+      try {
+        const data = hasActiveTrackingFilters
+          ? await getLogs({ year, month, day, from, to, userId, page, limit })
+          : await getLogs(DEFAULT_RECENT_LIMIT);
+        if (cancelled) return;
+
+        const filteredData = Array.isArray(data)
+          ? applyClientSideFilters(data, { year, month, day, from, to })
+          : [];
+
         setEntries(
-          Array.isArray(data)
-            ? data.map(normalizeEntry).sort(
-                (a, b) =>
-                  new Date(b.createdAt).getTime() -
-                  new Date(a.createdAt).getTime()
-              )
+          filteredData
+            ? filteredData
+                .map(normalizeEntry)
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             : []
         );
-      })
-      .catch(() => setError("Error al cargar las entradas"))
-      .finally(() => setIsLoadingEntries(false));
-  }, []);
+      } catch {
+        if (!cancelled) setError("Error al cargar las entradas");
+      } finally {
+        if (!cancelled) setIsLoadingEntries(false);
+      }
+    }
+
+    loadEntries();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [year, month, day, from, to, userId, page, limit]);
 
   const handleSave = async () => {
     if (!notes.trim()) {
@@ -100,11 +205,17 @@ export function useBitacora() {
         notes: notes.trim() || undefined,
       });
       setSaved(true);
-      // Recargar entradas desde la API
-      const refreshed = await getLogs(30);
+      const refreshed = hasActiveTrackingFilters
+        ? await getLogs({ year, month, day, from, to, userId, page, limit })
+        : await getLogs(DEFAULT_RECENT_LIMIT);
+
+      const filteredRefreshed = Array.isArray(refreshed)
+        ? applyClientSideFilters(refreshed, { year, month, day, from, to })
+        : [];
+
       setEntries(
-        Array.isArray(refreshed)
-          ? refreshed.map(normalizeEntry).sort(
+        filteredRefreshed
+          ? filteredRefreshed.map(normalizeEntry).sort(
               (a, b) =>
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()

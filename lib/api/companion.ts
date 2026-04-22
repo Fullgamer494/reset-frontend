@@ -35,6 +35,7 @@ export async function getSupportedUsers(): Promise<SupportedUser[]> {
         addictionType: data.godchild.addiction?.custom_name ?? '',
         sobrietyDays: data.statistics.dayCounter,
         status: data.sponsorship.status === 'ACTIVE' ? 'Activo' : 'Inactivo',
+        godchildCreatedAt: data.godchild.createdAt, // Fecha de registro del ahijado
       },
     ];
   } catch {

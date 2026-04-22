@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -14,6 +14,8 @@ import {
   deletePost,
 } from "@/lib/api/forum";
 import { storageSave, storageGet, STORAGE_KEYS } from "@/lib/storage";
+import { validateForumPost } from "@/lib/validation";
+import { sanitizeForumContent, sanitizeForumTitle } from "@/lib/sanitize";
 import type { ForoPost, ForoCategory, ForoComment } from "@/types";
 
 export function useForo() {
@@ -81,7 +83,7 @@ export function useForo() {
 
   // ── Carga de posts ─────────────────────────────────────────────────────────
 
-  const loadPosts = () => {
+  const loadPosts = useCallback(() => {
     setIsLoading(true);
     setError(null);
     Promise.all([getForoPosts(1, 10), getForoCategories()])
@@ -89,8 +91,8 @@ export function useForo() {
         setPosts(applyLikedState(p));
         setCategories(c);
       })
-      .catch((err: any) => {
-        const msg: string = err?.message ?? "";
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err ?? "");
         if (msg.toLowerCase().includes("token") || msg.includes("401") || msg.includes("nicia sesión")) {
           router.push("/login");
         } else {
@@ -98,9 +100,9 @@ export function useForo() {
         }
       })
       .finally(() => setIsLoading(false));
-  };
+  }, [router]);
 
-  useEffect(() => { loadPosts(); }, []);
+  useEffect(() => { loadPosts(); }, [loadPosts]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -111,20 +113,26 @@ export function useForo() {
   // ── Publicar post ──────────────────────────────────────────────────────────
 
   const handlePublish = async () => {
-    if (!postTitle.trim()) {
+    const cleanTitle = sanitizeForumTitle(postTitle);
+    const cleanContent = sanitizeForumContent(postText);
+
+    if (!cleanTitle) {
       setPublishError('El título es obligatorio.');
       return;
     }
-    if (!postText.trim()) {
-      setPublishError('El contenido no puede estar vacío.');
+
+    const contentValidation = validateForumPost(cleanContent);
+    if (!contentValidation.valid) {
+      setPublishError(contentValidation.error || 'El contenido no es válido.');
       return;
     }
+
     setIsSubmitting(true);
     setPublishError(null);
     try {
       await createForoPost({
-        title: postTitle,
-        content: postText,
+        title: cleanTitle,
+        content: cleanContent,
         isAnonymous,
         tags: selectedTags,
       });
@@ -146,7 +154,11 @@ export function useForo() {
   const handleToggleLike = async (id: string) => {
     const wasLiked = likedByMe.current.has(id);
     // Actualizar ref local de likes propios
-    wasLiked ? likedByMe.current.delete(id) : likedByMe.current.add(id);
+    if (wasLiked) {
+      likedByMe.current.delete(id);
+    } else {
+      likedByMe.current.add(id);
+    }
     // Actualización optimista: ±1 exacto sin refetch del servidor
     setPosts((prev) =>
       prev.map((p) =>
@@ -162,7 +174,11 @@ export function useForo() {
       persistLikes();
     } catch {
       // Revertir si falla
-      wasLiked ? likedByMe.current.add(id) : likedByMe.current.delete(id);
+      if (wasLiked) {
+        likedByMe.current.add(id);
+      } else {
+        likedByMe.current.delete(id);
+      }
       setPosts((prev) =>
         prev.map((p) =>
           p.id === id
@@ -171,12 +187,6 @@ export function useForo() {
         )
       );
     }
-  };
-
-  const handleToggleBookmark = (id: string) => {
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, bookmarked: !p.bookmarked } : p))
-    );
   };
 
   // ── Abrir/cerrar detalle del post ──────────────────────────────────────────
@@ -210,10 +220,16 @@ export function useForo() {
   // ── Enviar comentario ──────────────────────────────────────────────────────
 
   const handleSendComment = async () => {
-    if (!commentText.trim() || !openPost) return;
+    if (!openPost) return;
+    const cleanComment = sanitizeForumContent(commentText);
+    const commentValidation = validateForumPost(cleanComment);
+    if (!commentValidation.valid) {
+      setCommentError(commentValidation.error || "Comentario inválido.");
+      return;
+    }
     setIsCommentSubmitting(true);
     setCommentError(null);
-    const textToSend = commentText;
+    const textToSend = cleanComment;
     setCommentText("");
     try {
       const newComment = await commentPost(
@@ -325,7 +341,6 @@ export function useForo() {
     toggleTag,
     handlePublish,
     handleToggleLike,
-    handleToggleBookmark,
     handleDeletePost,
     loadPosts,
     // Detalle / comentarios

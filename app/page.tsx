@@ -1,9 +1,33 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { FaFacebookF, FaInstagram } from "react-icons/fa6";
+import { FaYoutube } from "react-icons/fa";
 import { isNativePlatform } from "@/lib/platform";
+
+/* ─── Smooth Scroll (lento y fluido) ────────────────────────────────────── */
+function smoothScrollTo(href: string) {
+  const id = href.replace("#", "");
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = 60;
+  const start = window.scrollY;
+  const target = el.getBoundingClientRect().top + window.scrollY - navH;
+  const duration = 1200;
+  const t0 = performance.now();
+  // easeInOutCubic
+  const ease = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const animate = (now: number) => {
+    const p = Math.min((now - t0) / duration, 1);
+    window.scrollTo(0, start + (target - start) * ease(p));
+    if (p < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    SVG Icons (inline, sin librerías externas)
@@ -73,12 +97,10 @@ function AppMockup() {
       aria-hidden="true"
       style={{ paddingBottom: "32px", paddingRight: "72px" }}
     >
-      {/* ── Ventana web (principal) ── */}
       <div
         className="landing-hero-mockup relative bg-white border border-[#e2e8f0] rounded-xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.12),0_30px_60px_-30px_rgba(0,0,0,0.15)]"
         style={{ aspectRatio: "16/10" }}
       >
-        {/* Chrome bar */}
         <div className="flex gap-2 items-center h-8 px-4 bg-[#f8fafc] border-b border-[#e2e8f0]">
           <span className="size-2.5 rounded-full bg-[#fca5a5]" />
           <span className="size-2.5 rounded-full bg-[#fcd34d]" />
@@ -87,27 +109,23 @@ function AppMockup() {
             reset-app.tech/dashboard
           </span>
         </div>
-        {/* Layout */}
         <div className="flex gap-4 p-5 h-[calc(100%-32px)]">
-          {/* Sidebar */}
           <div className="flex flex-col gap-3 w-[90px] shrink-0">
             <div className="bg-[#f8fafc] border border-[#f1f5f9] rounded h-[66px]" />
             <div className="bg-[#f8fafc] border border-[#f1f5f9] rounded flex-1" />
           </div>
-          {/* Main content */}
           <div className="flex flex-col gap-4 flex-1 min-w-0">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-jetbrains text-[11px] text-[#0d9488] tracking-widest uppercase leading-none mb-1">
-                  Mi Jardín Interior
+                  Mi Espacio ReSet
                 </p>
                 <p className="font-playfair text-[18px] text-[#0f172a] italic leading-none">
-                  Herbario de Sobriedad
+                  Tu momento de ReSet
                 </p>
               </div>
               <div className="size-8 rounded-full bg-[#f1f5f9]" />
             </div>
-            {/* Planta card */}
             <div className="flex-1 bg-[#f8fafc] border border-[#f1f5f9] rounded flex items-center justify-center relative overflow-hidden">
               <svg width="60" height="64" viewBox="0 0 56 60" fill="none" className="opacity-80">
                 <path d="M28 52 Q28 36 28 24" stroke="#0d9488" strokeWidth="2" strokeLinecap="round" />
@@ -129,16 +147,13 @@ function AppMockup() {
         </div>
       </div>
 
-      {/* ── Teléfono móvil (secundario, superpuesto abajo-derecha) ── */}
       <div
         className="landing-hero-mockup-mobile absolute right-0 bottom-0 bg-white border border-[#e2e8f0] rounded-[18px] overflow-hidden shadow-[0_20px_48px_-8px_rgba(0,0,0,0.18)]"
         style={{ width: "88px", aspectRatio: "9/19" }}
       >
-        {/* Notch */}
         <div className="flex justify-center pt-2 pb-1 bg-[#f8fafc] border-b border-[#f1f5f9]">
           <div className="w-[28px] h-[5px] bg-[#e2e8f0] rounded-full" />
         </div>
-        {/* Screen */}
         <div className="flex flex-col gap-1.5 p-2 bg-white h-[calc(100%-24px)]">
           <div className="flex items-center gap-1 mb-0.5">
             <div className="size-4 rounded-full bg-[#f1f5f9] shrink-0" />
@@ -160,7 +175,6 @@ function AppMockup() {
             <div className="flex-1 h-[18px] bg-[#f8fafc] border border-[#f1f5f9] rounded" />
             <div className="flex-1 h-[18px] bg-[#f8fafc] border border-[#f1f5f9] rounded" />
           </div>
-          {/* Bottom nav */}
           <div className="flex justify-around pt-1 border-t border-[#f1f5f9]">
             {["#0d9488", "#cbd5e1", "#cbd5e1"].map((c, i) => (
               <div key={i} className="size-2 rounded-sm" style={{ background: c }} />
@@ -169,7 +183,6 @@ function AppMockup() {
         </div>
       </div>
 
-      {/* ── Badge flotante — días ── */}
       <div className="landing-hero-badge absolute -bottom-2 left-0 bg-white border border-[#e2e8f0] rounded-xl px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.1)] flex items-center gap-3">
         <div className="flex flex-col items-center">
           <span className="font-playfair text-2xl text-[#0f172a] leading-none">47</span>
@@ -201,7 +214,6 @@ function CommunityMockup() {
           <h4 className="font-playfair text-[20px] text-[#0f172a]">Comunidad ReSet</h4>
           <span className="font-jetbrains text-[11px] text-[#94a3b8]">En línea: 1,402</span>
         </div>
-        {/* Mensaje */}
         <div className="flex gap-4 mb-6">
           <div className="size-10 rounded-full bg-[#f1f5f9] shrink-0" />
           <div className="flex-1">
@@ -220,7 +232,6 @@ function CommunityMockup() {
             </div>
           </div>
         </div>
-        {/* Input reply mockup */}
         <div className="flex gap-4 bg-[rgba(248,250,252,0.3)] border-l-2 border-[#0d9488] pl-4 pr-4 py-4">
           <div className="size-10 rounded-full bg-[#f1f5f9] shrink-0" />
           <div className="flex-1">
@@ -263,44 +274,196 @@ function useRevealOnScroll() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Navbar
+   Navbar (con sidebar mobile)
 ───────────────────────────────────────────────────────────────────────────── */
-function Navbar() {
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9] safe-top-bar">
-      <div className="max-w-[1280px] mx-auto px-8 h-[60px] flex items-center justify-between">
-        <Link
-          href="/"
-          className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight hover:text-[#0d9488] transition-colors"
-        >
-          ReSet
-        </Link>
+const NAV_ITEMS = [
+  { label: "Pilares",       href: "#pilares" },
+  { label: "Herramientas", href: "#herramientas" },
+  { label: "Móvil",        href: "#movil" },
+  { label: "Comunidad",    href: "#comunidad" },
+];
 
-        <nav className="hidden md:flex items-center gap-8">
-          {[
-            { label: "Pilares", href: "#pilares" },
-            { label: "Herbario", href: "#herbario" },
-            { label: "Móvil", href: "#movil" },
-            { label: "Comunidad", href: "#comunidad" },
-          ].map(({ label, href }) => (
+function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setOpen(false);
+    smoothScrollTo(href);
+  };
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#f1f5f9] safe-top-bar">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-[60px] flex items-center justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src="/logo.png"
+              alt="ReSet logo"
+              width={32}
+              height={32}
+              className="rounded-sm"
+              priority
+            />
+            <span className="font-playfair italic text-[22px] text-[#0f172a] tracking-tight">
+              ReSet
+            </span>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV_ITEMS.map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                onClick={(e) => handleNav(e, href)}
+                className="nav-link font-jetbrains text-[11px] uppercase tracking-[1.5px] text-[#64748b] hover:text-[#0f172a] transition-colors cursor-pointer"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] px-5 py-2.5 rounded-sm"
+            >
+              Entrar
+            </Link>
+            <button
+              className="md:hidden flex flex-col justify-center gap-[5px] p-2 ml-1"
+              onClick={() => setOpen(true)}
+              aria-label="Abrir menú"
+            >
+              <span className="block w-5 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+              <span className="block w-5 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+              <span className="block w-3 h-[1.5px] bg-[#64748b] rounded-full transition-all" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+        className="md:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px] transition-opacity duration-400"
+        style={{ opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none" }}
+      />
+
+      <aside
+        className="md:hidden fixed top-0 right-0 h-full w-72 z-[70] bg-white shadow-2xl flex flex-col"
+        style={{
+          transform: open ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+        }}
+        aria-label="Menú de navegación"
+      >
+        <div className="flex items-center justify-between px-6 h-[60px] border-b border-[#f1f5f9] shrink-0">
+          <span className="font-playfair italic text-[20px] text-[#0f172a]">ReSet</span>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Cerrar menú"
+            className="text-[#94a3b8] hover:text-[#0f172a] transition-colors p-1"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="flex flex-col flex-1 py-4 px-4 overflow-y-auto">
+          {NAV_ITEMS.map(({ label, href }, i) => (
             <a
               key={label}
               href={href}
-              className="nav-link font-jetbrains text-[11px] uppercase tracking-[1.5px] text-[#64748b] hover:text-[#0f172a] transition-colors"
+              onClick={(e) => handleNav(e, href)}
+              className="flex items-center justify-between px-2 py-4 border-b border-[#f8fafc] font-jetbrains text-[12px] uppercase tracking-[2px] text-[#0f172a] hover:text-[#0d9488] hover:pl-4 transition-all cursor-pointer"
+              style={{
+                transitionDuration: "0.3s",
+                transitionDelay: open ? `${i * 60}ms` : "0ms",
+                opacity: open ? 1 : 0,
+                transform: open ? "translateX(0)" : "translateX(16px)",
+              }}
             >
               {label}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </a>
           ))}
         </nav>
 
-        <Link
-          href="/login"
-          className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] px-5 py-2.5 rounded-sm"
-        >
-          Entrar
-        </Link>
-      </div>
-    </header>
+        <div className="px-6 py-6 border-t border-[#f1f5f9] shrink-0">
+          <Link
+            href="/login"
+            onClick={() => setOpen(false)}
+            className="landing-btn-primary font-jetbrains text-[11px] uppercase tracking-[1.5px] py-3.5 rounded-sm w-full flex items-center justify-center gap-2"
+          >
+            Entrar a ReSet
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+          <p className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] text-center mt-3">
+            cada paso, un día a la paz.
+          </p>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Back To Top Button
+───────────────────────────────────────────────────────────────────────────── */
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight;
+      const total = document.documentElement.scrollHeight;
+      setVisible(scrolled > total * 0.72);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    const start = window.scrollY;
+    const duration = 1400;
+    const t0 = performance.now();
+    // easeOutQuart — desacelera suavemente al llegar al top
+    const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+    const animate = (now: number) => {
+      const p = Math.min((now - t0) / duration, 1);
+      window.scrollTo(0, start * (1 - ease(p)));
+      if (p < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  };
+
+  return (
+    <button
+      onClick={scrollToTop}
+      aria-label="Volver al inicio de la página"
+      className="fixed bottom-8 right-6 z-40 w-12 h-12 rounded-full flex items-center justify-center shadow-xl"
+      style={{
+        background: "linear-gradient(135deg, #0d9488 0%, #0891b2 100%)",
+        boxShadow: "0 4px 18px rgba(13,148,136,0.35)",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0) scale(1)" : "translateY(16px) scale(0.85)",
+        pointerEvents: visible ? "auto" : "none",
+        transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)",
+      }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2">
+        <path d="M4.5 15.75l7.5-7.5 7.5 7.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
   );
 }
 
@@ -316,19 +479,18 @@ function HeroSection() {
           "radial-gradient(ellipse at 100% 0%, rgba(241,245,249,1) 0%, rgba(255,255,255,1) 60%)",
       }}
     >
-      <div className="max-w-[1280px] mx-auto px-8 py-24 flex items-center gap-16 w-full">
-        {/* Copy */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-12 sm:py-24 flex items-center gap-16 w-full">
         <div className="flex-1 min-w-0 flex flex-col gap-6">
-          <p className="landing-hero-label font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+          <p className="landing-hero-label font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
             — Tu espacio de acompañamiento
           </p>
-          <h1 className="landing-hero-h1 font-playfair text-[clamp(52px,8vw,96px)] leading-[1] text-[#0f172a]">
+          <h1 className="landing-hero-h1 font-playfair text-[clamp(48px,8vw,108px)] leading-[1] text-[#0f172a]">
             Tu momento
             <br />
             <em>de ReSet</em>
           </h1>
           <p
-            className="landing-hero-desc text-[18px] text-[#64748b] leading-[1.65] max-w-[440px]"
+            className="landing-hero-desc text-[20px] text-[#64748b] leading-[1.65] max-w-[460px]"
             style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
           >
             ReSet es tu espacio digital de apoyo para el proceso de recuperación. Un lugar tranquilo para registrar tu avance, mantener el contacto con tu red y acceder a herramientas pensadas para cada etapa del camino.
@@ -350,7 +512,6 @@ function HeroSection() {
               <span>Crear cuenta</span>
             </Link>
           </div>
-          {/* Indicador multiplataforma */}
           <div className="landing-hero-ctas flex items-center gap-3 pt-1">
             <span className="font-jetbrains text-[11px] text-[#94a3b8] uppercase tracking-[2px]">
               Disponible en web y móvil
@@ -364,7 +525,6 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Mockup visual */}
         <div className="hidden lg:flex flex-1 justify-end items-center min-w-0">
           <AppMockup />
         </div>
@@ -405,13 +565,13 @@ function PilaresSection() {
   ];
 
   return (
-    <section id="pilares" className="py-32 bg-white">
-      <div className="max-w-[1280px] mx-auto px-8">
+    <section id="pilares" className="py-16 sm:py-32 bg-white">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="text-center mb-16 reveal">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488] mb-4">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488] mb-4">
             — Metodología ReSet
           </p>
-          <h2 className="font-playfair text-[clamp(32px,5vw,56px)] text-[#0f172a]">
+          <h2 className="font-playfair text-[clamp(38px,5vw,68px)] text-[#0f172a]">
             Los tres pilares de tu calma
           </h2>
         </div>
@@ -420,7 +580,7 @@ function PilaresSection() {
           {pillars.map(({ icon, accentColor, tag, title, desc, linkText }, i) => (
             <div
               key={title}
-              className="reveal feature-card bg-white border border-[#e2e8f0] rounded-sm p-8 flex flex-col gap-5"
+              className="reveal feature-card bg-white border border-[#e2e8f0] rounded-sm p-6 sm:p-8 flex flex-col gap-5"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <div
@@ -460,52 +620,86 @@ function PilaresSection() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Herbario — Kit de herramientas
+   ReSet — Kit de herramientas
 ───────────────────────────────────────────────────────────────────────────── */
 function HerbarioSection() {
   const tools = [
     {
-      emoji: "🌱",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <line x1="18" y1="32" x2="18" y2="14" stroke="#0d9488" strokeWidth="2" strokeLinecap="round" />
+          <path d="M18 24 Q12 20 9 13 Q17 13 18 22" fill="#0d9488" opacity="0.75" />
+          <path d="M18 20 Q24 16 27 9 Q19 11 18 20" fill="#0d9488" opacity="0.75" />
+          <ellipse cx="18" cy="33" rx="7" ry="2.5" fill="#1e293b" />
+        </svg>
+      ),
       title: "Racha de hábitos",
       desc: "Cada día que eliges avanzar queda grabado en tu jardín. Tu planta crece con cada jornada de compromiso contigo mismo.",
     },
     {
-      emoji: "🫁",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="14" r="8" stroke="#0ea5e9" strokeWidth="1.8" fill="none" />
+          <path d="M15 11 Q18 8 21 11 Q22 13 18 16 Q14 13 15 11Z" fill="#0ea5e9" opacity="0.5" />
+          <line x1="18" y1="22" x2="18" y2="26" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" />
+          <line x1="14" y1="26" x2="22" y2="26" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      ),
       title: "Técnicas de acompañamiento",
       desc: "Recursos diferenciados según tu rol: técnicas de autoregistro y manejo de cravings si estás en recuperación, o guías de acompañamiento si eres padrino o apoyo de alguien.",
     },
     {
-      emoji: "📓",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect x="7" y="5" width="20" height="26" rx="2" stroke="#f1c40f" strokeWidth="1.8" fill="none" />
+          <line x1="12" y1="13" x2="24" y2="13" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="18" x2="24" y2="18" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="23" x2="18" y2="23" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="7" cy="13" r="3" fill="#f1c40f" opacity="0.5" />
+          <circle cx="7" cy="18" r="3" fill="#f1c40f" opacity="0.5" />
+        </svg>
+      ),
       title: "Bitácora de estados",
       desc: "Escribe lo que sientes cuando lo sientes: estado de ánimo, nivel de craving, reflexiones cortas. Un espejo honesto sin juicio.",
     },
     {
-      emoji: "🔗",
+      icon: (
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="18" r="4" stroke="#a78bfa" strokeWidth="1.8" fill="none" />
+          <circle cx="7" cy="10" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="29" cy="10" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="7" cy="26" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <circle cx="29" cy="26" r="3" stroke="#a78bfa" strokeWidth="1.5" fill="none" />
+          <line x1="14.5" y1="16" x2="10" y2="12" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="21.5" y1="16" x2="27" y2="12" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="14.5" y1="20" x2="10" y2="24" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+          <line x1="21.5" y1="20" x2="27" y2="24" stroke="#a78bfa" strokeWidth="1" opacity="0.7" />
+        </svg>
+      ),
       title: "Red de confianza",
       desc: "Designa personas de tu círculo cercano. Cuando lo necesites, recibirán una notificación y un correo de alerta con un mensaje tuyo.",
     },
   ];
 
   return (
-    <section id="herbario" className="py-24 bg-[#0f172a] overflow-hidden relative">
-      {/* Formas decorativas */}
+    <section id="herramientas" className="py-24 bg-[#0f172a] overflow-hidden relative">
       <div className="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true">
         <div className="absolute top-8 left-12 w-32 h-32 border border-white rounded-full" />
         <div className="absolute bottom-8 right-24 w-48 h-48 border border-white rounded-full" />
         <div className="absolute top-1/2 left-1/3 w-16 h-16 border border-white rotate-45" />
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="text-center mb-16 reveal">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488] mb-4">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488] mb-4">
             — Herramientas para cada etapa
           </p>
-          <h2 className="font-playfair text-[clamp(32px,5vw,52px)] text-white">
+          <h2 className="font-playfair text-[clamp(38px,5vw,64px)] text-white">
             Tu kit de{" "}
             <em>recuperación</em>
           </h2>
           <p
-            className="mt-6 text-[16px] text-[#64748b] max-w-[520px] mx-auto leading-relaxed"
+            className="mt-6 text-[18px] text-[#64748b] max-w-[520px] mx-auto leading-relaxed"
             style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
           >
             Un lugar para respirar, registrar y empezar de nuevo. Cada herramienta en ReSet está pensada para acompañarte, sin prisa y sin juicio.
@@ -513,14 +707,14 @@ function HerbarioSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-0 border border-white/10 reveal">
-          {tools.map(({ emoji, title, desc }, i) => (
+          {tools.map(({ icon, title, desc }, i) => (
             <div
               key={title}
-              className={`flex flex-col gap-4 p-8 ${
+              className={`flex flex-col gap-4 p-5 sm:p-8 ${
                 i < 3 ? "border-b sm:border-b-0 sm:border-r border-white/10" : ""
               } hover:bg-white/5 transition-colors`}
             >
-              <span className="text-3xl">{emoji}</span>
+              <span>{icon}</span>
               <h3 className="font-playfair text-[18px] text-white italic">{title}</h3>
               <p
                 className="text-[13px] text-[#64748b] leading-relaxed"
@@ -552,9 +746,8 @@ function MobileSection() {
   return (
     <section
       id="movil"
-      className="py-20 bg-white border-y border-[#f1f5f9] overflow-hidden relative"
+      className="py-12 sm:py-20 bg-white border-y border-[#f1f5f9] overflow-hidden relative"
     >
-      {/* Fondo decorativo sutil */}
       <div
         className="absolute inset-0 pointer-events-none opacity-30"
         aria-hidden="true"
@@ -564,13 +757,11 @@ function MobileSection() {
         }}
       />
 
-      <div className="max-w-[1280px] mx-auto px-8 relative">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative">
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20">
 
-          {/* Ícono de teléfono SVG */}
           <div className="reveal shrink-0 flex items-center justify-center">
             <div className="relative">
-              {/* Teléfono grande decorativo */}
               <svg
                 width="120"
                 height="200"
@@ -582,20 +773,15 @@ function MobileSection() {
                 <rect x="4" y="4" width="112" height="192" rx="20" fill="white" stroke="#e2e8f0" strokeWidth="2" />
                 <rect x="4" y="4" width="112" height="192" rx="20" stroke="#0d9488" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.4" />
                 <rect x="12" y="28" width="96" height="144" rx="4" fill="#f8fafc" />
-                {/* Planta */}
                 <line x1="60" y1="140" x2="60" y2="100" stroke="#0d9488" strokeWidth="2.5" strokeLinecap="round" />
                 <path d="M60 122 Q50 115 45 105 Q53 104 60 116" fill="#0d9488" opacity="0.7" />
                 <path d="M60 116 Q70 109 75 99 Q67 100 60 112" fill="#0d9488" opacity="0.7" />
                 <ellipse cx="60" cy="143" rx="12" ry="4" fill="#e2e8f0" />
-                {/* Barra de progreso */}
                 <rect x="20" y="156" width="80" height="4" rx="2" fill="#e2e8f0" />
                 <rect x="20" y="156" width="60" height="4" rx="2" fill="#0d9488" />
-                {/* Notch */}
                 <rect x="44" y="10" width="32" height="6" rx="3" fill="#e2e8f0" />
-                {/* Home indicator */}
                 <rect x="48" y="186" width="24" height="3" rx="1.5" fill="#e2e8f0" />
               </svg>
-              {/* Pulso animado */}
               <div
                 className="absolute inset-[-8px] rounded-[28px] border border-[#0d9488] opacity-20 animate-pulse"
                 aria-hidden="true"
@@ -603,21 +789,20 @@ function MobileSection() {
             </div>
           </div>
 
-          {/* Texto */}
           <div className="flex-1 flex flex-col gap-5 reveal-right text-center lg:text-left">
-            <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+            <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
               — Acceso multiplataforma
             </p>
-            <h2 className="font-playfair text-[clamp(28px,4vw,44px)] text-[#0f172a] leading-tight">
+            <h2 className="font-playfair text-[clamp(34px,4vw,56px)] text-[#0f172a] leading-tight">
               Lleva tu recuperación
               <br />
               <em>en el bolsillo</em>
             </h2>
             <p
-              className="text-[16px] text-[#64748b] leading-relaxed max-w-[480px] mx-auto lg:mx-0"
+              className="text-[18px] text-[#64748b] leading-relaxed max-w-[480px] mx-auto lg:mx-0"
               style={{ fontWeight: 300, fontFamily: "Inter, sans-serif" }}
             >
-              ReSet funciona en cualquier dispositivo: abre tu herbario, escribe en tu bitácora o contacta a tu red de apoyo desde el móvil, la tablet o la web, sin instalar nada adicional.
+              ReSet funciona en cualquier dispositivo: accede a tus herramientas, escribe en tu bitácora o contacta a tu red de apoyo desde el móvil, la tablet o la web, sin instalar nada adicional.
             </p>
             <ul className="flex flex-col gap-3 items-center lg:items-start">
               {[
@@ -637,10 +822,9 @@ function MobileSection() {
               ))}
             </ul>
 
-            {/* CTAs móvil */}
             <div className="flex flex-wrap items-center gap-4 pt-2 justify-center lg:justify-start">
-              <a
-                href="https://reset-app.tech/download"
+              <Link
+                href="/download"
                 className="landing-btn-primary font-jetbrains text-[12px] uppercase tracking-[1.2px] px-8 py-4 rounded-sm inline-flex items-center gap-3"
               >
                 <svg width="14" height="16" viewBox="0 0 14 16" fill="none" aria-hidden="true">
@@ -650,7 +834,7 @@ function MobileSection() {
                   <line x1="7" y1="5" x2="7" y2="10" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
                 Usar en mi celular
-              </a>
+              </Link>
               <Link
                 href="/login"
                 className="landing-btn-ghost font-jetbrains text-[12px] uppercase tracking-[1.2px] border border-[#e2e8f0] px-8 py-4 rounded-sm hover:border-[#0d9488] transition-colors"
@@ -672,21 +856,19 @@ function ComunidadSection() {
   return (
     <section
       id="comunidad"
-      className="py-32"
+      className="py-16 sm:py-32"
       style={{ background: "rgba(248,250,252,0.5)" }}
     >
-      <div className="max-w-[1280px] mx-auto px-8 flex items-center gap-16 flex-col lg:flex-row">
-        {/* Mockup */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 flex items-center gap-10 lg:gap-16 flex-col lg:flex-row">
         <div className="flex-1 min-w-0 flex justify-center">
           <CommunityMockup />
         </div>
 
-        {/* Texto */}
         <div className="flex-1 min-w-0 flex flex-col gap-6 reveal-right">
-          <p className="font-jetbrains text-[11px] uppercase tracking-[5px] text-[#0d9488]">
+          <p className="font-jetbrains text-[12px] uppercase tracking-[5px] text-[#0d9488]">
             — Espacios de encuentro
           </p>
-          <h2 className="font-playfair text-[clamp(36px,5vw,52px)] leading-[1.1] text-[#0f172a]">
+          <h2 className="font-playfair text-[clamp(40px,5vw,64px)] leading-[1.1] text-[#0f172a]">
             Nunca camines
             <br />
             <em>en soledad</em>
@@ -732,15 +914,14 @@ function ComunidadSection() {
 ───────────────────────────────────────────────────────────────────────────── */
 function Footer() {
   return (
-    <footer className="bg-white border-t border-[#f1f5f9] pt-24 pb-12">
-      <div className="max-w-[1280px] mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* Brand */}
+    <footer className="bg-white border-t border-[#f1f5f9] pt-12 sm:pt-24 pb-12">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 mb-12">
           <div className="md:col-span-1 flex flex-col gap-5">
             <div>
               <p className="font-playfair italic text-[24px] text-[#0f172a] leading-none">ReSet</p>
               <p className="font-jetbrains text-[11px] text-[#94a3b8] tracking-[2px] uppercase mt-1">
-                by Hagging Lines
+                by Hanging Lines
               </p>
             </div>
             <p
@@ -751,19 +932,45 @@ function Footer() {
             </p>
             <a
               href="https://reset-app.tech"
-              className="font-jetbrains text-[11px] text-[#94a3b8] hover:text-[#0d9488] transition-colors"
+              className="font-jetbrains text-[11px] text-[#94a3b8] hover:text-[#0d9488] transition-colors w-fit"
             >
               reset-app.tech
             </a>
+            
+            <div className="flex gap-3 flex-wrap mt-2 justify-center md:justify-start">
+              <a
+                href="https://www.instagram.com/resetapp.tech?igsh=MWFyMzYxOXZkM2IxYg=="
+                className="size-9 rounded-full border border-[#e2e8f0] text-[#94a3b8] hover:border-[#0d9488] hover:text-[#0d9488] transition-colors flex items-center justify-center"
+                aria-label="Síguenos en Instagram"
+              >
+                <FaInstagram size={18} aria-hidden="true" />
+              </a>
+
+              <a
+                href="https://www.facebook.com/share/1ED17Hcj2J/"
+                className="size-9 rounded-full border border-[#e2e8f0] text-[#94a3b8] hover:border-[#0d9488] hover:text-[#0d9488] transition-colors flex items-center justify-center"
+                aria-label="Síguenos en Facebook"
+              >
+                <FaFacebookF size={18} aria-hidden="true" />
+              </a>
+
+              <a
+                href="https://youtube.com/@resetofficial51?si=EonF_O7K26Ghk-AL"
+                className="size-9 rounded-full border border-[#e2e8f0] text-[#94a3b8] hover:border-[#0d9488] hover:text-[#0d9488] transition-colors flex items-center justify-center"
+                aria-label="Síguenos en YouTube"
+              >
+                <FaYoutube size={18} aria-hidden="true" />
+              </a>
+
+            </div>
           </div>
 
-          {/* Producto */}
           <div>
             <h5 className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#0f172a] mb-6">
               Producto
             </h5>
             <ul className="flex flex-col gap-4">
-              {["Herbario", "Pares de Apoyo", "Comunidad", "Precios"].map((item) => (
+              {["Herramientas ReSet", "Pares de Apoyo", "Comunidad"].map((item) => (
                 <li key={item}>
                   <a
                     href="/login"
@@ -777,13 +984,12 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Compañía */}
           <div>
             <h5 className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#0f172a] mb-6">
               Compañía
             </h5>
             <ul className="flex flex-col gap-4">
-              {["Nosotros", "Impacto", "Blog", "Contacto"].map((item) => (
+              {["Nosotros", "Impacto", "Contacto"].map((item) => (
                 <li key={item}>
                   <a
                     href="#"
@@ -799,21 +1005,17 @@ function Footer() {
 
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-[#f8fafc] pt-12 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="border-t border-[#f8fafc] pt-8 sm:pt-12 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8]">
-            © 2026 Hagging Lines. Todos los derechos reservados.
+            © 2026 Hanging Lines. Todos los derechos reservados.
           </p>
           <div className="flex gap-8">
-            {["Privacidad", "Términos", "Cookies"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] hover:text-[#0f172a] transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+            <a
+              href="/terms"
+              className="font-jetbrains text-[11px] uppercase tracking-[1px] text-[#94a3b8] hover:text-[#0f172a] transition-colors"
+            >
+              Privacidad &amp; Términos
+            </a>
           </div>
         </div>
       </div>
@@ -852,6 +1054,7 @@ export default function LandingPage() {
         <ComunidadSection />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

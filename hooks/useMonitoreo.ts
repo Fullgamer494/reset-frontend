@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getGodchildProfile } from "@/lib/api/sponsorship";
+import { getGodchildProfile, graduateAddict } from "@/lib/api/sponsorship";
 import type { GodchildProfileResponse } from "@/lib/api/sponsorship";
 
 // ─── Tipos exportados ──────────────────────────────────────────────────
@@ -15,8 +15,10 @@ export interface GodchildInfo {
 export interface GodchildStats {
   sobrietyDays: number;
   notesThisWeek: number;
-  consistency: number;         // 0–100
+  averageCraving: number;       // 0-10: Nivel promedio de ansia
+  totalRelapses: number;        // Recaídas totales en la relación
   lastActiveAt: string | null;
+  godchildCreatedAt: string;    // Fecha de registro del ahijado
 }
 
 export interface RecentLogEntry {
@@ -35,6 +37,7 @@ export interface MonitoreoResult {
   stats: GodchildStats | null;
   recentLogs: RecentLogEntry[];
   error: string | null;
+  handleGraduateAddict: () => Promise<void>;
 }
 
 // ─── Helpers de mapeo ────────────────────────────────────────────────
@@ -59,8 +62,10 @@ function mapProfile(data: GodchildProfileResponse): {
     stats: {
       sobrietyDays: statistics.dayCounter,
       notesThisWeek: recentLogs.length, // proxy: logs en el periodo devuelto
-      consistency: 0, // La API no devuelve un % de consistencia directamente
+      averageCraving: Math.round(statistics.averageCraving * 10) / 10, // Redondeado a 1 decimal
+      totalRelapses: statistics.totalRelapses,
       lastActiveAt,
+      godchildCreatedAt: godchild.createdAt, // Fecha de registro del ahijado
     },
     recentLogs: recentLogs.map((log, idx) => ({
       id: `${log.logDate}-${idx}`,
@@ -111,6 +116,25 @@ export function useMonitoreo(): MonitoreoResult {
     return () => { cancelled = true; };
   }, []);
 
-  return { isLoading, godchildFound, godchild, stats, recentLogs, error };
+  const handleGraduateAddict = async () => {
+    if (!godchild) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      await graduateAddict(godchild.id);
+      // Tras graduar, ya no hay ahijado activo para este padrino
+      setGodchildFound(false);
+      setGodchild(null);
+      setStats(null);
+      setRecentLogs([]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al graduar al ahijado");
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { isLoading, godchildFound, godchild, stats, recentLogs, error, handleGraduateAddict };
 }
 

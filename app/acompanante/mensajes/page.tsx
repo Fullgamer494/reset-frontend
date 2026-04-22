@@ -45,7 +45,7 @@ export default function MensajesPage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="1.5" className="flex-shrink-0 mt-0.5">
               <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <p className="text-[11px] italic text-amber-700 dark:text-amber-400 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p className="text-[13px] text-amber-700 dark:text-amber-400 leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>
               El servicio de mensajería está en desarrollo. Por ahora, usa la biblioteca de abajo para copiar frases de aliento y enviárselas por otro medio.
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function MensajesPage() {
                 placeholder={sendDisabled ? "Mensajería en desarrollo..." : "Escribe un mensaje de aliento..."}
                 disabled={sendDisabled}
                 className="flex-1 border border-[var(--ui-border)] dark:bg-[#070f1a] dark:text-slate-200 dark:placeholder-slate-600 rounded-lg px-4 py-3 rs-text-body text-[13px] outline-none resize-none focus:border-teal-300 focus:ring-1 focus:ring-teal-100 transition-all disabled:bg-slate-50 dark:disabled:bg-[#0a1628] disabled:text-slate-300 dark:disabled:text-slate-600 disabled:cursor-not-allowed"
-                style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey && !sendDisabled) {
                     e.preventDefault();
@@ -158,8 +158,8 @@ export default function MensajesPage() {
                   <button
                     key={item.id}
                     onClick={() => setText(item.text)}
-                    className="text-left text-[11px] italic rs-text-caption hover:text-teal-600 py-2 px-3 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-transparent hover:border-teal-100 dark:hover:border-teal-800/40"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="text-left text-[12px] rs-text-caption hover:text-teal-600 py-2 px-3 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors border border-transparent hover:border-teal-100 dark:hover:border-teal-800/40"
+                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
                     {item.text}
                   </button>
@@ -175,7 +175,7 @@ export default function MensajesPage() {
                 ¿Por qué enviar mensajes?
               </p>
               <p
-                className="text-[11px] italic text-teal-700 dark:text-teal-300 leading-relaxed"
+                className="text-[12px] text-teal-700 dark:text-teal-300 leading-relaxed"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Los mensajes de apoyo aumentan la motivación y reducen la sensación de soledad en la recuperación.

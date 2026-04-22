@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { register } from "@/lib/api/auth";
 import { ADDICTION_TYPES } from "@/lib/constants";
+import { validateRegisterForm } from "@/lib/validation";
 import type { AddictionTypeId } from "@/types";
 
 interface RegisterFormStep1 {
@@ -14,7 +14,6 @@ interface RegisterFormStep1 {
 }
 
 export function useRegister() {
-  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [role, setRole] = useState<"user" | "companion">("user");
   const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "", confirmPassword: "" });
@@ -24,6 +23,8 @@ export function useRegister() {
   const [addictionClassification, setAddictionClassification] = useState<"conductual" | "sustancia" | "">("")
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDeactivated, setIsDeactivated] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,24 +32,9 @@ export function useRegister() {
   };
 
   const handleNextStep = () => {
-    if (!form.name.trim()) {
-      setError('Ingresa tu nombre completo.');
-      return;
-    }
-    if (!form.email.trim()) {
-      setError('Ingresa tu correo electrónico.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      setError('El correo electrónico no tiene un formato válido.');
-      return;
-    }
-    if (!form.password) {
-      setError('Elige una contraseña.');
-      return;
-    }
-    if (form.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+    const validation = validateRegisterForm(form.name, form.email, form.password);
+    if (!validation.valid) {
+      setError(validation.errors.name || validation.errors.email || validation.errors.password?.[0] || 'Datos inválidos.');
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -60,8 +46,13 @@ export function useRegister() {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.password) {
-      setError("Completa todos los campos de cuenta.");
+    const validation = validateRegisterForm(form.name, form.email, form.password);
+    if (!validation.valid) {
+      setError(validation.errors.name || validation.errors.email || validation.errors.password?.[0] || "Completa todos los campos correctamente.");
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      setError('Las contraseñas no coinciden.');
       return;
     }
     if (role === "user") {
@@ -81,19 +72,26 @@ export function useRegister() {
     setIsLoading(true);
     setError(null);
     try {
-      // Determinar el nombre legible de la adicción para el backend
+      // Determinar el nombre legible y la clasificación para el backend
+      const selectedType = ADDICTION_TYPES.find((a) => a.id === selectedAddiction);
+      
       const addictionLabel =
         selectedAddiction === "otros"
           ? otherDescription.trim()
-          : ADDICTION_TYPES.find((a) => a.id === selectedAddiction)?.label ?? selectedAddiction;
+          : selectedType?.label ?? selectedAddiction;
 
-      // Mapear clasificación al formato del contrato
-      const classificationLabel =
-        addictionClassification === "conductual"
-          ? "Conductual"
-          : addictionClassification === "sustancia"
-          ? "Sustancias"
-          : undefined;
+      // Si es "otros", usamos la clasificación elegida interactivamente.
+      // Si es estándar, la tomamos de la constante ADDICTION_TYPES.
+      let classificationLabel = selectedType?.classification;
+      
+      if (selectedAddiction === "otros") {
+        classificationLabel =
+          addictionClassification === "conductual"
+            ? "Conductual"
+            : addictionClassification === "sustancia"
+            ? "Sustancias"
+            : undefined;
+      }
 
       await register({
         name: form.name,
@@ -103,8 +101,16 @@ export function useRegister() {
         ...(role === "user" && addictionLabel ? { addictionName: addictionLabel } : {}),
         ...(role === "user" && classificationLabel ? { classification: classificationLabel } : {}),
       });
-      router.push("/login");
-    } catch (err) {
+      setIsSuccess(true);
+    } catch (err: unknown) {
+      const errorCode =
+        typeof err === 'object' && err !== null && 'code' in err
+          ? (err as { code?: string }).code
+          : undefined;
+
+      if (errorCode === "ACCOUNT_DEACTIVATED") {
+        setIsDeactivated(true);
+      }
       setError(err instanceof Error ? err.message : "Error al crear la cuenta");
     } finally {
       setIsLoading(false);
@@ -127,6 +133,8 @@ export function useRegister() {
     setAddictionClassification,
     showConfirmPassword,
     setShowConfirmPassword,
+    isDeactivated,
+    isSuccess,
     handleChange,
     handleNextStep,
     handleSubmit,

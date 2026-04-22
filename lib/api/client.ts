@@ -10,8 +10,22 @@ const REQUEST_TIMEOUT_MS = 15_000;
 
 let authToken: string | null = null;
 
+/**
+ * Establece el token en memoria para peticiones síncronas y lo guarda en cookies
+ * para que el Middleware de Next.js pueda leerlo.
+ */
 export function setToken(token: string | null) {
   authToken = token;
+  if (typeof window !== 'undefined') {
+    if (token) {
+      document.cookie = `reset_token=${token}; path=/; max-age=2592000; samesite=lax`;
+    } else {
+      // Limpiar la cookie asegurando que el path coincida
+      document.cookie = `reset_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      // Refuerzo para eliminar cualquier residuo (si existiera en otro path o subdominio)
+      document.cookie = `reset_token=; path=/; max-age=0; samesite=lax`;
+    }
+  }
 }
 
 export function getToken(): string | null {
@@ -40,16 +54,21 @@ export async function apiRequest<T>(
       ...options,
       headers,
       signal: controller.signal,
+      credentials: 'include', // Requerido para device_id y 2FA
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({})) as { message?: string | string[]; error?: string };
-      // NestJS ValidationPipe puede devolver message como array de cadenas
+      const err = await res.json().catch(() => ({})) as { 
+        message?: string | string[]; 
+        error?: string;
+        code?: string; // Nuevo: Código de error específico
+      };
+      
       const rawMsg = err.message;
       const msg = Array.isArray(rawMsg)
-        ? rawMsg[0]                      // primera falla de validación
+        ? rawMsg[0]
         : (rawMsg ?? '');
-      // Mensajes legibles para los códigos de estado más comunes
+
       const fallbacks: Record<number, string> = {
         401: 'Correo o contraseña incorrectos.',
         403: 'No tienes permiso para realizar esta acción.',
@@ -59,7 +78,14 @@ export async function apiRequest<T>(
         429: 'Demasiados intentos. Espera un momento antes de volver a intentarlo.',
         500: 'Error interno del servidor. Inténtalo de nuevo más tarde.',
       };
-      throw new Error(msg || fallbacks[res.status] || `Error ${res.status}`);
+
+      // Adjuntamos el código y el status al objeto de error si existe
+      const errorMessage = msg || fallbacks[res.status] || `Error ${res.status}`;
+      const errorObject = new Error(errorMessage) as any;
+      errorObject.status = res.status;
+      if (err.code) errorObject.code = err.code;
+      
+      throw errorObject;
     }
 
     const result = await res.json() as any;

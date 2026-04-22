@@ -11,25 +11,40 @@ export interface RegisterData {
   password: string;
   addictionType: string;
   otherDescription?: string;
-  role?: "ADICTO" | "PADRINO";
+  role?: "ADICTO" | "PADRINO" | "ADMIN";
 }
 
-export interface AuthResponse {
-  accessToken: string;
-  user: User;
+export interface AddictionData {
+  custom_name: string;
+  classification: string;
+  is_active: boolean;
+  registered_at: string;
 }
 
-// ─── User ────────────────────────────────────────────────────────────────────
+export interface SponsorData {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl?: string | null;
+  sponsorshipId?: string;
+  status?: 'PENDING' | 'ACTIVE';
+}
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: "ADICTO" | "PADRINO";
+  role: "ADICTO" | "PADRINO" | "ADMIN";
   sponsorCode?: string | null;
+  avatarUrl?: string | null;
   createdAt: string;
-  /** @deprecated Solo disponible en mocks — la API no devuelve addictionType */
-  addictionType?: string;
+  addiction?: AddictionData | null;
+  sponsor?: SponsorData | null;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  user: Pick<User, 'id' | 'name' | 'email' | 'role' | 'sponsorCode'>;
 }
 
 // ─── Dashboard / Progress ────────────────────────────────────────────────────
@@ -59,6 +74,7 @@ export type AddictionTypeId =
 export interface AddictionType {
   id: AddictionTypeId;
   label: string;
+  classification?: "Sustancias" | "Conductual";
 }
 
 // ─── Journal / Bitácora ──────────────────────────────────────────────────────
@@ -160,6 +176,7 @@ export interface SupportedUser {
   addictionType: string;
   sobrietyDays: number;
   status: 'Activo' | 'Inactivo';
+  godchildCreatedAt?: string; // Fecha de registro del ahijado
 }
 
 export interface CompanionActivity {
@@ -200,7 +217,5 @@ export interface MessageLibraryItem {
 export interface CompanionProfile {
   name: string;
   email: string;
-  phone: string;
   emailAlerts: boolean;
-  smsAlerts: boolean;
 }

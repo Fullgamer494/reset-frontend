@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { forgotPassword } from "@/lib/api/auth";
 
 export function useForgotPassword() {
   const [email, setEmail] = useState("");
@@ -26,14 +27,10 @@ export function useForgotPassword() {
     setIsLoading(true);
     setError(null);
     try {
-      // TODO: Implementar cuando el backend tenga endpoint de recuperación.
-      // await apiRequest('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) });
-      //
-      // Por ahora simulamos el envío con un delay para dar feedback al usuario.
-      await new Promise((r) => setTimeout(r, 1000));
+      await forgotPassword(email);
       setSent(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo enviar el correo. Intenta de nuevo.");
+    } catch (err: any) {
+      setError(err.message || "No se pudo enviar el correo. Intenta de nuevo.");
     } finally {
       setIsLoading(false);
     }

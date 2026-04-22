@@ -7,7 +7,7 @@ import CapacitorProvider from "@/components/CapacitorProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400"],
   style: ["normal", "italic"],
   variable: "--font-playfair",
   display: "swap",
@@ -16,7 +16,6 @@ const playfair = Playfair_Display({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
-  style: ["normal", "italic"],
   variable: "--font-jetbrains",
   display: "swap",
 });
@@ -24,6 +23,18 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "ReSet — Tu espacio de recuperación",
   description: "Un espacio seguro para sanar, reconectar y florecer en libertad.",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/logo.png", type: "image/png", sizes: "192x192" },
+      { url: "/logo.png", type: "image/png", sizes: "32x32" },
+      { url: "/logo.png", type: "image/png", sizes: "16x16" },
+    ],
+    shortcut: "/logo.png",
+    apple: [
+      { url: "/logo.png", type: "image/png", sizes: "180x180" },
+    ],
+  },
 };
 
 /**
@@ -34,7 +45,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,   // evita el zoom accidental en inputs (UX móvil)
   viewportFit: "cover",
 };
 
@@ -53,7 +63,7 @@ export default function RootLayout({
          */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("reset_theme");document.documentElement.setAttribute("data-theme",t==="dark"||t==="light"?t:window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){}`,
+            __html: `try{var t=localStorage.getItem("reset_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){}`,
           }}
         />
         <ThemeProvider>

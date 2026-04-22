@@ -6,6 +6,20 @@ import { useMiCuenta } from "@/hooks/useMiCuenta";
 import { useSession } from "@/hooks/useSession";
 import { useAuth } from "@/context/AuthContext";
 
+function formatAbsoluteDate(isoDate: string | undefined): string {
+  if (!isoDate) return "Fecha no disponible";
+  try {
+    const d = new Date(isoDate);
+    return d.toLocaleString('es-MX', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
 export default function MiCuentaPage() {
   const { user } = useAuth();
   const {
@@ -19,10 +33,8 @@ export default function MiCuentaPage() {
     sponsorshipActionError,
     handleChange,
     handleSave,
-    handleTerminateSponsorship,
   } = useMiCuenta();
   const { logout } = useSession();
-  const [showTerminateConfirm, setShowTerminateConfirm] = useState(false);
 
   if (isLoading) {
     return (
@@ -74,7 +86,6 @@ export default function MiCuentaPage() {
             {([
               { label: "Nombre Completo", field: "name", value: profile.name, type: "text" },
               { label: "Correo Electrónico", field: "email", value: profile.email, type: "email" },
-              { label: "Teléfono (para SMS)", field: "phone", value: profile.phone, type: "tel" },
             ] as const).map(({ label, field, value, type }) => (
               <div key={label} className="flex flex-col gap-1.5">
                 <label
@@ -139,7 +150,7 @@ export default function MiCuentaPage() {
                 {user.sponsorCode}
               </p>
               <p
-                className="text-[10px] tracking-[1px] uppercase text-teal-500/70 dark:text-teal-400/60"
+                className="text-[11px] tracking-[1px] uppercase text-teal-500/70 dark:text-teal-400/60"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 Comparte este código con tu ahijado para que solicite el apadrinamiento
@@ -160,7 +171,7 @@ export default function MiCuentaPage() {
                 <button
                   type="button"
                   onClick={logout}
-                  className="text-[10px] tracking-[1px] uppercase text-amber-500 hover:text-amber-600 underline transition-colors"
+                  className="text-[11px] tracking-[1px] uppercase text-amber-500 hover:text-amber-600 underline transition-colors"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   Cierra sesión y vuelve a entrar para verlo →
@@ -198,7 +209,7 @@ export default function MiCuentaPage() {
               <p className="text-[13px] italic rs-text-caption" style={{ fontFamily: "'Playfair Display', serif" }}>
                 Aún no tienes un ahijado activo.
               </p>
-              <p className="text-[10px] tracking-[0.5px] rs-text-caption max-w-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="text-[11px] tracking-[0.5px] rs-text-caption max-w-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                 Comparte tu código de padrino para que alguien solicite tu apoyo.
               </p>
             </div>
@@ -226,6 +237,14 @@ export default function MiCuentaPage() {
                   >
                     Adicción: {supportedUser.addictionType} — {supportedUser.sobrietyDays} días de recuperación
                   </p>
+                  {supportedUser.godchildCreatedAt && (
+                    <p
+                      className="text-[10px] rs-text-caption text-slate-500 mt-1"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      Registrado el: {formatAbsoluteDate(supportedUser.godchildCreatedAt)}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
                   <span
@@ -234,93 +253,12 @@ export default function MiCuentaPage() {
                   >
                     {supportedUser.status}
                   </span>
-                  {activeSponsorshipId && (
-                    showTerminateConfirm ? (
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="text-[10px] tracking-[0.5px] rs-text-caption"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                        >
-                          ¿Terminar?
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => { handleTerminateSponsorship(); setShowTerminateConfirm(false); }}
-                          className="text-[10px] tracking-[1px] uppercase text-white bg-red-500 hover:bg-red-600 px-2 py-0.5 rounded transition-colors"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                        >
-                          Sí
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setShowTerminateConfirm(false)}
-                          className="text-[10px] tracking-[1px] uppercase rs-text-muted hover:rs-text-body transition-colors"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                        >
-                          No
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setShowTerminateConfirm(true)}
-                        className="text-[10px] tracking-[1px] uppercase text-red-400 hover:text-red-500 transition-colors"
-                        style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                      >
-                        Terminar
-                      </button>
-                    )
-                  )}
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* Alert preferences */}
-        <div className="border border-(--ui-border) bg-(--surface-card) rounded-sm p-8 mb-6">
-          <div className="flex items-center gap-2 mb-5">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="1.5">
-              <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <p
-              className="text-[11px] tracking-[2px] uppercase text-teal-600"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              Preferencias de Alerta
-            </p>
-          </div>
-
-          <p
-            className="text-[11px] italic rs-text-caption mb-5 leading-relaxed"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Elige cómo quieres recibir notificaciones cuando tu ahijado active el protocolo de emergencia.
-          </p>
-
-          {[
-            { label: "Notificaciones por Email", sub: "Recibe un correo cuando se active la alarma.", field: "emailAlerts" as const, checked: profile.emailAlerts },
-            { label: "Notificaciones por SMS", sub: `Mensaje al número ${profile.phone}.`, field: "smsAlerts" as const, checked: profile.smsAlerts },
-          ].map(({ label, sub, checked, field }) => (
-            <div key={label} className="flex items-center gap-4 py-4 border-t border-slate-50 dark:border-slate-700/20">
-              <div className="flex-1">
-                <p
-                  className="text-[11px] tracking-[1.5px] uppercase rs-text-muted mb-0.5"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                >
-                  {label}
-                </p>
-                <p
-                  className="text-[11px] rs-text-caption"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                >
-                  {sub}
-                </p>
-              </div>
-              <Toggle checked={checked} onChange={(v) => handleChange(field, v)} color="teal" />
-            </div>
-          ))}
-        </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/30">
@@ -338,6 +276,7 @@ export default function MiCuentaPage() {
             Cerrar Sesión
           </button>
         </div>
+
       </div>
     </div>
   );

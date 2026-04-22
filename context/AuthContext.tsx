@@ -18,23 +18,19 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   type ReactNode,
 } from 'react';
+import { User } from '@/types';
+import { getProfile } from '@/lib/api/auth';
 import { setToken } from '@/lib/api/client';
 import { storageSave, storageGet, storageRemove, STORAGE_KEYS } from '@/lib/storage';
+import { decryptFromStorage, encryptForStorage } from '@/lib/secure-storage';
+import { log } from '@/lib/logger';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
-export interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  role: 'ADICTO' | 'PADRINO';
-  /** Código de 8 caracteres del padrino — solo presente si role = 'PADRINO' */
-  sponsorCode?: string | null;
-  /** URL del avatar generado por DiceBear u otro servicio — null si no disponible */
-  avatarUrl?: string | null;
-}
+export type AuthUser = User;
 
 interface AuthCtx {
   user: AuthUser | null;
@@ -48,6 +44,8 @@ interface AuthCtx {
    * un flash de "no autenticado" en móvil cuando el token sí existe en storage.
    */
   isRestoring: boolean;
+  /** Forza la recarga del perfil desde el servidor */
+  refreshProfile: () => Promise<void>;
 }
 
 // ─── Contexto ────────────────────────────────────────────────────────────────
@@ -58,6 +56,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isRestoring, setIsRestoring] = useState(true);
 
+  // ── Limpiar ───────────────────────────────────────────────────────────────
+  const clearAuth = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    storageRemove(STORAGE_KEYS.TOKEN).catch((error: unknown) => {
+      log.warn('No se pudo eliminar token de storage', { error: String(error) });
+    });
+    storageRemove(STORAGE_KEYS.USER).catch((error: unknown) => {
+      log.warn('No se pudo eliminar usuario de storage', { error: String(error) });
+    });
+  }, []);
+
   // ── Restaurar sesión al arrancar ──────────────────────────────────────────
   // Se ejecuta una sola vez al montar el Provider (début de la app).
   // Si existe un token guardado, lo restaura en memoria y recupera los datos
@@ -65,71 +75,105 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function restoreSession() {
       try {
-        const [token, raw] = await Promise.all([
-          storageGet(STORAGE_KEYS.TOKEN),
-          storageGet(STORAGE_KEYS.USER),
-        ]);
-        if (token && raw) {
-          const parsedUser = JSON.parse(raw) as AuthUser;
-
-          // Sesión antigua: si el PADRINO no tiene sponsorCode guardado,
-          // intentar extraerlo del JWT (payload público — no requiere red).
-          if (parsedUser.role === 'PADRINO' && !parsedUser.sponsorCode) {
-            try {
-              const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-              const payload = JSON.parse(atob(b64)) as Record<string, unknown>;
-              const extracted = (payload.sponsorCode ?? payload.sponsor_code ?? null) as string | null;
-              if (extracted) {
-                parsedUser.sponsorCode = extracted;
-                // Actualizar storage con el dato recuperado
-                storageSave(STORAGE_KEYS.USER, JSON.stringify(parsedUser)).catch(() => {});
-              }
-            } catch { /* JWT malformado — ignorar */ }
-          }
-
+        const tokenRaw = await storageGet(STORAGE_KEYS.TOKEN);
+        const token = tokenRaw ? await decryptFromStorage(tokenRaw) : null;
+        if (token) {
           setToken(token);   // pone el token en memoria para las llamadas HTTP
-          setUser(parsedUser);
+          
+          // Intentar obtener el perfil fresco del servidor
+          try {
+            const profile = await getProfile();
+            setUser(profile);
+            // Sincronizar storage con los datos frescos
+            const encryptedProfile = await encryptForStorage(JSON.stringify(profile));
+            storageSave(STORAGE_KEYS.USER, encryptedProfile).catch((error: unknown) => {
+              log.warn('No se pudo persistir el perfil restaurado', { error: String(error) });
+            });
+          } catch (error: unknown) {
+            log.error('Error al restaurar sesión desde el servidor', { phase: 'restore-profile' }, error instanceof Error ? error : undefined);
+            const status = typeof error === 'object' && error !== null && 'status' in error
+              ? (error as { status?: number }).status
+              : undefined;
+            
+            // Si el error es 401 (Unauthorized), significa que el token no es válido.
+            // Debemos limpiar la sesión por completo para evitar bucles de redirección.
+            if (status === 401) {
+              clearAuth();
+            } else {
+              // Si el servidor falla por otros motivos (ej: Red), intentar usar los datos locales como fallback
+              const raw = await storageGet(STORAGE_KEYS.USER);
+              if (raw) {
+                const decrypted = await decryptFromStorage(raw);
+                if (decrypted) {
+                  setUser(JSON.parse(decrypted) as AuthUser);
+                } else {
+                  clearAuth();
+                }
+              } else {
+                clearAuth();
+              }
+            }
+          }
         }
-      } catch {
-        // Si el storage está corrupto, seguir sin sesión (pedirá login)
+      } catch (error: unknown) {
+        // Al error de storage, seguimos sin sesión
+        log.warn('No se pudo restaurar sesión desde storage', { error: String(error) });
       } finally {
         setIsRestoring(false);
       }
     }
     restoreSession();
-  }, []);
+  }, [clearAuth]);
 
   // ── Guardar ───────────────────────────────────────────────────────────────
-  const saveAuth = (token: string, u: AuthUser) => {
+  const saveAuth = useCallback((token: string, u: AuthUser) => {
     setToken(token);
     setUser(u);
     // Persistir de forma asíncrona (fire-and-forget).
     // Si falla (p.ej. almacenamiento lleno), la sesión en memoria sigue activa.
-    storageSave(STORAGE_KEYS.TOKEN, token).catch(() => {});
-    storageSave(STORAGE_KEYS.USER, JSON.stringify(u)).catch(() => {});
-  };
+    encryptForStorage(token)
+      .then((encrypted) => storageSave(STORAGE_KEYS.TOKEN, encrypted))
+      .catch((error: unknown) => {
+        log.warn('No se pudo persistir el token en storage', { error: String(error) });
+      });
 
-  // ── Limpiar ───────────────────────────────────────────────────────────────
-  const clearAuth = () => {
-    setToken(null);
-    setUser(null);
-    storageRemove(STORAGE_KEYS.TOKEN).catch(() => {});
-    storageRemove(STORAGE_KEYS.USER).catch(() => {});
-  };
+    encryptForStorage(JSON.stringify(u))
+      .then((encrypted) => storageSave(STORAGE_KEYS.USER, encrypted))
+      .catch((error: unknown) => {
+        log.warn('No se pudo persistir el usuario en storage', { error: String(error) });
+      });
+  }, []);
 
   // ── Actualización parcial del usuario ────────────────────────────────────
-  const updateUser = (partial: Partial<AuthUser>) => {
-    setUser((prev) => {
+  const updateUser = useCallback((partial: Partial<AuthUser>) => {
+    setUser((prev: AuthUser | null) => {
       if (!prev) return prev;
       const updated = { ...prev, ...partial };
       // Mantener storage sincronizado
-      storageSave(STORAGE_KEYS.USER, JSON.stringify(updated)).catch(() => {});
+      encryptForStorage(JSON.stringify(updated))
+        .then((encrypted) => storageSave(STORAGE_KEYS.USER, encrypted))
+        .catch((error: unknown) => {
+          log.warn('No se pudo sincronizar usuario actualizado en storage', { error: String(error) });
+        });
       return updated;
     });
-  };
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    try {
+      const profile = await getProfile();
+      setUser(profile);
+      const encrypted = await encryptForStorage(JSON.stringify(profile));
+      storageSave(STORAGE_KEYS.USER, encrypted).catch((error: unknown) => {
+        log.warn('No se pudo persistir perfil refrescado', { error: String(error) });
+      });
+    } catch (err) {
+      log.error('Error al refrescar perfil', { phase: 'refresh-profile' }, err instanceof Error ? err : undefined);
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, saveAuth, clearAuth, updateUser, isRestoring }}>
+    <AuthContext.Provider value={{ user, saveAuth, clearAuth, updateUser, isRestoring, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

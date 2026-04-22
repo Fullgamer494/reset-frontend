@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CompanionSidebar from "@/components/features/dashboard/CompanionSidebar";
@@ -25,12 +25,17 @@ export default function AcompananteLayout({
     ? user.name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")
     : "P";
 
+  // Al navegar en móvil, cerramos el menú para evitar overlays persistentes.
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   return (
-    <div className="flex h-dvh bg-(--surface-main) overflow-hidden">
+    <div className="flex h-fill bg-(--surface-main)">
       {/* Overlay semitransparente en móvil cuando el sidebar está abierto */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-20 md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
@@ -38,10 +43,10 @@ export default function AcompananteLayout({
 
       <CompanionSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* main: sin margen en móvil, con margen en md+ */}
-      <main className="flex-1 md:ml-72 overflow-auto bg-(--surface-main) flex flex-col">
-        {/* Barra superior móvil — oculta en desktop */}
-        <div className="sticky top-0 z-10 flex items-end gap-3 px-4 min-h-14 pb-3 bg-(--surface-card) border-b border-teal-50 dark:border-teal-900/20 md:hidden shrink-0 safe-top-bar">
+      {/* main: columna flex de altura completa — EL scroll ocurre solo en el div interior */}
+      <main className="flex-1 md:ml-72 flex flex-col min-h-0 bg-(--surface-main)">
+        {/* Barra superior móvil — oculta en desktop. NO es sticky: el flex-col la mantiene arriba */}
+        <div className="shrink-0 z-30 flex items-end gap-3 px-4 min-h-14 pb-3 bg-(--surface-card) border-b border-teal-50 dark:border-teal-900/20 md:hidden safe-top-bar">
           {/* En sub-páginas: botón Atrás. En raíz: botón hamburguesa */}
           {!isRoot ? (
             <button
@@ -68,10 +73,7 @@ export default function AcompananteLayout({
           )}
 
           {/* Título de la página actual */}
-          <span
-            className="flex-1 text-[16px] font-normal rs-text-body"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <span className="flex-1 font-playfair text-[16px] font-normal rs-text-body">
             {pageLabel}
           </span>
 
@@ -83,7 +85,7 @@ export default function AcompananteLayout({
             aria-label="Mi perfil"
           >
             {user?.id
-              ? <img src={getAvatarUrl(user.id)} alt={initials} className="w-full h-full object-cover" />
+              ? <img src={getAvatarUrl(user.avatarUrl, user.id)} alt={initials} className="w-full h-full object-cover" />
               : initials}
           </Link>
 
@@ -102,7 +104,8 @@ export default function AcompananteLayout({
           )}
         </div>
 
-        <div className="flex-1 overflow-auto">
+        {/* Único contenedor de scroll — nativo optimizado para Android WebView */}
+        <div className="flex-1 min-h-0 overflow-y-auto native-scroll">
           {children}
         </div>
       </main>

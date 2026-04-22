@@ -5,8 +5,137 @@ import { useBitacora } from "@/hooks/useBitacora";
 import { MOOD_COLORS, formatDate, getMoodDisplayLabel } from "@/lib/bitacora-helpers";
 import BitacoraEntryModal from "@/components/features/dashboard/BitacoraEntryModal";
 import type { JournalEntry, MoodId } from "@/types";
+import type { TrackingLogFilters } from "@/lib/api/tracking";
+
+type FilterMode = "recent" | "month" | "day" | "range";
+
+const MONTH_LABELS = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
+
+function toDateInputValue(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month, 0).getDate();
+}
+
+function toUtcStartOfDayIso(year: number, month: number, day: number): string {
+  return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0)).toISOString();
+}
+
+function toUtcEndOfDayIso(year: number, month: number, day: number): string {
+  return new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999)).toISOString();
+}
+
+function parseYmd(dateValue: string): { year: number; month: number; day: number } | null {
+  const match = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+
+  return {
+    year: Number(match[1]),
+    month: Number(match[2]),
+    day: Number(match[3]),
+  };
+}
+
+function buildFilterSummary(
+  mode: FilterMode,
+  year: number,
+  month: number,
+  day: number,
+  from: string,
+  to: string
+): string {
+  if (mode === "recent") return "Últimos 5 registros";
+  if (mode === "month") return `${MONTH_LABELS[month - 1]} ${year}`;
+  if (mode === "day") return `${day} de ${MONTH_LABELS[month - 1]} de ${year}`;
+  if (from && to) return `${from} → ${to}`;
+  return "Rango personalizado";
+}
 
 export default function BitacoraPage() {
+  const ENTRIES_PER_PAGE = 5;
+  const [filterMode, setFilterMode] = React.useState<FilterMode>("recent");
+  const [filterYear, setFilterYear] = React.useState(() => new Date().getFullYear());
+  const [filterMonth, setFilterMonth] = React.useState(() => new Date().getMonth() + 1);
+  const [filterDay, setFilterDay] = React.useState(() => new Date().getDate());
+  const [rangeFrom, setRangeFrom] = React.useState(() => toDateInputValue(new Date(new Date().getFullYear(), new Date().getMonth(), 1)));
+  const [rangeTo, setRangeTo] = React.useState(() => toDateInputValue(new Date()));
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const normalizedRange =
+    rangeFrom && rangeTo && rangeFrom > rangeTo
+      ? { from: rangeTo, to: rangeFrom }
+      : { from: rangeFrom, to: rangeTo };
+
+  const activeFilters: TrackingLogFilters = React.useMemo(() => {
+    if (filterMode === "month") {
+      const monthLastDay = getDaysInMonth(filterYear, filterMonth);
+      return {
+        year: filterYear,
+        month: filterMonth,
+        from: toUtcStartOfDayIso(filterYear, filterMonth, 1),
+        to: toUtcEndOfDayIso(filterYear, filterMonth, monthLastDay),
+      };
+    }
+
+    if (filterMode === "day") {
+      return {
+        year: filterYear,
+        month: filterMonth,
+        day: filterDay,
+        from: toUtcStartOfDayIso(filterYear, filterMonth, filterDay),
+        to: toUtcEndOfDayIso(filterYear, filterMonth, filterDay),
+      };
+    }
+
+    if (filterMode === "range") {
+      const fromParts = parseYmd(normalizedRange.from);
+      const toParts = parseYmd(normalizedRange.to);
+      return {
+        from: fromParts
+          ? toUtcStartOfDayIso(fromParts.year, fromParts.month, fromParts.day)
+          : normalizedRange.from,
+        to: toParts
+          ? toUtcEndOfDayIso(toParts.year, toParts.month, toParts.day)
+          : normalizedRange.to,
+      };
+    }
+
+    return {};
+  }, [
+    filterMode,
+    filterYear,
+    filterMonth,
+    filterDay,
+    normalizedRange.from,
+    normalizedRange.to,
+  ]);
+
+  const daysInSelectedMonth = getDaysInMonth(filterYear, filterMonth);
+
+  React.useEffect(() => {
+    if (filterDay > daysInSelectedMonth) {
+      setFilterDay(daysInSelectedMonth);
+    }
+  }, [daysInSelectedMonth, filterDay]);
+
   const {
     entries,
     isLoadingEntries,
@@ -29,12 +158,49 @@ export default function BitacoraPage() {
     setConsumed,
     handleSave,
     handleDelete,
-  } = useBitacora();
+  } = useBitacora(activeFilters);
+
+  const filterSummary = buildFilterSummary(
+    filterMode,
+    filterYear,
+    filterMonth,
+    filterDay,
+    normalizedRange.from,
+    normalizedRange.to
+  );
+
+  const yearOptions = React.useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const startYear = Math.max(2015, currentYear - 8);
+    const years: number[] = [];
+
+    for (let year = currentYear + 1; year >= startYear; year -= 1) {
+      years.push(year);
+    }
+
+    return years;
+  }, []);
 
   // ── Entrada seleccionada para ver detalle ─────────────────────────────
   const [selectedEntry, setSelectedEntry] = React.useState<JournalEntry | null>(null);
 
   const entry = selectedEntry;
+  const hasActiveFilter = filterMode !== "recent";
+  const totalPages = Math.max(1, Math.ceil(entries.length / ENTRIES_PER_PAGE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const pageStart = (safeCurrentPage - 1) * ENTRIES_PER_PAGE;
+  const pageEnd = pageStart + ENTRIES_PER_PAGE;
+  const visibleEntries = entries.slice(pageStart, pageEnd);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filterMode, filterYear, filterMonth, filterDay, normalizedRange.from, normalizedRange.to]);
+
+  React.useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <>
@@ -44,20 +210,17 @@ export default function BitacoraPage() {
         {/* ─── Header ─────────────────────────────────────────────────────── */}
         <div className="mb-10">
           <p
-            className="text-[11px] tracking-[1.8px] uppercase rs-text-muted mb-1"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            className="font-jetbrains text-[11px] tracking-[1.8px] uppercase rs-text-muted mb-1"
           >
             Registro Personal
           </p>
           <h1
-            className="text-[42px] font-normal rs-text-heading leading-none mb-2"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="font-playfair text-[clamp(28px,7vw,42px)] font-normal rs-text-heading leading-none mb-2"
           >
             Bitácora Diaria
           </h1>
           <p
-            className="text-[12px] italic rs-text-caption"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="font-jetbrains text-[13px] rs-text-caption"
           >
             Cada entrada queda guardada y ordenada en el tiempo.
           </p>
@@ -71,8 +234,7 @@ export default function BitacoraPage() {
           {/* Cabecera del form */}
           <div className="px-6 pt-6 pb-4 border-b border-(--ui-border)">
             <p
-              className="text-[11px] tracking-[1.8px] uppercase rs-text-muted"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              className="font-jetbrains text-[11px] tracking-[1.8px] uppercase rs-text-muted"
             >
               Nueva Entrada
             </p>
@@ -83,14 +245,13 @@ export default function BitacoraPage() {
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2">
                 <p
-                  className="text-[11px] tracking-[1px] uppercase rs-text-muted"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted"
                 >
                   Estado de Ánimo
                 </p>
                 <span
-                  className="text-[13px] tabular-nums"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", color: moodColor }}
+                  className="font-jetbrains text-[13px] tabular-nums"
+                  style={{ color: moodColor }}
                 >
                   {moodLevel}<span className="text-[11px] rs-text-caption">/10</span>
                 </span>
@@ -104,8 +265,8 @@ export default function BitacoraPage() {
                 style={{ background: moodTrack, accentColor: moodColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy bajo</span>
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy alto</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy bajo</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy alto</span>
               </div>
             </div>
 
@@ -113,14 +274,13 @@ export default function BitacoraPage() {
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2">
                 <p
-                  className="text-[11px] tracking-[1px] uppercase rs-text-muted"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted"
                 >
-                  Nivel de Craving
+                  Nivel de Craving <span className="lowercase text-[10px] opacity-70">(ansia o deseo intenso de consumir)</span>
                 </p>
                 <span
-                  className="text-[13px] tabular-nums"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", color: cravingColor }}
+                  className="font-jetbrains text-[13px] tabular-nums"
+                  style={{ color: cravingColor }}
                 >
                   {cravingLevel}<span className="text-[11px] rs-text-caption">/10</span>
                 </span>
@@ -134,15 +294,14 @@ export default function BitacoraPage() {
                 style={{ background: cravingTrack, accentColor: cravingColor }}
               />
               <div className="flex justify-between mt-1.5">
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Sin deseo</span>
-                <span className="text-[10px] rs-text-caption" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Muy intenso</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Sin deseo</span>
+                <span className="font-jetbrains text-[11px] rs-text-caption">Muy intenso</span>
               </div>
             </div>
 
             {/* Título */}
             <p
-              className="text-[11px] tracking-[1px] uppercase rs-text-muted mb-2"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted mb-2"
             >
               Título
             </p>
@@ -151,14 +310,12 @@ export default function BitacoraPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Dale un título a esta entrada..."
-              className="w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic" }}
+              className="font-jetbrains w-full bg-(--surface-input) border border-(--ui-border) rounded-lg px-4 py-2.5 text-[14px] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-sky-300 focus:ring-1 focus:ring-sky-100 transition-all mb-4"
             />
 
             {/* Notas */}
             <p
-              className="text-[11px] tracking-[1px] uppercase rs-text-muted mb-2"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted mb-2"
             >
               Notas del Día
             </p>
@@ -167,22 +324,19 @@ export default function BitacoraPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Escribe aquí lo que tu alma necesite expresar..."
               rows={4}
-              className="w-full bg-transparent border border-(--ui-border) rounded-lg p-4 rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, lineHeight: "1.8", fontStyle: "italic" }}
+              className="font-jetbrains w-full bg-transparent border border-(--ui-border) rounded-lg p-4 text-[14px] leading-[1.8] rs-text-body placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:border-slate-300 dark:focus:border-slate-700 focus:ring-1 focus:ring-slate-200 resize-none transition-all mb-4"
             />
 
             {/* Toggle consumo */}
             <div className="flex items-center gap-3 py-3 border-t border-b border-(--ui-border) mb-5">
               <div className="flex-1">
                 <p
-                  className="text-[11px] tracking-[1px] uppercase rs-text-muted"
-                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                  className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-muted"
                 >
                   ¿Consumiste hoy?
                 </p>
                 <p
-                  className="text-[11px] italic rs-text-caption mt-0.5"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="font-jetbrains text-[12px] rs-text-caption mt-0.5"
                 >
                   Ser honesto ayuda a mantener tu racha actualizada.
                 </p>
@@ -201,8 +355,8 @@ export default function BitacoraPage() {
                 />
               </button>
               <span
-                className="text-[11px] uppercase w-5 text-right"
-                style={{ fontFamily: "'JetBrains Mono', monospace", color: consumed ? "#f87171" : "#94a3b8" }}
+                className="font-jetbrains text-[11px] uppercase w-5 text-right"
+                style={{ color: consumed ? "#f87171" : "#94a3b8" }}
               >
                 {consumed ? "Sí" : "No"}
               </span>
@@ -210,12 +364,12 @@ export default function BitacoraPage() {
 
             {/* Feedback */}
             {error && (
-              <p className="mb-3 text-[11px] text-red-400" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="font-jetbrains mb-3 text-[12px] text-red-400">
                 {error}
               </p>
             )}
             {saved && (
-              <p className="mb-3 text-[11px] text-teal-500" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+              <p className="font-jetbrains mb-3 text-[12px] text-teal-500">
                 Entrada guardada correctamente ✓
               </p>
             )}
@@ -224,8 +378,7 @@ export default function BitacoraPage() {
             <button
               onClick={handleSave}
               disabled={isSubmitting}
-              className="flex items-center gap-3 justify-center w-full h-12 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase" }}
+              className="font-jetbrains flex items-center gap-3 justify-center w-full h-12 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-white rounded-xl transition-colors text-[11px] tracking-[2px] uppercase"
             >
               {isSubmitting ? (
                 <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -244,21 +397,214 @@ export default function BitacoraPage() {
         {/* ─── Lista de entradas ───────────────────────────────────────────── */}
         <div>
           {/* Cabecera de sección */}
-          <div className="flex items-center justify-between mb-5">
-            <p
-              className="text-[11px] tracking-[1.8px] uppercase rs-text-muted"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              Mis Registros
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
+            <div>
+              <p
+                className="font-jetbrains text-[11px] tracking-[1.8px] uppercase rs-text-muted"
+              >
+                Mis Registros
+              </p>
+              <p className="font-jetbrains text-[11px] rs-text-caption mt-1">
+                {filterSummary}
+              </p>
+            </div>
             {!isLoadingEntries && (
               <span
-                className="text-[11px] tracking-[1px] uppercase rs-text-caption"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                className="font-jetbrains text-[11px] tracking-[1px] uppercase rs-text-caption"
               >
-                {entries.length} {entries.length === 1 ? "entrada" : "entradas"}
+                {visibleEntries.length} {visibleEntries.length === 1 ? "entrada" : "entradas"}
               </span>
             )}
+          </div>
+
+          {/* ─── Filtros de historial ─────────────────────────────────────── */}
+          <div
+            className="bg-(--surface-card) border border-(--ui-border) rounded-sm overflow-hidden mb-6"
+            style={{ boxShadow: "0px 4px 20px -8px rgba(0,0,0,0.16)" }}
+          >
+            <div className="px-6 pt-6 pb-4 border-b border-(--ui-border) flex items-center justify-between gap-3">
+              <div>
+                <p className="font-jetbrains text-[11px] tracking-[1.8px] uppercase rs-text-muted">
+                  Consulta del Historial
+                </p>
+                <p className="font-jetbrains text-[12px] rs-text-caption mt-1">
+                  {filterSummary}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFilterMode("recent")}
+                className="font-jetbrains text-[10px] uppercase tracking-[1.6px] px-3 py-2 rounded-sm border border-(--ui-border) rs-text-caption hover:border-slate-300 hover:text-slate-700 transition-colors"
+              >
+                Ver recientes
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div className="flex flex-wrap gap-2">
+                {([
+                  ["recent", "Recientes"],
+                  ["month", "Mes"],
+                  ["day", "Día"],
+                  ["range", "Rango"],
+                ] as const).map(([mode, label]) => {
+                  const isActive = filterMode === mode;
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setFilterMode(mode)}
+                      className="font-jetbrains text-[10px] uppercase tracking-[1.6px] px-3.5 py-2 rounded-full border transition-colors"
+                      style={{
+                        borderColor: isActive ? "var(--ui-border)" : "var(--ui-border-subtle)",
+                        backgroundColor: isActive ? "rgba(59,130,246,0.08)" : "transparent",
+                        color: isActive ? "#1d4ed8" : "var(--ui-text-caption)",
+                      }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {filterMode === "recent" && (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-sm border border-dashed border-(--ui-border) px-4 py-3">
+                    <p className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted mb-1">
+                      Vista rápida
+                    </p>
+                    <p className="font-jetbrains text-[12px] rs-text-caption">
+                      Se muestran tus últimos 5 registros.
+                    </p>
+                  </div>
+                  <div className="rounded-sm border border-dashed border-(--ui-border) px-4 py-3">
+                    <p className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted mb-1">
+                      Consejo
+                    </p>
+                    <p className="font-jetbrains text-[12px] rs-text-caption">
+                      Usa mes o día para navegar rápido por el calendario.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {filterMode === "month" && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Año
+                    </span>
+                    <select
+                      value={filterYear}
+                      onChange={(e) => setFilterYear(Number(e.target.value))}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    >
+                      {yearOptions.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Mes
+                    </span>
+                    <select
+                      value={filterMonth}
+                      onChange={(e) => setFilterMonth(Number(e.target.value))}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    >
+                      {MONTH_LABELS.map((label, index) => (
+                        <option key={label} value={index + 1}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
+
+              {filterMode === "day" && (
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Año
+                    </span>
+                    <select
+                      value={filterYear}
+                      onChange={(e) => setFilterYear(Number(e.target.value))}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    >
+                      {yearOptions.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Mes
+                    </span>
+                    <select
+                      value={filterMonth}
+                      onChange={(e) => setFilterMonth(Number(e.target.value))}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    >
+                      {MONTH_LABELS.map((label, index) => (
+                        <option key={label} value={index + 1}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Día
+                    </span>
+                    <select
+                      value={filterDay}
+                      onChange={(e) => setFilterDay(Number(e.target.value))}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    >
+                      {Array.from({ length: daysInSelectedMonth }, (_, index) => index + 1).map((day) => (
+                        <option key={day} value={day}>
+                          {day}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
+
+              {filterMode === "range" && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Desde
+                    </span>
+                    <input
+                      type="date"
+                      value={rangeFrom}
+                      onChange={(e) => setRangeFrom(e.target.value)}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[1.4px] rs-text-muted">
+                      Hasta
+                    </span>
+                    <input
+                      type="date"
+                      value={rangeTo}
+                      onChange={(e) => setRangeTo(e.target.value)}
+                      className="font-jetbrains h-11 rounded-lg border border-(--ui-border) bg-(--surface-input) px-4 text-[13px] outline-none focus:border-sky-300"
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Estado de carga */}
@@ -274,17 +620,18 @@ export default function BitacoraPage() {
           {!isLoadingEntries && entries.length === 0 && (
             <div className="text-center py-14 border border-dashed border-slate-300 rounded-sm">
               <p
-                className="text-[13px] italic rs-text-caption"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                className="font-jetbrains text-[13px] rs-text-caption"
               >
-                Aún no hay entradas. ¡Escribe tu primera nota!
+                {hasActiveFilter
+                  ? "No hay entradas para este filtro. Prueba otra fecha o vuelve a recientes."
+                  : "Aún no hay entradas. ¡Escribe tu primera nota!"}
               </p>
             </div>
           )}
 
           {/* Tarjetas de entradas */}
           <div className="flex flex-col gap-3">
-            {entries.map((entry) => {
+            {visibleEntries.map((entry) => {
               const { date, time } = formatDate(entry.createdAt);
               const colors = MOOD_COLORS[entry.mood as MoodId];
               const entryMoodLabel = getMoodDisplayLabel(entry.mood as MoodId);
@@ -304,8 +651,8 @@ export default function BitacoraPage() {
                         style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}`, color: colors.text }}
                       >
                         <span
-                          className="text-[10px] uppercase tracking-[0.5px]"
-                          style={{ fontFamily: "'JetBrains Mono', monospace", color: colors.text }}
+                          className="font-jetbrains text-[11px] uppercase tracking-[0.5px]"
+                          style={{ color: colors.text }}
                         >
                           {entryMoodLabel}
                         </span>
@@ -314,8 +661,8 @@ export default function BitacoraPage() {
                       {/* Consumed badge */}
                       {entry.consumed && (
                         <span
-                          className="text-[10px] uppercase tracking-[0.5px] px-2 py-0.5 rounded-full shrink-0"
-                          style={{ fontFamily: "'JetBrains Mono', monospace", backgroundColor: "#fef2f2", border: "1px solid #fecaca", color: "#ef4444" }}
+                          className="font-jetbrains text-[11px] uppercase tracking-[0.5px] px-2 py-0.5 rounded-full shrink-0"
+                          style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca", color: "#ef4444" }}
                         >
                           Consumo
                         </span>
@@ -326,14 +673,12 @@ export default function BitacoraPage() {
                     <div className="flex items-center gap-3 shrink-0">
                       <div className="text-right">
                         <p
-                          className="text-[11px] uppercase rs-text-muted leading-tight"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                          className="font-jetbrains text-[11px] uppercase rs-text-muted leading-tight"
                         >
                           {date}
                         </p>
                         <p
-                          className="text-[11px] rs-text-caption leading-tight"
-                          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                          className="font-jetbrains text-[11px] rs-text-caption leading-tight"
                         >
                           {time}
                         </p>
@@ -352,24 +697,21 @@ export default function BitacoraPage() {
 
                   {/* Título */}
                   <h3
-                    className="text-[17px] italic rs-text-body leading-snug mb-1.5"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="font-jetbrains text-[17px] rs-text-body leading-snug mb-1.5"
                   >
                     {entry.title || "Sin título"}
                   </h3>
 
                   {/* Extracto de notas */}
                   <p
-                    className="text-[13px] rs-text-muted leading-relaxed line-clamp-2"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="font-playfair text-[13px] rs-text-muted leading-relaxed line-clamp-2"
                   >
                     {entry.notes}
                   </p>
 
                   {/* Leer más */}
                   <p
-                    className="mt-2 text-[11px] uppercase tracking-[1px] rs-text-caption"
-                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    className="font-jetbrains mt-2 text-[11px] uppercase tracking-[1px] rs-text-caption"
                   >
                     Toca para leer completo →
                   </p>
@@ -377,6 +719,51 @@ export default function BitacoraPage() {
               );
             })}
           </div>
+
+          {!isLoadingEntries && entries.length > ENTRIES_PER_PAGE && (
+            <div className="mt-6 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                disabled={safeCurrentPage === 1}
+                className="font-jetbrains h-9 min-w-9 px-3 rounded-sm border border-(--ui-border) rs-text-caption disabled:opacity-40 disabled:cursor-not-allowed hover:border-slate-300 transition-colors"
+                aria-label="Página anterior"
+              >
+                ←
+              </button>
+
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => {
+                const isActive = pageNumber === safeCurrentPage;
+                return (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => setCurrentPage(pageNumber)}
+                    className="font-jetbrains h-9 min-w-9 px-3 rounded-sm border text-[11px] tracking-[1px] transition-colors"
+                    style={{
+                      borderColor: isActive ? "#2563eb" : "var(--ui-border)",
+                      color: isActive ? "#1d4ed8" : "var(--ui-text-caption)",
+                      backgroundColor: isActive ? "rgba(37,99,235,0.08)" : "transparent",
+                    }}
+                    aria-label={`Ir a página ${pageNumber}`}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {pageNumber}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                disabled={safeCurrentPage === totalPages}
+                className="font-jetbrains h-9 min-w-9 px-3 rounded-sm border border-(--ui-border) rs-text-caption disabled:opacity-40 disabled:cursor-not-allowed hover:border-slate-300 transition-colors"
+                aria-label="Página siguiente"
+              >
+                →
+              </button>
+            </div>
+          )}
         </div>
 
       </div>

@@ -215,13 +215,13 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span
-              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] tracking-[1px] uppercase font-normal ${dc.bg} ${dc.text}`}
+              className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] tracking-[1px] uppercase font-normal ${dc.bg} ${dc.text}`}
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               {tecnica.dificultad}
             </span>
             <span
-              className="text-[10px] tracking-[1px] uppercase rs-text-caption"
+              className="text-[11px] tracking-[1px] uppercase rs-text-caption"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
               {tecnica.duracion}
@@ -254,13 +254,13 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
         <div className="px-6 pb-6 border-t border-slate-100 dark:border-slate-700/30">
           <p
             className="text-[13px] rs-text-caption leading-relaxed mt-4 mb-5"
-            style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {tecnica.descripcion}
           </p>
 
           <p
-            className="text-[10px] tracking-[2px] uppercase rs-text-caption mb-3"
+            className="text-[11px] tracking-[2px] uppercase rs-text-caption mb-3"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
             Pasos
@@ -290,7 +290,7 @@ function TecnicaCard({ tecnica }: { tecnica: Tecnica }) {
                 <path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <p
-                className="text-[12px] italic text-sky-700 dark:text-sky-300 leading-relaxed"
+                className="text-[12px] text-sky-700 dark:text-sky-300 leading-relaxed"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {tecnica.consejo}
@@ -333,7 +333,7 @@ export default function TecnicasPage() {
             Mis Técnicas
           </h1>
           <p
-            className="text-[12px] italic rs-text-caption max-w-md"
+            className="text-[12px] rs-text-caption max-w-md"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Recursos prácticos pensados para tu proceso de recuperación. Úsalos a tu ritmo, vuelve a ellos cuando los necesites.
