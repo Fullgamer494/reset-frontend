@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, getProfile, verify2FA } from "@/lib/api/auth";
 import { useAuth } from "@/context/AuthContext";
+import { validateLoginForm, validateMFACode } from "@/lib/validation";
 
 export function useLogin() {
   const router = useRouter();
@@ -30,21 +31,9 @@ export function useLogin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validaciones de cliente antes de llamar a la API
-    if (!form.email.trim()) {
-      setError('Ingresa tu correo electrónico.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      setError('El correo electrónico no tiene un formato válido.');
-      return;
-    }
-    if (!form.password) {
-      setError('Ingresa tu contraseña.');
-      return;
-    }
-    if (form.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+    const validation = validateLoginForm(form.email, form.password);
+    if (!validation.valid) {
+      setError(validation.errors.email || validation.errors.password || "Datos inválidos.");
       return;
     }
     setIsLoading(true);
@@ -69,11 +58,22 @@ export function useLogin() {
       saveAuth(loginResult.accessToken, profileResult);
       
       router.push(profileResult.role === "PADRINO" ? "/acompanante" : "/dashboard");
-    } catch (err: any) {
-      if (err.code === 'EMAIL_NOT_VERIFIED') {
+    } catch (err: unknown) {
+      const errorCode =
+        typeof err === 'object' && err !== null && 'code' in err
+          ? (err as { code?: string }).code
+          : undefined;
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : (typeof err === 'object' && err !== null && 'message' in err
+              ? String((err as { message?: string }).message)
+              : undefined);
+
+      if (errorCode === 'EMAIL_NOT_VERIFIED') {
         setError("Tu cuenta aún no ha sido verificada. Revisa tu correo electrónico para activarla.");
       } else {
-        setError(err.message || "Credenciales incorrectas o problema de conexión.");
+        setError(errorMessage || "Credenciales incorrectas o problema de conexión.");
       }
       clearAuth(); 
     } finally {
@@ -83,8 +83,9 @@ export function useLogin() {
 
   const handleVerify2FA = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otpCode || otpCode.length !== 6) {
-      setError("Ingresa el código de 6 dígitos.");
+    const codeValidation = validateMFACode(otpCode);
+    if (!codeValidation.valid) {
+      setError(codeValidation.error || "Ingresa un código válido.");
       return;
     }
     if (!mfaToken) {
@@ -104,8 +105,14 @@ export function useLogin() {
       const profileResult = await getProfile();
       saveAuth(verifyResult.accessToken, profileResult);
       router.push(profileResult.role === "PADRINO" ? "/acompanante" : "/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Código incorrecto o expirado.");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : (typeof err === 'object' && err !== null && 'message' in err
+              ? String((err as { message?: string }).message)
+              : undefined);
+      setError(errorMessage || "Código incorrecto o expirado.");
     } finally {
       setIsLoading(false);
     }

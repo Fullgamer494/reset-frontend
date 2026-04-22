@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { register } from "@/lib/api/auth";
 import { ADDICTION_TYPES } from "@/lib/constants";
+import { validateRegisterForm } from "@/lib/validation";
 import type { AddictionTypeId } from "@/types";
 
 interface RegisterFormStep1 {
@@ -14,7 +14,6 @@ interface RegisterFormStep1 {
 }
 
 export function useRegister() {
-  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [role, setRole] = useState<"user" | "companion">("user");
   const [form, setForm] = useState<RegisterFormStep1>({ name: "", email: "", password: "", confirmPassword: "" });
@@ -33,31 +32,9 @@ export function useRegister() {
   };
 
   const handleNextStep = () => {
-    if (!form.name.trim()) {
-      setError('Ingresa tu nombre completo.');
-      return;
-    }
-    if (!form.email.trim()) {
-      setError('Ingresa tu correo electrónico.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      setError('El correo electrónico no tiene un formato válido.');
-      return;
-    }
-    if (!form.password) {
-      setError('Elige una contraseña.');
-      return;
-    }
-    if (form.password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres.');
-      return;
-    }
-    const hasLetter = /[a-zA-Z]/.test(form.password);
-    const hasNumber = /[0-9]/.test(form.password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>\-_]/.test(form.password);
-    if (!hasLetter || !hasNumber || !hasSpecial) {
-      setError('La contraseña debe ser alfanumérica y contener un carácter especial.');
+    const validation = validateRegisterForm(form.name, form.email, form.password);
+    if (!validation.valid) {
+      setError(validation.errors.name || validation.errors.email || validation.errors.password?.[0] || 'Datos inválidos.');
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -69,19 +46,9 @@ export function useRegister() {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.password) {
-      setError("Completa todos los campos de cuenta.");
-      return;
-    }
-    if (form.password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres.');
-      return;
-    }
-    const hasLetter = /[a-zA-Z]/.test(form.password);
-    const hasNumber = /[0-9]/.test(form.password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>\-_]/.test(form.password);
-    if (!hasLetter || !hasNumber || !hasSpecial) {
-      setError('La contraseña debe ser alfanumérica y contener un carácter especial.');
+    const validation = validateRegisterForm(form.name, form.email, form.password);
+    if (!validation.valid) {
+      setError(validation.errors.name || validation.errors.email || validation.errors.password?.[0] || "Completa todos los campos correctamente.");
       return;
     }
     if (form.password !== form.confirmPassword) {
@@ -135,8 +102,13 @@ export function useRegister() {
         ...(role === "user" && classificationLabel ? { classification: classificationLabel } : {}),
       });
       setIsSuccess(true);
-    } catch (err: any) {
-      if (err?.code === "ACCOUNT_DEACTIVATED") {
+    } catch (err: unknown) {
+      const errorCode =
+        typeof err === 'object' && err !== null && 'code' in err
+          ? (err as { code?: string }).code
+          : undefined;
+
+      if (errorCode === "ACCOUNT_DEACTIVATED") {
         setIsDeactivated(true);
       }
       setError(err instanceof Error ? err.message : "Error al crear la cuenta");

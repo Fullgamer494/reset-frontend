@@ -2,6 +2,7 @@
 // Foro comunitario — posts, reacciones y comentarios.
 
 import { apiRequest } from './client';
+import { sanitizeForumContent, sanitizeForumTitle } from '@/lib/sanitize';
 import type { ForoPost, ForoCategory, ForoComment, CreateForoPostData } from '@/types';
 
 // ─── Helpers de normalización ────────────────────────────────────────────────
@@ -124,11 +125,14 @@ export async function getForoPosts(
 export async function createForoPost(
   data: CreateForoPostData
 ): Promise<ForoPost> {
+  const safeTitle = sanitizeForumTitle(data.title);
+  const safeContent = sanitizeForumContent(data.content);
+
   const res = await apiRequest<unknown>('/forum/posts', {
     method: 'POST',
     body: JSON.stringify({
-      title: data.title,
-      content: data.content,
+      title: safeTitle,
+      content: safeContent,
       is_anonymous: data.isAnonymous,
     }),
   });
@@ -164,9 +168,10 @@ export async function commentPost(
   is_anonymous = false,
   currentUserId?: string
 ): Promise<ForoComment> {
+  const safeContent = sanitizeForumContent(content);
   const res = await apiRequest<unknown>(`/forum/posts/${postId}/comments`, {
     method: 'POST',
-    body: JSON.stringify({ content, is_anonymous }),
+    body: JSON.stringify({ content: safeContent, is_anonymous }),
   });
   return normalizeComment(unwrapData(res), currentUserId);
 }

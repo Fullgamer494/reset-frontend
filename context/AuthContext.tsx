@@ -25,6 +25,8 @@ import { User } from '@/types';
 import { getProfile } from '@/lib/api/auth';
 import { setToken } from '@/lib/api/client';
 import { storageSave, storageGet, storageRemove, STORAGE_KEYS } from '@/lib/storage';
+import { decryptFromStorage, encryptForStorage } from '@/lib/secure-storage';
+import { log } from '@/lib/logger';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -54,6 +56,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isRestoring, setIsRestoring] = useState(true);
 
+  // ── Limpiar ───────────────────────────────────────────────────────────────
+  const clearAuth = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    storageRemove(STORAGE_KEYS.TOKEN).catch((error: unknown) => {
+      log.warn('No se pudo eliminar token de storage', { error: String(error) });
+    });
+    storageRemove(STORAGE_KEYS.USER).catch((error: unknown) => {
+      log.warn('No se pudo eliminar usuario de storage', { error: String(error) });
+    });
+  }, []);
+
   // ── Restaurar sesión al arrancar ──────────────────────────────────────────
   // Se ejecuta una sola vez al montar el Provider (début de la app).
   // Si existe un token guardado, lo restaura en memoria y recupera los datos
@@ -61,7 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function restoreSession() {
       try {
-        const token = await storageGet(STORAGE_KEYS.TOKEN);
+        const tokenRaw = await storageGet(STORAGE_KEYS.TOKEN);
+        const token = tokenRaw ? await decryptFromStorage(tokenRaw) : null;
         if (token) {
           setToken(token);   // pone el token en memoria para las llamadas HTTP
           
@@ -70,33 +85,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const profile = await getProfile();
             setUser(profile);
             // Sincronizar storage con los datos frescos
-            storageSave(STORAGE_KEYS.USER, JSON.stringify(profile)).catch(() => {});
-          } catch (error: any) {
-            console.error("Error al restaurar sesión desde el servidor:", error);
+            const encryptedProfile = await encryptForStorage(JSON.stringify(profile));
+            storageSave(STORAGE_KEYS.USER, encryptedProfile).catch((error: unknown) => {
+              log.warn('No se pudo persistir el perfil restaurado', { error: String(error) });
+            });
+          } catch (error: unknown) {
+            log.error('Error al restaurar sesión desde el servidor', { phase: 'restore-profile' }, error instanceof Error ? error : undefined);
+            const status = typeof error === 'object' && error !== null && 'status' in error
+              ? (error as { status?: number }).status
+              : undefined;
             
             // Si el error es 401 (Unauthorized), significa que el token no es válido.
             // Debemos limpiar la sesión por completo para evitar bucles de redirección.
-            if (error?.status === 401) {
+            if (status === 401) {
               clearAuth();
             } else {
               // Si el servidor falla por otros motivos (ej: Red), intentar usar los datos locales como fallback
               const raw = await storageGet(STORAGE_KEYS.USER);
               if (raw) {
-                setUser(JSON.parse(raw) as AuthUser);
+                const decrypted = await decryptFromStorage(raw);
+                if (decrypted) {
+                  setUser(JSON.parse(decrypted) as AuthUser);
+                } else {
+                  clearAuth();
+                }
               } else {
                 clearAuth();
               }
             }
           }
         }
-      } catch {
+      } catch (error: unknown) {
         // Al error de storage, seguimos sin sesión
+        log.warn('No se pudo restaurar sesión desde storage', { error: String(error) });
       } finally {
         setIsRestoring(false);
       }
     }
     restoreSession();
-  }, []);
+  }, [clearAuth]);
 
   // ── Guardar ───────────────────────────────────────────────────────────────
   const saveAuth = useCallback((token: string, u: AuthUser) => {
@@ -104,16 +131,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(u);
     // Persistir de forma asíncrona (fire-and-forget).
     // Si falla (p.ej. almacenamiento lleno), la sesión en memoria sigue activa.
-    storageSave(STORAGE_KEYS.TOKEN, token).catch(() => {});
-    storageSave(STORAGE_KEYS.USER, JSON.stringify(u)).catch(() => {});
-  }, []);
+    encryptForStorage(token)
+      .then((encrypted) => storageSave(STORAGE_KEYS.TOKEN, encrypted))
+      .catch((error: unknown) => {
+        log.warn('No se pudo persistir el token en storage', { error: String(error) });
+      });
 
-  // ── Limpiar ───────────────────────────────────────────────────────────────
-  const clearAuth = useCallback(() => {
-    setToken(null);
-    setUser(null);
-    storageRemove(STORAGE_KEYS.TOKEN).catch(() => {});
-    storageRemove(STORAGE_KEYS.USER).catch(() => {});
+    encryptForStorage(JSON.stringify(u))
+      .then((encrypted) => storageSave(STORAGE_KEYS.USER, encrypted))
+      .catch((error: unknown) => {
+        log.warn('No se pudo persistir el usuario en storage', { error: String(error) });
+      });
   }, []);
 
   // ── Actualización parcial del usuario ────────────────────────────────────
@@ -122,7 +150,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!prev) return prev;
       const updated = { ...prev, ...partial };
       // Mantener storage sincronizado
-      storageSave(STORAGE_KEYS.USER, JSON.stringify(updated)).catch(() => {});
+      encryptForStorage(JSON.stringify(updated))
+        .then((encrypted) => storageSave(STORAGE_KEYS.USER, encrypted))
+        .catch((error: unknown) => {
+          log.warn('No se pudo sincronizar usuario actualizado en storage', { error: String(error) });
+        });
       return updated;
     });
   }, []);
@@ -131,9 +163,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const profile = await getProfile();
       setUser(profile);
-      storageSave(STORAGE_KEYS.USER, JSON.stringify(profile)).catch(() => {});
+      const encrypted = await encryptForStorage(JSON.stringify(profile));
+      storageSave(STORAGE_KEYS.USER, encrypted).catch((error: unknown) => {
+        log.warn('No se pudo persistir perfil refrescado', { error: String(error) });
+      });
     } catch (err) {
-      console.error("Error al refrescar perfil:", err);
+      log.error('Error al refrescar perfil', { phase: 'refresh-profile' }, err instanceof Error ? err : undefined);
     }
   }, []);
 

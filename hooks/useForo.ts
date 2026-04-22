@@ -14,6 +14,8 @@ import {
   deletePost,
 } from "@/lib/api/forum";
 import { storageSave, storageGet, STORAGE_KEYS } from "@/lib/storage";
+import { validateForumPost } from "@/lib/validation";
+import { sanitizeForumContent, sanitizeForumTitle } from "@/lib/sanitize";
 import type { ForoPost, ForoCategory, ForoComment } from "@/types";
 
 export function useForo() {
@@ -111,20 +113,26 @@ export function useForo() {
   // ── Publicar post ──────────────────────────────────────────────────────────
 
   const handlePublish = async () => {
-    if (!postTitle.trim()) {
+    const cleanTitle = sanitizeForumTitle(postTitle);
+    const cleanContent = sanitizeForumContent(postText);
+
+    if (!cleanTitle) {
       setPublishError('El título es obligatorio.');
       return;
     }
-    if (!postText.trim()) {
-      setPublishError('El contenido no puede estar vacío.');
+
+    const contentValidation = validateForumPost(cleanContent);
+    if (!contentValidation.valid) {
+      setPublishError(contentValidation.error || 'El contenido no es válido.');
       return;
     }
+
     setIsSubmitting(true);
     setPublishError(null);
     try {
       await createForoPost({
-        title: postTitle,
-        content: postText,
+        title: cleanTitle,
+        content: cleanContent,
         isAnonymous,
         tags: selectedTags,
       });
@@ -212,10 +220,16 @@ export function useForo() {
   // ── Enviar comentario ──────────────────────────────────────────────────────
 
   const handleSendComment = async () => {
-    if (!commentText.trim() || !openPost) return;
+    if (!openPost) return;
+    const cleanComment = sanitizeForumContent(commentText);
+    const commentValidation = validateForumPost(cleanComment);
+    if (!commentValidation.valid) {
+      setCommentError(commentValidation.error || "Comentario inválido.");
+      return;
+    }
     setIsCommentSubmitting(true);
     setCommentError(null);
-    const textToSend = commentText;
+    const textToSend = cleanComment;
     setCommentText("");
     try {
       const newComment = await commentPost(
